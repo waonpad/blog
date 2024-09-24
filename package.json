@@ -7,7 +7,6 @@
     "setup": "$npm_execpath install",
     "dev": "next dev",
     "build": "next build",
-    "export": "next export",
     "start": "next start",
     "fmt": "biome format --write .",
     "lnt": "biome lint --write .",
