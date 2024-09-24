@@ -1,0 +1,45 @@
+name: publish
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # 手動実行用
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Place Path
+        uses: actions/checkout@v4
+        with:
+          path: data
+          ref: data
+        continue-on-error: true
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+
+      # 必要であればテスト等を実行
+
+      - name: Build
+        run: bun run build
+
+      - name: Export
+        run: bun run export
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: out

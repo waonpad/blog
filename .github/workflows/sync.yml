@@ -1,0 +1,73 @@
+name: sync
+
+on:
+  issue_comment:
+    types:
+      - created
+      - deleted
+      - edited
+  issues:
+    types:
+      - closed
+      - deleted
+      - edited
+      - labeled
+      - opened
+      - pinned
+      - reopened
+      - transferred
+      - unlabeled
+      - unpinned
+  workflow_dispatch: # 手動実行用
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Place Path
+        uses: actions/checkout@v4
+        with:
+          path: data
+          ref: data
+        continue-on-error: true
+
+      # [r7kamura/gialog-sync: Custom action to update JSON files for gialog.](https://github.com/r7kamura/gialog-sync)
+      - name: Gialog Sync
+        uses: r7kamura/gialog-sync@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Deploy Process
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          destination_dir: .
+          disable_nojekyll: true
+          force_orphan: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: data
+          publish_dir: data
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+
+      # 必要であればテスト等を実行
+
+      - name: Build
+        run: bun run build
+
+      - name: Export
+        run: bun run export
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: out
