@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { promise } from "glob-promise";
+import { glob } from "glob";
 import matter from "gray-matter";
 import rehypeStringify from "rehype-stringify";
 import { remark } from "remark";
@@ -43,7 +43,7 @@ export const getIssue = async ({ issueNumber }: { issueNumber: number }) => {
  */
 export const listIssues = async () => {
   // Issueファイルのパス一覧を取得
-  const paths = await promise(`${dataDirectoryPath}/issues/*/issue.md`);
+  const paths = await glob(`${dataDirectoryPath}/issues/*/issue.md`);
 
   // Issueファイルを読み込み、データを取得
   return paths
@@ -69,7 +69,7 @@ export const listIssueComments = async ({
   issueNumber: number;
 }) => {
   // Issueのコメントファイルのパス一覧を取得
-  const paths = await promise(`${dataDirectoryPath}/issues/${issueNumber}/issue_comments/*.md`);
+  const paths = await glob(`${dataDirectoryPath}/issues/${issueNumber}/issue_comments/*.md`);
 
   // Issueのコメントファイルを読み込み、データを取得
   const issueComments = await Promise.all(
