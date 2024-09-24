@@ -3,6 +3,7 @@ import { PHASE_DEVELOPMENT_SERVER } from "next/constants.js";
 /** @type {import('next').NextConfig} */
 const nextConfig = (phase, { defaultConfig }) => ({
   ...defaultConfig,
+  output: "export",
   typescript: {
     tsconfigPath: "./tsconfig.build.json",
   },

@@ -63,9 +63,6 @@ jobs:
       - name: Build
         run: bun run build
 
-      - name: Export
-        run: bun run export
-
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
