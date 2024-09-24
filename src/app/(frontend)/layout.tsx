@@ -1,3 +1,4 @@
+import { APP_NAME } from "@/config/constants";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -11,8 +12,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               href="/"
               className="font-bold text-gray-900 visited:text-gray-900 dark:text-gray-300 dark:visited:text-gray-300"
             >
-              {/* TODO: 後で変更する */}
-              My Blog
+              {APP_NAME}
             </Link>
           </p>
         </nav>
