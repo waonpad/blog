@@ -6,11 +6,10 @@ import Link from "next/link";
 export const generateStaticParams = async () => {
   // NOTICE: これの定義元は現状anyなので注意
   const issues: Array<Issue> = await listIssues();
+
   return issues.map((issue) => {
     return {
-      params: {
-        issueNumber: issue.number.toString(),
-      },
+      issueNumber: issue.number.toString(),
     };
   });
 };

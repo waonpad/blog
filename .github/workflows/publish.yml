@@ -17,7 +17,7 @@ jobs:
         with:
           ref: main
 
-      - name: Place Path
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           path: data
