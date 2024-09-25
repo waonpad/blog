@@ -6,7 +6,9 @@ const nextConfig = (phase, { defaultConfig }) => {
 
   return {
     ...defaultConfig,
+    // GitHub Pages にデプロイするためにサーバー環境無しで動作するようにする
     output: "export",
+    // GitHub Pages はパスの末尾に強制的にスラッシュを追加するため、これに対応するために trailingSlash を true にする
     trailingSlash: true,
     typescript: {
       tsconfigPath: "./tsconfig.build.json",
