@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja">
-      <body className={`${intr.className}`}>{children}</body>
+      <body className={`flex min-h-dvh flex-col ${intr.className}`}>{children}</body>
     </html>
   );
 }

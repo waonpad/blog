@@ -32,13 +32,13 @@ export default async function Page({ params }: Props) {
   const issueComments = await listIssueComments({ issueNumber });
 
   return (
-    <div className="divide-y divide-gray-300 dark:divide-gray-700">
-      <article className="markdown">
+    <div className="w-full divide-y">
+      <article className="markdown-body">
         <header>
           <Time dateTime={issue.created_at} />
           <h1>{issue.title}</h1>
         </header>
-        <aside className="block text-[.8rem] text-gray-500 dark:text-gray-400">
+        <aside>
           <p>
             Posted by&nbsp;
             <ExternalLink href={issue.user!.html_url!}>{issue.user!.login}</ExternalLink>
@@ -50,7 +50,7 @@ export default async function Page({ params }: Props) {
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
       </article>
       {issueComments.map((issueComment) => (
-        <article key={issueComment.id} className="markdown">
+        <article key={issueComment.id} className="markdown-body">
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
           <div dangerouslySetInnerHTML={{ __html: issueComment.body_html_md }} />
         </article>

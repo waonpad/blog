@@ -6,7 +6,7 @@ export default async function Page() {
   const issues = await listIssues();
 
   return (
-    <section>
+    <section className="grow">
       <ol className="flex flex-col gap-12">
         {issues.map((issue) => (
           <li key={issue.number}>
