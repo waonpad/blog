@@ -46,8 +46,8 @@ export const listIssues = async () => {
   const paths = await glob(`${dataDirectoryPath}/issues/*/issue.md`);
 
   // Issueファイルを読み込み、データを取得
-  const issues = paths
-    .map((filePath) => {
+  const issues = sortByCreatedAt(
+    paths.map((filePath) => {
       const content = readFileSync(filePath, { encoding: "utf-8" });
       const issueMatter = matter(content);
       const body = issueMatter.content;
@@ -56,9 +56,8 @@ export const listIssues = async () => {
         body,
         ...issueMatter.data,
       } as Issue;
-    })
-    .sort(byCreatedAt)
-    .reverse();
+    }),
+  ).reverse();
 
   return issues;
 };
@@ -75,7 +74,7 @@ export const listIssueComments = async ({
   const paths = await glob(`${dataDirectoryPath}/issues/${issueNumber}/issue_comments/*.md`);
 
   // Issueのコメントファイルを読み込み、データを取得
-  const issueComments = (
+  const issueComments = sortByCreatedAt(
     await Promise.all(
       paths.map(async (filePath: string) => {
         const content = readFileSync(filePath, { encoding: "utf-8" });
@@ -89,8 +88,8 @@ export const listIssueComments = async ({
           body_html_md,
         } as IssueComment & { body_html_md: string };
       }),
-    )
-  ).sort(byCreatedAt);
+    ),
+  );
 
   return issueComments;
 };
@@ -98,14 +97,17 @@ export const listIssueComments = async ({
 /**
  * Issueを作成日時でソートするための関数
  */
-// TODO: 型定義を追加する
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const byCreatedAt = (a: any, b: any) => {
-  if (a.created_at < b.created_at) return -1;
+const sortByCreatedAt = <T extends { created_at: string }>(array: T[]) => {
+  return array.sort((a, b) => {
+    const aTime = new Date(a.created_at).getTime();
+    const bTime = new Date(b.created_at).getTime();
 
-  if (a.created_at > b.created_at) return 1;
+    if (aTime < bTime) return -1;
 
-  return 0;
+    if (aTime > bTime) return 1;
+
+    return 0;
+  });
 };
 
 /**
