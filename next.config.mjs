@@ -7,6 +7,7 @@ const nextConfig = (phase, { defaultConfig }) => {
   return {
     ...defaultConfig,
     output: "export",
+    trailingSlash: true,
     typescript: {
       tsconfigPath: "./tsconfig.build.json",
     },
