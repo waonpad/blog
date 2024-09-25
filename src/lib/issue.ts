@@ -8,13 +8,11 @@ import remarkGithub from "remark-github";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 
-// TODO: 型定義を追加する
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export type Issue = any;
+import type { Endpoints } from "@octokit/types";
 
-// TODO: 型定義を追加する
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export type IssueComment = any;
+export type Issue = Endpoints["GET /repos/{owner}/{repo}/issues/{issue_number}"]["response"]["data"];
+
+export type IssueComment = Endpoints["GET /repos/{owner}/{repo}/issues/comments/{comment_id}"]["response"]["data"];
 
 const dataDirectoryPath = process.env.DATA_DIRECTORY_PATH || "./data";
 
@@ -29,13 +27,15 @@ export const getIssue = async ({ issueNumber }: { issueNumber: number }) => {
   const content = readFileSync(filePath, { encoding: "utf-8" });
   const issueMatter = matter(content);
   const body = issueMatter.content;
-  const bodyHTML = await renderMarkdown(body);
+  const body_html_md = await renderMarkdown(body);
 
-  return {
-    body,
-    bodyHTML,
+  const issue = {
     ...issueMatter.data,
-  };
+    body,
+    body_html_md,
+  } as Issue & { body_html_md: string };
+
+  return issue;
 };
 
 /**
@@ -46,18 +46,21 @@ export const listIssues = async () => {
   const paths = await glob(`${dataDirectoryPath}/issues/*/issue.md`);
 
   // Issueファイルを読み込み、データを取得
-  return paths
+  const issues = paths
     .map((filePath) => {
       const content = readFileSync(filePath, { encoding: "utf-8" });
       const issueMatter = matter(content);
       const body = issueMatter.content;
+
       return {
         body,
         ...issueMatter.data,
-      };
+      } as Issue;
     })
     .sort(byCreatedAt)
     .reverse();
+
+  return issues;
 };
 
 /**
@@ -72,22 +75,24 @@ export const listIssueComments = async ({
   const paths = await glob(`${dataDirectoryPath}/issues/${issueNumber}/issue_comments/*.md`);
 
   // Issueのコメントファイルを読み込み、データを取得
-  const issueComments = await Promise.all(
-    paths.map(async (filePath: string) => {
-      const content = readFileSync(filePath, { encoding: "utf-8" });
-      const issueMatter = matter(content);
-      const body = issueMatter.content;
-      const bodyHTML = await renderMarkdown(body);
+  const issueComments = (
+    await Promise.all(
+      paths.map(async (filePath: string) => {
+        const content = readFileSync(filePath, { encoding: "utf-8" });
+        const issueMatter = matter(content);
+        const body = issueMatter.content;
+        const body_html_md = await renderMarkdown(body);
 
-      return {
-        body,
-        bodyHTML,
-        ...issueMatter.data,
-      };
-    }),
-  );
+        return {
+          ...issueMatter.data,
+          body,
+          body_html_md,
+        } as IssueComment & { body_html_md: string };
+      }),
+    )
+  ).sort(byCreatedAt);
 
-  return issueComments.sort(byCreatedAt);
+  return issueComments;
 };
 
 /**

@@ -1,10 +1,9 @@
 import { Time } from "@/components/time";
-import { type Issue, listIssues } from "@/lib/issue";
+import { listIssues } from "@/lib/issue";
 import Link from "next/link";
 
 export default async function Page() {
-  // NOTICE: これの定義元は現状anyなので注意
-  const issues: Issue[] = await listIssues();
+  const issues = await listIssues();
 
   return (
     <section>

@@ -18,7 +18,8 @@
         "noUnusedImports": "error"
       },
       "style": {
-        "noImplicitBoolean": "error"
+        "noImplicitBoolean": "error",
+        "noNonNullAssertion": "off"
       },
       "nursery": {
         "useSortedClasses": {

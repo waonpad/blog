@@ -1,11 +1,14 @@
+import { ExternalLink } from "@/components/external-link";
 import { Time } from "@/components/time";
-import { type Issue, type IssueComment, getIssue, listIssueComments, listIssues } from "@/lib/issue";
-import Head from "next/head";
-import Link from "next/link";
+import { getIssue, listIssueComments, listIssues } from "@/lib/issue";
+import type { Metadata } from "next";
 
-export const generateStaticParams = async () => {
-  // NOTICE: これの定義元は現状anyなので注意
-  const issues: Array<Issue> = await listIssues();
+type Props = {
+  params: { issueNumber: string };
+};
+
+export const generateStaticParams = async (): Promise<Props["params"][]> => {
+  const issues = await listIssues();
 
   return issues.map((issue) => {
     return {
@@ -14,18 +17,22 @@ export const generateStaticParams = async () => {
   });
 };
 
-export default async function Page({ params }: { params: { issueNumber: string } }) {
-  const issueNumber = Number.parseInt(params.issueNumber, 10);
-  // NOTICE: これの定義元は現状anyなので注意
-  const issue: Issue = await getIssue({ issueNumber });
-  // NOTICE: これの定義元は現状anyなので注意
-  const issueComments: Array<IssueComment> = await listIssueComments({ issueNumber });
+export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const issueNumber = Number(params.issueNumber);
+  const issue = await getIssue({ issueNumber });
+
+  return {
+    title: issue.title,
+  };
+};
+
+export default async function Page({ params }: Props) {
+  const issueNumber = Number(params.issueNumber);
+  const issue = await getIssue({ issueNumber });
+  const issueComments = await listIssueComments({ issueNumber });
 
   return (
     <div className="divide-y divide-gray-300 dark:divide-gray-700">
-      <Head>
-        <title>{issue.title}</title>
-      </Head>
       <article className="markdown">
         <header>
           <Time dateTime={issue.created_at} />
@@ -34,18 +41,18 @@ export default async function Page({ params }: { params: { issueNumber: string }
         <aside className="block text-[.8rem] text-gray-500 dark:text-gray-400">
           <p>
             Posted by&nbsp;
-            <Link href={issue.user.html_url}>{issue.user.login}</Link>
+            <ExternalLink href={issue.user!.html_url!}>{issue.user!.login}</ExternalLink>
             &nbsp;at&nbsp;
-            <Link href={issue.html_url}>{`#${issue.number}`}</Link>.
+            <ExternalLink href={issue.html_url}>{`#${issue.number}`}</ExternalLink>.
           </p>
         </aside>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
-        <div dangerouslySetInnerHTML={{ __html: issue.bodyHTML }} />
+        <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
       </article>
       {issueComments.map((issueComment) => (
         <article key={issueComment.id} className="markdown">
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
-          <div dangerouslySetInnerHTML={{ __html: issueComment.bodyHTML }} />
+          <div dangerouslySetInnerHTML={{ __html: issueComment.body_html_md }} />
         </article>
       ))}
     </div>
