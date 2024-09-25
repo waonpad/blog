@@ -1,11 +1,8 @@
-import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
 import "@/styles/globals.scss";
 import "@/styles/markdown.scss";
 import { APP_NAME } from "@/config/constants";
 import type { Metadata } from "next";
-
-const intr = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +16,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja">
-      <body className={`flex min-h-dvh flex-col ${intr.className}`}>{children}</body>
+      <body className="flex min-h-dvh flex-col">{children}</body>
     </html>
   );
 }

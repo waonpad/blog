@@ -10,8 +10,9 @@
   margin: 0;
   color: #e6edf3;
   background-color: #0d1117;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
-    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  // グローバルに定義を移動した
+  // font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+  //   Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
