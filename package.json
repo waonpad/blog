@@ -7,7 +7,7 @@
     "setup": "$npm_execpath install",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "serve out",
     "fmt": "biome format --write .",
     "lnt": "biome lint --write .",
     "che": "biome check --write .",
@@ -41,6 +41,7 @@
     "lefthook": "^1.7.16",
     "postcss": "^8.4.47",
     "sass": "^1.79.3",
+    "serve": "^14.2.3",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.2",
     "vitest": "^2.1.1"
