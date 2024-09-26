@@ -26,45 +26,52 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout
+      # mainブランチの内容をコピー
+      - name: Checkout main
         uses: actions/checkout@v4
 
-      - name: Checkout
+      # Issueのデータを保存してあるブランチの内容をコピー
+      - name: Checkout issue data
         uses: actions/checkout@v4
         with:
-          path: data
-          ref: data
+          ref: data # issueが保存されているブランチ
+          path: data # issueが保存されているディレクトリ
         continue-on-error: true
 
-      # [r7kamura/gialog-sync: Custom action to update JSON files for gialog.](https://github.com/r7kamura/gialog-sync)
-      - name: Gialog Sync
+      # issueを処理する
+      - name: Sync issue data
         uses: r7kamura/gialog-sync@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Deploy Process
+      # issueの内容をdataブランチに反映
+      - name: Publish issue data
         uses: peaceiris/actions-gh-pages@v4
         with:
           destination_dir: .
           disable_nojekyll: true
           force_orphan: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: data
-          publish_dir: data
+          publish_branch: data # push先ブランチ
+          publish_dir: data #　pushするディレクトリ
 
+      # Bunをインストール
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
+      # 依存関係をインストール
       - name: Install dependencies
         run: bun install
 
       # 必要であればテスト等を実行
 
+      # プロジェクトをビルド
       - name: Build
         run: bun run build
 
+      # ビルド結果をデプロイ
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: out
+          publish_dir: out # ビルド結果が出力されたディレクトリ

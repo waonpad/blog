@@ -12,31 +12,35 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout
+      # mainブランチの内容をコピー
+      - name: Checkout main
         uses: actions/checkout@v4
-        with:
-          ref: main
 
-      - name: Checkout
+      # Issueのデータを保存してあるブランチの内容をコピー
+      - name: Checkout issue data
         uses: actions/checkout@v4
         with:
-          path: data
-          ref: data
+          ref: data # issueが保存されているブランチ
+          path: data # issueが保存されているディレクトリ
         continue-on-error: true
 
+      # Bunをインストール
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
 
+      # 依存関係をインストール
       - name: Install dependencies
         run: bun install
 
       # 必要であればテスト等を実行
 
+      # プロジェクトをビルド
       - name: Build
         run: bun run build
 
+      # ビルド結果をデプロイ
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: out
+          publish_dir: out # ビルド結果が出力されたディレクトリ
