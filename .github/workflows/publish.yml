@@ -24,6 +24,10 @@ jobs:
           path: data # issueが保存されているディレクトリ
         continue-on-error: true
 
+      # 別のホスティングサービスを使う場合
+      # ここでビルドしてActionsから直接デプロイするか
+      # mainとdataブランチの内容を組み合わせたものを別ブランチにpushしてデプロイをトリガーして終了する
+
       # Bunをインストール
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2

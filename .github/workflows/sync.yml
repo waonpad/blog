@@ -55,6 +55,10 @@ jobs:
           publish_branch: data # push先ブランチ
           publish_dir: data #　pushするディレクトリ
 
+      # 別のホスティングサービスを使う場合
+      # ここでビルドしてActionsから直接デプロイするか
+      # mainとdataブランチの内容を組み合わせたものを別ブランチにpushしてデプロイをトリガーして終了する
+
       # Bunをインストール
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
