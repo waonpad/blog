@@ -7,7 +7,7 @@ export default async function Page() {
 
   return (
     <section className="grow">
-      <ol className="flex flex-col gap-12">
+      <ol className="flex flex-col gap-4">
         {issues.map((issue) => (
           <li key={issue.number}>
             <Time dateTime={issue.created_at} />

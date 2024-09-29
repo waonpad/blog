@@ -1,6 +1,7 @@
 import { Time } from "@/components/time";
-import { getIssue, listIssueComments, listIssues } from "@/lib/issue";
+import { getIssue, listIssueComments, listIssues, sortByName } from "@/lib/issue";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 type Props = {
   params: { issueNumber: string };
@@ -30,12 +31,21 @@ export default async function Page({ params }: Props) {
   const issue = await getIssue({ issueNumber });
   const issueComments = await listIssueComments({ issueNumber });
 
+  const labels = sortByName(issue.labels.flat() as Required<Exclude<(typeof issue)["labels"][0], string>>[]);
+
   return (
     <div className="w-full divide-y divide-[#30363db3]">
       <article className="markdown-body">
-        <header>
+        <header className="pb-4">
           <Time dateTime={issue.created_at} />
           <h1>{issue.title}</h1>
+          <div className="flex gap-2">
+            {labels.map((label) => (
+              <Link key={label.id} href={`/tags/${label.name}`}>
+                <span className="chip">{label.name}</span>
+              </Link>
+            ))}
+          </div>
         </header>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />

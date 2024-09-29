@@ -21,6 +21,9 @@ export default function Layout({ children }: { children: ReactNode }) {
             <li>
               <Link href="/">Home</Link>
             </li>
+            <li>
+              <Link href="/tags">Tags</Link>
+            </li>
           </ul>
         </nav>
       </footer>

@@ -119,6 +119,34 @@ const sortByCreatedAt = <T extends { created_at: string }>(array: T[]) => {
 };
 
 /**
+ * Labelの一覧を取得
+ */
+export const listLabels = async () => {
+  const issues = await listIssues();
+
+  const _labels = issues.flatMap((issue) => issue.labels) as Required<
+    Exclude<(typeof issues)[0]["labels"][0], string>
+  >[];
+
+  const labels = sortByName(_labels.filter((label, index, self) => self.findIndex((l) => l.id === label.id) === index));
+
+  return labels;
+};
+
+/**
+ * Labelを名前でソートするための関数
+ */
+export const sortByName = <T extends { name: string }>(array: T[]) => {
+  return array.sort((a, b) => {
+    if (a.name < b.name) return -1;
+
+    if (a.name > b.name) return 1;
+
+    return 0;
+  });
+};
+
+/**
  * MarkdownをHTMLに変換する
  *
  * [remarkjs/remark](https://github.com/remarkjs/remark)
