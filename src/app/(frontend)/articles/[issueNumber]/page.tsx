@@ -42,7 +42,7 @@ export default async function Page({ params }: Props) {
           {labels.length > 0 && (
             <div className="mb-4 flex gap-2">
               {labels.map((label) => (
-                <Link key={label.id} href={`/tags/${label.name}`}>
+                <Link key={label.id} href={`/tags/${label.code}`}>
                   <span className="chip">{label.name}</span>
                 </Link>
               ))}

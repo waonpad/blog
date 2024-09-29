@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 type Props = {
-  params: { tagName: string };
+  params: { tagCode: string };
 };
 
 export const generateStaticParams = async (): Promise<Props["params"][]> => {
@@ -12,24 +12,24 @@ export const generateStaticParams = async (): Promise<Props["params"][]> => {
 
   return labels.map((issue) => {
     return {
-      tagName: issue.name,
+      tagCode: issue.code,
     };
   });
 };
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   return {
-    title: params.tagName,
+    title: params.tagCode,
   };
 };
 
 export default async function Page({ params }: Props) {
   const issues = await listIssues();
 
-  // labelsにparams.tagNameが含まれるissueのみを抽出
+  // labelsにparams.tagCodeが含まれるissueのみを抽出
   const filteredIssues = issues.filter((issue) =>
     (issue.labels as Required<Exclude<(typeof issues)[0]["labels"][0], string>>[]).some(
-      (label) => label.name === params.tagName,
+      (label) => label.code === params.tagCode,
     ),
   );
 

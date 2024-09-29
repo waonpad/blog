@@ -41,7 +41,8 @@ export const getIssue = async ({ issueNumber }: { issueNumber: number }) => {
     ...issueMatter.data,
     body,
     body_html_md,
-  } as Issue & { body_html_md: string };
+    labels: issueMatter.data.labels.map(transformLabel),
+  } as Issue & { body_html_md: string; labels: ReturnType<typeof transformLabel>[] };
 
   return issue;
 };
@@ -61,9 +62,10 @@ export const listIssues = async () => {
       const body = issueMatter.content;
 
       return {
-        body,
         ...issueMatter.data,
-      } as Issue;
+        body,
+        labels: issueMatter.data.labels.map(transformLabel),
+      } as Issue & { labels: ReturnType<typeof transformLabel>[] };
     }),
   ).reverse();
 
@@ -124,13 +126,42 @@ const sortByCreatedAt = <T extends { created_at: string }>(array: T[]) => {
 export const listLabels = async () => {
   const issues = await listIssues();
 
-  const _labels = issues.flatMap((issue) => issue.labels) as Required<
-    Exclude<(typeof issues)[0]["labels"][0], string>
-  >[];
+  const _labels = (
+    issues.flatMap((issue) => issue.labels) as Required<Exclude<(typeof issues)[0]["labels"][0], string>>[]
+  ).map(transformLabel);
 
   const labels = sortByName(_labels.filter((label, index, self) => self.findIndex((l) => l.id === label.id) === index));
 
   return labels;
+};
+
+/**
+ * Labelのdescriptionに埋め込まれたコードを取得してdescriptionから削除して返す
+ */
+const transformLabel = (label: Required<Exclude<Issue["labels"][0], string>> & { code?: string }) => {
+  // 既にtransformされている場合はそのまま返す
+  if (label.code !== undefined) return label as typeof label & { code: string };
+
+  // パスパラメータ等に表示するためのコードがdescriptionに埋め込まれていた場合、コードを取得
+  const code = label.description
+    ? (() => {
+        if (!label.description.includes("___")) return null;
+
+        const _code = label.description.split("___")[0];
+
+        return _code === "" ? null : _code;
+      })()
+    : null;
+
+  // コードが存在する場合はdescriptionからコードを削除
+  const description = code ? (label.description ? label.description.split("___")[1] : null) : label.description;
+
+  return {
+    ...label,
+    description,
+    // コードが存在しない場合はnameをコードとして使用
+    code: code || label.name,
+  };
 };
 
 /**
