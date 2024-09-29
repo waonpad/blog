@@ -10,9 +10,9 @@ type Props = {
 export const generateStaticParams = async (): Promise<Props["params"][]> => {
   const labels = await listLabels();
 
-  return labels.map((issue) => {
+  return labels.map((label) => {
     return {
-      tagCode: issue.code,
+      tagCode: label.code,
     };
   });
 };

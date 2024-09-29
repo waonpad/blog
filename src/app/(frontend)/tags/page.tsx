@@ -4,8 +4,6 @@ import Link from "next/link";
 export default async function Page() {
   const labels = await listLabels();
 
-  console.log(labels);
-
   return (
     <section className="grow">
       <ul className="flex flex-col gap-2">
