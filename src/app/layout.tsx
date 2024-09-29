@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import "@/styles/globals.scss";
 import "@/styles/markdown.scss";
-import "@/styles/highlight.scss";
 import { clientEnv } from "@/config/env/client.mjs";
 import type { Metadata } from "next";
 

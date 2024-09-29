@@ -2,7 +2,6 @@ import { readFileSync } from "node:fs";
 import { glob } from "glob";
 import matter from "gray-matter";
 import rehypeStringify from "rehype-stringify";
-import { remark } from "remark";
 import remarkGfm from "remark-gfm";
 import remarkGithub from "remark-github";
 import remarkParse from "remark-parse";
@@ -10,7 +9,9 @@ import remarkRehype from "remark-rehype";
 
 import { clientEnv } from "@/config/env/client.mjs";
 import type { Endpoints } from "@octokit/types";
-import rehypeHighlight from "rehype-highlight";
+import { transformerCopyButton } from "@rehype-pretty/transformers/copy-button";
+import rehypePrettyCode from "rehype-pretty-code";
+import { unified } from "unified";
 
 export type Issue = Endpoints["GET /repos/{owner}/{repo}/issues/{issue_number}"]["response"]["data"];
 
@@ -118,14 +119,23 @@ const sortByCreatedAt = <T extends { created_at: string }>(array: T[]) => {
  * [remarkjs/remark](https://github.com/remarkjs/remark)
  */
 const renderMarkdown = async (content: string) => {
-  const result = await remark()
+  const result = await unified()
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkGithub, {
       repository: clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY || "user/repo",
     })
     .use(remarkRehype)
-    .use(rehypeHighlight)
+    .use(rehypePrettyCode, {
+      theme: "github-dark",
+      keepBackground: false,
+      transformers: [
+        transformerCopyButton({
+          visibility: "always",
+          feedbackDuration: 3_000,
+        }),
+      ],
+    })
     .use(rehypeStringify)
     .use(remarkGfm)
     .process(content);

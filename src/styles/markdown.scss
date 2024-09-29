@@ -1112,3 +1112,8 @@
 .markdown-body > *:first-child > .heading-element:first-child {
   margin-top: 0 !important;
 }
+
+// rehype-pretty-codeはfigure要素で囲むので、figure要素の余白を0にする
+.markdown-body figure[data-rehype-pretty-code-figure] {
+  margin: 0;
+}
