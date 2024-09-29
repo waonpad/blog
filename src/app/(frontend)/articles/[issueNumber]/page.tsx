@@ -31,7 +31,7 @@ export default async function Page({ params }: Props) {
   const issueComments = await listIssueComments({ issueNumber });
 
   return (
-    <div className="w-full divide-y">
+    <div className="w-full divide-y divide-[#30363db3]">
       <article className="markdown-body">
         <header>
           <Time dateTime={issue.created_at} />
@@ -41,7 +41,10 @@ export default async function Page({ params }: Props) {
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
       </article>
       {issueComments.map((issueComment) => (
-        <article key={issueComment.id} className="markdown-body">
+        <article key={issueComment.id} className="markdown-body pt-4">
+          <header className="pb-2">
+            <Time dateTime={issueComment.created_at} />
+          </header>
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
           <div dangerouslySetInnerHTML={{ __html: issueComment.body_html_md }} />
         </article>
