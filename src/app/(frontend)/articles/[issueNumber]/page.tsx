@@ -36,16 +36,18 @@ export default async function Page({ params }: Props) {
   return (
     <div className="w-full divide-y divide-[#30363db3]">
       <article className="markdown-body">
-        <header className="pb-4">
+        <header>
           <Time dateTime={issue.created_at} />
           <h1>{issue.title}</h1>
-          <div className="flex gap-2">
-            {labels.map((label) => (
-              <Link key={label.id} href={`/tags/${label.name}`}>
-                <span className="chip">{label.name}</span>
-              </Link>
-            ))}
-          </div>
+          {labels.length > 0 && (
+            <div className="mb-4 flex gap-2">
+              {labels.map((label) => (
+                <Link key={label.id} href={`/tags/${label.name}`}>
+                  <span className="chip">{label.name}</span>
+                </Link>
+              ))}
+            </div>
+          )}
         </header>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
