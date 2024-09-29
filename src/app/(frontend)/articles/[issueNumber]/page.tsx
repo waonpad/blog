@@ -1,4 +1,3 @@
-import { ExternalLink } from "@/components/external-link";
 import { Time } from "@/components/time";
 import { getIssue, listIssueComments, listIssues } from "@/lib/issue";
 import type { Metadata } from "next";
@@ -38,14 +37,6 @@ export default async function Page({ params }: Props) {
           <Time dateTime={issue.created_at} />
           <h1>{issue.title}</h1>
         </header>
-        <aside>
-          <p>
-            Posted by&nbsp;
-            <ExternalLink href={issue.user!.html_url!}>{issue.user!.login}</ExternalLink>
-            &nbsp;at&nbsp;
-            <ExternalLink href={issue.html_url}>{`#${issue.number}`}</ExternalLink>.
-          </p>
-        </aside>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
       </article>

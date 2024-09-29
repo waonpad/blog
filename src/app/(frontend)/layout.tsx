@@ -1,4 +1,4 @@
-import { APP_NAME } from "@/config/constants";
+import { clientEnv } from "@/config/env/client.mjs";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <nav>
           <p>
             <Link href="/" className="font-bold">
-              {APP_NAME}
+              {clientEnv.NEXT_PUBLIC_APP_NAME}
             </Link>
           </p>
         </nav>

@@ -8,13 +8,14 @@ import remarkGithub from "remark-github";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 
+import { clientEnv } from "@/config/env/client.mjs";
 import type { Endpoints } from "@octokit/types";
 
 export type Issue = Endpoints["GET /repos/{owner}/{repo}/issues/{issue_number}"]["response"]["data"];
 
 export type IssueComment = Endpoints["GET /repos/{owner}/{repo}/issues/comments/{comment_id}"]["response"]["data"];
 
-const dataDirectoryPath = process.env.DATA_DIRECTORY_PATH || "./data";
+const dataDirectoryPath = "./data";
 
 /**
  * Issueを取得
@@ -120,8 +121,7 @@ const renderMarkdown = async (content: string) => {
     .use(remarkParse)
     .use(remarkGfm)
     .use(remarkGithub, {
-      // NOTICE: ローカルでは GITHUB_REPOSITORY が設定されていないため "user/repo" になる
-      repository: process.env.GITHUB_REPOSITORY || "user/repo",
+      repository: clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY || "user/repo",
     })
     .use(remarkRehype)
     .use(rehypeStringify)

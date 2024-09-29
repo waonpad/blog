@@ -1,13 +1,10 @@
 import { PHASE_DEVELOPMENT_SERVER } from "next/constants.js";
+import { clientEnv } from "./src/config/env/client.mjs";
+import "./src/config/env/server.mjs";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = (phase, { defaultConfig }) => {
-  /**
-   * NOTICE: ローカルでは GITHUB_REPOSITORY が設定されていないため 空文字 になる
-   *
-   * [変数に情報を保存する - GitHub ドキュメント](https://docs.github.com/ja/actions/writing-workflows/choosing-what-your-workflow-does/store-information-in-variables#default-environment-variables)
-   */
-  const basePath = process.env.GITHUB_REPOSITORY ? `/${process.env.GITHUB_REPOSITORY.split("/")[1]}` : "";
+  const basePath = clientEnv.NEXT_PUBLIC_BASE_PATH;
 
   return {
     ...defaultConfig,
@@ -26,10 +23,6 @@ const nextConfig = (phase, { defaultConfig }) => {
       const isDevServer = phase === PHASE_DEVELOPMENT_SERVER;
       return isDevServer ? [`dev.${extension}`, extension] : extension;
     }),
-    // 環境変数に設定する
-    env: {
-      NEXT_PUBLIC_BASE_PATH: basePath,
-    },
   };
 };
 
