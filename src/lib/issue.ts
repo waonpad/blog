@@ -10,6 +10,7 @@ import remarkRehype from "remark-rehype";
 
 import { clientEnv } from "@/config/env/client.mjs";
 import type { Endpoints } from "@octokit/types";
+import rehypeHighlight from "rehype-highlight";
 
 export type Issue = Endpoints["GET /repos/{owner}/{repo}/issues/{issue_number}"]["response"]["data"];
 
@@ -124,6 +125,7 @@ const renderMarkdown = async (content: string) => {
       repository: clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY || "user/repo",
     })
     .use(remarkRehype)
+    .use(rehypeHighlight)
     .use(rehypeStringify)
     .use(remarkGfm)
     .process(content);
