@@ -40,7 +40,7 @@ export default async function Page({ params }: Props) {
           <Time dateTime={issue.created_at} />
           <h1>{issue.title}</h1>
           {labels.length > 0 && (
-            <div className="mb-4 flex gap-2">
+            <div className="mb-4 flex flex-wrap gap-2">
               {labels.map((label) => (
                 <Link key={label.id} href={`/tags/${label.code}`}>
                   <span className="chip">{label.name}</span>
