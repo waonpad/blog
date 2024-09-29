@@ -1,5 +1,10 @@
 import { listLabels } from "@/lib/issue";
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "タグ一覧",
+};
 
 export default async function Page() {
   const labels = await listLabels();

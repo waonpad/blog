@@ -18,8 +18,12 @@ export const generateStaticParams = async (): Promise<Props["params"][]> => {
 };
 
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+  const labels = await listLabels();
+
+  const label = labels.find((label) => label.code === params.tagCode)!;
+
   return {
-    title: params.tagCode,
+    title: label.name,
   };
 };
 
