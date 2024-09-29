@@ -1,9 +1,9 @@
-import { format } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 
 export const Time = ({ dateTime }: { dateTime: string }) => {
   return (
-    <time dateTime={dateTime} title={dateTime} className="block text-[.8rem] text-gray-500 dark:text-gray-400">
-      {format(new Date(dateTime), "yyyy-MM-dd")}
+    <time dateTime={dateTime} title={dateTime} className="block text-gray-400 text-sm">
+      {formatInTimeZone(new Date(dateTime), "Asia/Tokyo", "yyyy-MM-dd HH:mm")}
     </time>
   );
 };

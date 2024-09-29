@@ -10,7 +10,7 @@ export default async function Page() {
         {labels.map((label) => (
           <li key={label.id}>
             <Link href={`/tags/${label.code}`}>{label.name}</Link>
-            <p>{label.description}</p>
+            <p className="text-sm">{label.description}</p>
           </li>
         ))}
       </ul>
