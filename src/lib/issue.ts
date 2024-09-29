@@ -10,7 +10,12 @@ import remarkRehype from "remark-rehype";
 import { clientEnv } from "@/config/env/client.mjs";
 import type { Endpoints } from "@octokit/types";
 import { transformerCopyButton } from "@rehype-pretty/transformers/copy-button";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeExternalLinks from "rehype-external-links";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import rehypeToc from "rehype-toc";
+import remarkHtml from "remark-html";
 import { unified } from "unified";
 
 export type Issue = Endpoints["GET /repos/{owner}/{repo}/issues/{issue_number}"]["response"]["data"];
@@ -136,6 +141,37 @@ const renderMarkdown = async (content: string) => {
         }),
       ],
     })
+    .use(rehypeExternalLinks, {
+      target: "_blank",
+      rel: ["noopener", "noreferrer"],
+    })
+    .use(rehypeSlug)
+    .use(rehypeToc, {
+      customizeTOC: (toc) => {
+        // @ts-ignore
+        const items = (toc.children?.[0].children || []) as Node[];
+        // 見出しの数が0の場合は目次を表示しない
+        if (items.length === 0) return false;
+
+        // 開いたり閉じたりできるようにする
+        const wrappedToc = {
+          type: "element",
+          tagName: "details",
+          children: [
+            {
+              type: "element",
+              tagName: "summary",
+              children: [{ type: "text", value: "目次" }],
+            },
+            toc,
+          ],
+        };
+
+        return wrappedToc;
+      },
+    })
+    .use(rehypeAutolinkHeadings, { behavior: "wrap", properties: { className: "alternative-link" } })
+    .use(remarkHtml)
     .use(rehypeStringify)
     .use(remarkGfm)
     .process(content);

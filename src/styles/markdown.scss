@@ -55,7 +55,7 @@
   display: none !important;
 }
 
-.markdown-body a {
+.markdown-body a:not(.alternative-link) {
   background-color: transparent;
   color: #4493f8;
   text-decoration: none;
@@ -184,7 +184,7 @@
   font: inherit;
 }
 
-.markdown-body a:hover {
+.markdown-body a:not(.alternative-link):hover {
   text-decoration: underline;
 }
 

@@ -8,6 +8,14 @@ body {
     Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
-a {
-  @apply text-[#4493f8] underline;
+a:not(.alternative-link) {
+  @apply text-[#4493f8];
+}
+
+a:not(.alternative-link):hover {
+  @apply underline;
+}
+
+a.alternative-link:hover {
+  @apply opacity-70;
 }
