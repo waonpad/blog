@@ -1,10 +1,9 @@
 import { ImageResponse } from "next/og";
-import { generateStaticParams } from "../page";
+import { type Props, generateStaticParams } from "../page";
 
 export { generateStaticParams };
 
-// export default async function Image({ issueNumber }: { issueNumber: string }) {
-export const GET = async (_: never, { params: { issueNumber } }: { params: { issueNumber: string } }) => {
+export const GET = async (_: never, { params: { issueNumber } }: Props) => {
   return new ImageResponse(
     <div
       style={{

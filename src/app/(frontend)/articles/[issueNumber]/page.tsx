@@ -3,7 +3,7 @@ import { getIssue, listIssueComments, listIssues, sortByName } from "@/lib/issue
 import type { Metadata } from "next";
 import Link from "next/link";
 
-type Props = {
+export type Props = {
   params: { issueNumber: string };
 };
 
