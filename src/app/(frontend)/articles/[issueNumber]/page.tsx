@@ -23,6 +23,16 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
   return {
     title: issue.title,
+    openGraph: {
+      images: [
+        {
+          url: `/articles/${params.issueNumber}/opengraph-image.png`,
+          width: 1200,
+          height: 630,
+          type: "image/png",
+        },
+      ],
+    },
   };
 };
 
