@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   icons: `${clientEnv.NEXT_PUBLIC_BASE_PATH}/favicon.ico`,
   metadataBase: new URL(
     clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY
-      ? `${clientEnv.NEXT_PUBLIC_GITHUB_USER}.github.io${clientEnv.NEXT_PUBLIC_BASE_PATH}`
+      ? `https://${clientEnv.NEXT_PUBLIC_GITHUB_USER}.github.io${clientEnv.NEXT_PUBLIC_BASE_PATH}`
       : "http://localhost:3000",
   ),
 };
