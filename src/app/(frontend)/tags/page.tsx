@@ -15,7 +15,7 @@ export default async function Page() {
         {labels.map((label) => (
           <li key={label.id}>
             <Link href={`/tags/${label.code}`}>{label.name}</Link>
-            <p className="text-sm">{label.description}</p>
+            <p className="mt-0.5 text-sm">{label.description}</p>
           </li>
         ))}
       </ul>
