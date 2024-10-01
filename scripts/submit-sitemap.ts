@@ -28,7 +28,7 @@ const main = async () => {
 
   const auth = new google.auth.GoogleAuth({
     credentials: {
-      private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY,
+      private_key: JSON.parse(process.env.GOOGLE_CLOUD_PRIVATE_KEY || ""),
       client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
     },
     scopes: ["https://www.googleapis.com/auth/webmasters"],
