@@ -11,11 +11,7 @@ export const metadata: Metadata = {
   },
   description: "",
   icons: `${clientEnv.NEXT_PUBLIC_BASE_PATH}/favicon.ico`,
-  metadataBase: new URL(
-    clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY
-      ? `https://${clientEnv.NEXT_PUBLIC_GITHUB_USER}.github.io${clientEnv.NEXT_PUBLIC_BASE_PATH}`
-      : "http://localhost:3000",
-  ),
+  metadataBase: new URL(clientEnv.NEXT_PUBLIC_SITE_URL),
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
