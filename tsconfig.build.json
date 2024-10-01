@@ -12,6 +12,7 @@
     "node_modules",
     "src/testing/**/*",
     "**/*.test.ts",
-    "**/*.test.tsx"
+    "**/*.test.tsx",
+    "scripts/**/*"
   ]
 }

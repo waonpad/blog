@@ -11,14 +11,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const routes: (MetadataRoute.Sitemap[number] | string)[] = ["/", "/about", "/tags", ...articleRoutes, ...tagRoutes];
 
-  return routes.map((route) => {
-    if (typeof route === "string") {
-      return { url: `${siteUrl}${route}` };
-    }
+  return (
+    routes
+      .map((route) => {
+        if (typeof route === "string") {
+          return { url: `${siteUrl}${route}` };
+        }
 
-    return {
-      ...route,
-      url: `${siteUrl}${route.url}`,
-    };
-  });
+        return {
+          ...route,
+          url: `${siteUrl}${route.url}`,
+        };
+      })
+      // 常に一定の規則で並ぶようにソート
+      .sort((a, b) => a.url.localeCompare(b.url))
+  );
 }

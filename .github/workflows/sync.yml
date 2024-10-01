@@ -23,6 +23,8 @@ on:
 env:
   NEXT_PUBLIC_APP_NAME: ${{ vars.NEXT_PUBLIC_APP_NAME }}
   NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY: ${{ vars.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY }}
+  GOOGLE_CLOUD_PRIVATE_KEY: ${{ secrets.GOOGLE_CLOUD_PRIVATE_KEY }}
+  GOOGLE_CLOUD_CLIENT_EMAIL: ${{ secrets.GOOGLE_CLOUD_PROJECT_ID }}
 
 jobs:
   sync:
@@ -40,6 +42,15 @@ jobs:
         with:
           ref: data # issueが保存されているブランチ
           path: data # ブランチの内容を保存するディレクトリ
+        continue-on-error: true
+
+      # 現在デプロイされているブランチの内容をコピー
+      - name: Checkout Current Pages
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY }}
+          ref: gh-pages
+          path: gh-pages
         continue-on-error: true
 
       # issueを処理する
@@ -85,3 +96,7 @@ jobs:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository: ${{ env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY }}
           publish_dir: out # ビルド結果が出力されたディレクトリ
+
+      # サイトマップをGoogleに送信
+      - name: Submit sitemap
+        run: bun run scripts/submit-sitemap.ts
