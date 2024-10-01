@@ -9,7 +9,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const articleRoutes = (await generateStaticArticleParams()).map((params) => `/articles/${params.issueNumber}`);
   const tagRoutes = (await generateStaticTagParams()).map((params) => `/tags/${params.tagCode}`);
 
-  const routes: (MetadataRoute.Sitemap[number] | string)[] = ["/", "/about", "/tags", ...articleRoutes, ...tagRoutes];
+  const routes: (MetadataRoute.Sitemap[number] | string)[] = [
+    "/",
+    "/about",
+    "/tags",
+    "/privacy",
+    ...articleRoutes,
+    ...tagRoutes,
+  ];
 
   return (
     routes

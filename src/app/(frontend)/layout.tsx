@@ -65,6 +65,11 @@ export default function Layout({ children }: { children: ReactNode }) {
                 Tags
               </Link>
             </li>
+            <li>
+              <Link href="/privacy" className="alternative-link font-medium text-slate-300">
+                Privacy
+              </Link>
+            </li>
           </ul>
         </nav>
       </footer>
