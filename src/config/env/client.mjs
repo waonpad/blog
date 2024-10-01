@@ -7,6 +7,7 @@ export const clientEnv = createEnv({
     NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY: z.string().min(1).optional(),
     NEXT_PUBLIC_BASE_PATH: z.string(),
     NEXT_PUBLIC_GITHUB_USER: z.string(),
+    NEXT_PUBLIC_SITE_URL: z.string(),
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
@@ -17,5 +18,8 @@ export const clientEnv = createEnv({
     NEXT_PUBLIC_GITHUB_USER: process.env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY
       ? process.env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY.split("/")[0]
       : "",
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY
+      ? `https://${process.env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY.split("/")[0]}.github.io/${process.env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY.split("/")[1]}`
+      : "http://localhost:3000",
   },
 });

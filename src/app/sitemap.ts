@@ -4,9 +4,7 @@ import { generateStaticParams as generateStaticArticleParams } from "./(frontend
 import { generateStaticParams as generateStaticTagParams } from "./(frontend)/tags/[tagCode]/page";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY
-    ? `https://${clientEnv.NEXT_PUBLIC_GITHUB_USER}.github.io${clientEnv.NEXT_PUBLIC_BASE_PATH}`
-    : "http://localhost:3000";
+  const baseUrl = clientEnv.NEXT_PUBLIC_SITE_URL;
 
   const articleRoutes = (await generateStaticArticleParams()).map((params) => `/articles/${params.issueNumber}`);
   const tagRoutes = (await generateStaticTagParams()).map((params) => `/tags/${params.tagCode}`);

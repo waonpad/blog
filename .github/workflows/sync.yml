@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: data # issueが保存されているブランチ
-          path: data # issueが保存されているディレクトリ
+          path: data # ブランチの内容を保存するディレクトリ
         continue-on-error: true
 
       # issueを処理する
