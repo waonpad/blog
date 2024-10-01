@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { clientEnv } from "@/config/env/client.mjs";
+import { JWT } from "google-auth-library";
 import { google } from "googleapis";
 
 const main = async () => {
@@ -26,17 +27,15 @@ const main = async () => {
 
   const searchConsole = google.searchconsole("v1");
 
-  const auth = new google.auth.GoogleAuth({
-    credentials: {
-      private_key: JSON.parse(process.env.GOOGLE_CLOUD_PRIVATE_KEY || ""),
-      client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
-    },
+  const client = new JWT({
+    key: process.env.GOOGLE_CLOUD_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+    email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
     scopes: ["https://www.googleapis.com/auth/webmasters"],
   });
 
-  const authClient = await auth.getClient();
-  // @ts-ignore
-  google.options({ auth: authClient });
+  google.options({ auth: client });
+
+  console.log("サイトマップを送信します");
 
   await searchConsole.sitemaps.submit({
     siteUrl: clientEnv.NEXT_PUBLIC_SITE_URL,
