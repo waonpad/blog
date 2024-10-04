@@ -47,10 +47,18 @@ export const getIssue = async ({ issueNumber }: { issueNumber: number }) => {
   return issue;
 };
 
+const reservedissueTitles = ["about", "privacy-policy"] as const;
+
 /**
  * Issueの一覧を取得
  */
-export const listIssues = async ({ withClosed = false } = {}) => {
+export const listIssues = async ({
+  withClosed = false,
+  withReserved,
+}: {
+  withClosed?: boolean;
+  withReserved?: (typeof reservedissueTitles)[number][];
+} = {}) => {
   // Issueファイルのパス一覧を取得
   const paths = await glob(`${dataDirectoryPath}/issues/*/issue.md`);
 
@@ -64,6 +72,16 @@ export const listIssues = async ({ withClosed = false } = {}) => {
         // クロースされたIssueを取得するオプションが無効の場合、クロースされたIssueは除外するためnullを返す
         if (!withClosed && issueMatter.data.closed_at) return null;
 
+        const tilte = issueMatter.data.title as string;
+        if (
+          // 予約されたIssueのタイトルであって
+          reservedissueTitles.some((title) => title === tilte) &&
+          // withReservedに指定されていない場合は除外する
+          !(withReserved ?? []).some((title) => title === tilte)
+        )
+          // 予約されたIssueで且つ取得する対象でないものはここで除外される
+          return null;
+
         const body = issueMatter.content;
 
         return {
@@ -76,6 +94,35 @@ export const listIssues = async ({ withClosed = false } = {}) => {
   ).reverse();
 
   return issues;
+};
+
+export const getIssueByTitle = async ({ title }: { title: (typeof reservedissueTitles)[number] | (string & {}) }) => {
+  // Issueファイルのパス一覧を取得
+  const paths = await glob(`${dataDirectoryPath}/issues/*/issue.md`);
+
+  // Issueファイルを読み込み、データを取得
+  const targetIssueMatter = paths
+    .map((filePath) => {
+      const content = readFileSync(filePath, { encoding: "utf-8" });
+      const issueMatter = matter(content);
+
+      return issueMatter.data;
+    })
+    .find((issue) => issue.title === title);
+
+  if (!targetIssueMatter) throw new Error(`タイトルが ${title} のIssueは見つかりませんでした`);
+
+  const body = targetIssueMatter.content;
+  const body_html_md = await renderMarkdown(body);
+
+  const issue = {
+    ...targetIssueMatter.data,
+    body,
+    body_html_md,
+    labels: targetIssueMatter.data.labels.map(transformLabel),
+  } as Issue & { body_html_md: string; labels: ReturnType<typeof transformLabel>[] };
+
+  return issue;
 };
 
 /**

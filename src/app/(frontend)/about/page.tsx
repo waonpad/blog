@@ -1,3 +1,4 @@
+import { getIssueByTitle, listIssueComments } from "@/lib/issue";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,6 +7,23 @@ export const metadata: Metadata = {
   description: "waonpadのブログです。このブログと私の事について記載しています。",
 };
 
-export default function Page() {
-  return <div>about</div>;
+export default async function Page() {
+  const issue = await getIssueByTitle({ title: "about" });
+
+  const issueComments = await listIssueComments({ issueNumber: issue.number });
+
+  return (
+    <div className="w-full divide-y divide-[#30363db3]">
+      <div className="markdown-body">
+        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
+        <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
+      </div>
+      {issueComments.map((issueComment) => (
+        <div key={issueComment.id} className="markdown-body pt-4">
+          {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
+          <div dangerouslySetInnerHTML={{ __html: issueComment.body_html_md }} />
+        </div>
+      ))}
+    </div>
+  );
 }
