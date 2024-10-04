@@ -106,9 +106,9 @@ export const getIssueByTitle = async ({ title }: { title: (typeof reservedissueT
       const content = readFileSync(filePath, { encoding: "utf-8" });
       const issueMatter = matter(content);
 
-      return issueMatter.data;
+      return issueMatter;
     })
-    .find((issue) => issue.title === title);
+    .find((issue) => issue.data.title === title);
 
   if (!targetIssueMatter) throw new Error(`タイトルが ${title} のIssueは見つかりませんでした`);
 
