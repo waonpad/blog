@@ -24,6 +24,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
   return {
     title: label.name,
+    description: `${label.name}に関連する記事の一覧です。`,
   };
 };
 

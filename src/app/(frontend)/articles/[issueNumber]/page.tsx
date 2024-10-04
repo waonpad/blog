@@ -23,6 +23,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
   return {
     title: issue.title,
+    // descriptionどうする？一旦設定無しでおいておく
     openGraph: {
       images: [
         {
