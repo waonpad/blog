@@ -28,9 +28,6 @@ export const GET = async () => {
           display: "flex",
           color: "#e6edf3",
           flexDirection: "column",
-          padding: 40,
-          // Twitterに共有した時にOGPの上にページタイトルが被るため、そのぶんpaddingを追加
-          paddingBottom: 64,
           fontFamily: "-apple-system",
           // 間が少し大きく見えたので調整
           letterSpacing: "-0.0397em",
