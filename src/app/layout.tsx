@@ -10,9 +10,20 @@ export const metadata: Metadata = {
     default: clientEnv.NEXT_PUBLIC_APP_NAME,
     template: `%s | ${clientEnv.NEXT_PUBLIC_APP_NAME}`,
   },
-  description: "",
+  // NOTICE: サイト管理者の名前に書き換える
+  description: "waonpadのブログです。",
   icons: `${clientEnv.NEXT_PUBLIC_BASE_PATH}/favicon.ico`,
   metadataBase: new URL(clientEnv.NEXT_PUBLIC_SITE_URL),
+  openGraph: {
+    images: [
+      {
+        url: "/default-opengraph-image.png",
+        width: 1200,
+        height: 630,
+        type: "image/png",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

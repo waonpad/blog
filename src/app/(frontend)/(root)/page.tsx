@@ -1,20 +1,8 @@
-import { Time } from "@/components/time";
+import { ArticleList } from "@/components/article-list";
 import { listIssues } from "@/lib/issue";
-import Link from "next/link";
 
 export default async function Page() {
   const issues = await listIssues();
 
-  return (
-    <section className="grow">
-      <ol className="flex flex-col gap-4">
-        {issues.map((issue) => (
-          <li key={issue.number}>
-            <Time dateTime={issue.created_at} />
-            <Link href={`/articles/${issue.number}`}>{issue.title}</Link>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
+  return <ArticleList articles={issues} />;
 }

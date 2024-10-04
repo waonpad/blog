@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
+  description: "プライバシーポリシーに関する事について記載しています。",
 };
 
 export default function Page() {

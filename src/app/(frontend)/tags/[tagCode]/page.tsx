@@ -1,7 +1,6 @@
-import { Time } from "@/components/time";
+import { ArticleList } from "@/components/article-list";
 import { listIssues, listLabels } from "@/lib/issue";
 import type { Metadata } from "next";
-import Link from "next/link";
 
 type Props = {
   params: { tagCode: string };
@@ -24,6 +23,7 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 
   return {
     title: label.name,
+    description: `${label.name}に関連する記事の一覧です。`,
   };
 };
 
@@ -37,16 +37,5 @@ export default async function Page({ params }: Props) {
     ),
   );
 
-  return (
-    <section className="grow">
-      <ol className="flex flex-col gap-4">
-        {filteredIssues.map((issue) => (
-          <li key={issue.number}>
-            <Time dateTime={issue.created_at} />
-            <Link href={`/articles/${issue.number}`}>{issue.title}</Link>
-          </li>
-        ))}
-      </ol>
-    </section>
-  );
+  return <ArticleList articles={filteredIssues} />;
 }
