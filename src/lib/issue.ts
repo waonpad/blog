@@ -50,23 +50,29 @@ export const getIssue = async ({ issueNumber }: { issueNumber: number }) => {
 /**
  * Issueの一覧を取得
  */
-export const listIssues = async () => {
+export const listIssues = async ({ withClosed = false } = {}) => {
   // Issueファイルのパス一覧を取得
   const paths = await glob(`${dataDirectoryPath}/issues/*/issue.md`);
 
   // Issueファイルを読み込み、データを取得
   const issues = sortByCreatedAt(
-    paths.map((filePath) => {
-      const content = readFileSync(filePath, { encoding: "utf-8" });
-      const issueMatter = matter(content);
-      const body = issueMatter.content;
+    paths
+      .map((filePath) => {
+        const content = readFileSync(filePath, { encoding: "utf-8" });
+        const issueMatter = matter(content);
 
-      return {
-        ...issueMatter.data,
-        body,
-        labels: issueMatter.data.labels.map(transformLabel),
-      } as Issue & { labels: ReturnType<typeof transformLabel>[] };
-    }),
+        // クロースされたIssueを取得するオプションが無効の場合、クロースされたIssueは除外するためnullを返す
+        if (!withClosed && issueMatter.data.closed_at) return null;
+
+        const body = issueMatter.content;
+
+        return {
+          ...issueMatter.data,
+          body,
+          labels: issueMatter.data.labels.map(transformLabel),
+        } as Issue & { labels: ReturnType<typeof transformLabel>[] };
+      })
+      .filter((issue): issue is Exclude<typeof issue, null> => issue !== null),
   ).reverse();
 
   return issues;
