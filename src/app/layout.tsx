@@ -13,6 +13,16 @@ export const metadata: Metadata = {
   description: "",
   icons: `${clientEnv.NEXT_PUBLIC_BASE_PATH}/favicon.ico`,
   metadataBase: new URL(clientEnv.NEXT_PUBLIC_SITE_URL),
+  openGraph: {
+    images: [
+      {
+        url: "/default-opengraph-image.png",
+        width: 1200,
+        height: 630,
+        type: "image/png",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
