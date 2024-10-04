@@ -14,6 +14,9 @@ export default async function Page() {
   return (
     <div className="w-full divide-y divide-[#30363db3]">
       <div className="markdown-body">
+        <header>
+          <h1>プライバシーポリシー</h1>
+        </header>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
       </div>
