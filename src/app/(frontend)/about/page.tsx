@@ -14,15 +14,15 @@ export default async function Page() {
 
   return (
     <div className="w-full divide-y divide-[#30363db3]">
-      <div className="markdown-body">
+      <div className="markdown">
         <header>
-          <h1>このブログについて</h1>
+          <h1 className="!mt-0">このブログについて</h1>
         </header>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
       </div>
       {issueComments.map((issueComment) => (
-        <div key={issueComment.id} className="markdown-body pt-4">
+        <div key={issueComment.id} className="markdown pt-4">
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
           <div dangerouslySetInnerHTML={{ __html: issueComment.body_html_md }} />
         </div>

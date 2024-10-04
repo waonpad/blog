@@ -28,6 +28,10 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 };
 
 export default async function Page({ params }: Props) {
+  const labels = await listLabels();
+
+  const label = labels.find((label) => label.code === params.tagCode)!;
+
   const issues = await listIssues();
 
   // labelsにparams.tagCodeが含まれるissueのみを抽出
@@ -37,5 +41,14 @@ export default async function Page({ params }: Props) {
     ),
   );
 
-  return <ArticleList articles={filteredIssues} />;
+  return (
+    <>
+      <div className="markdown !mb-4">
+        <h1>
+          {label.name} <span className="text-[75%] text-slate-300">の記事一覧</span>
+        </h1>
+      </div>
+      <ArticleList articles={filteredIssues} />
+    </>
+  );
 }

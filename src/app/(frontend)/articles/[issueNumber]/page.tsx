@@ -46,10 +46,10 @@ export default async function Page({ params }: Props) {
 
   return (
     <div className="w-full divide-y divide-[#30363db3]">
-      <article className="markdown-body">
+      <article className="markdown">
         <header>
           <Time dateTime={issue.created_at} />
-          <h1>{issue.title}</h1>
+          <h1 className="!mt-0">{issue.title}</h1>
           {labels.length > 0 && (
             <div className="mb-4 flex flex-wrap gap-2">
               {labels.map((label) => (
@@ -64,7 +64,7 @@ export default async function Page({ params }: Props) {
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
       </article>
       {issueComments.map((issueComment) => (
-        <article key={issueComment.id} className="markdown-body pt-4">
+        <article key={issueComment.id} className="markdown pt-4">
           <header className="pb-2">
             <Time dateTime={issueComment.created_at} />
           </header>

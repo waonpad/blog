@@ -12,13 +12,18 @@ export default async function Page() {
   const labels = await listLabels();
 
   return (
-    <ul className="flex flex-col gap-2">
-      {labels.map((label) => (
-        <li key={label.id}>
-          <Link href={`/tags/${label.code}`}>{label.name}</Link>
-          {label.description && <p className="mt-0.5 text-sm">{label.description}</p>}
-        </li>
-      ))}
-    </ul>
+    <>
+      <div className="markdown !mb-4">
+        <h1>タグ一覧</h1>
+      </div>
+      <ul className="flex flex-col gap-2">
+        {labels.map((label) => (
+          <li key={label.id}>
+            <Link href={`/tags/${label.code}`}>{label.name}</Link>
+            {label.description && <p className="mt-0.5 text-sm">{label.description}</p>}
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
