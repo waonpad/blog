@@ -282,7 +282,14 @@ const renderMarkdown = async (content: string) => {
         return wrappedToc;
       },
     })
-    .use(rehypeAutolinkHeadings, { behavior: "wrap", properties: { className: "alternative-link" } })
+    .use(rehypeAutolinkHeadings, {
+      behavior: "wrap",
+      properties: {
+        className: "alternative-link",
+        // tailwindによるスタイルの敵用がされない可能性があるため、直接styleを指定
+        style: "display: inline-block; width: 100%;",
+      },
+    })
     .use(remarkHtml)
     .use(rehypeStringify)
     .use(remarkGfm)

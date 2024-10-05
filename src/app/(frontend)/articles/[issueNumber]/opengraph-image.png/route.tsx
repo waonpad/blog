@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import Logo from "@/app/logo.svg";
+import { clientEnv } from "@/config/env/client.mjs";
 import { getIssue } from "@/lib/issue";
 import { getUniqueChars } from "@/utils/string";
 import { ImageResponse } from "next/og";
@@ -64,17 +65,34 @@ export const GET = async (_: never, { params: { issueNumber } }: Props) => {
             textOverflow: "ellipsis",
             lineClamp: '4 "…  "',
             display: "block",
+            flexGrow: 1,
           }}
         >
           {issue.title}
         </span>
-        <div style={{ display: "flex", marginTop: "auto" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: 72,
+          }}
+        >
           <Logo
             style={{
-              width: 80,
-              height: 80,
+              width: 72,
+              height: 72,
+              marginRight: 28,
             }}
           />
+          <span
+            style={{
+              // 位置調整
+              marginBottom: 8,
+            }}
+          >
+            {clientEnv.NEXT_PUBLIC_APP_NAME}
+          </span>
         </div>
       </div>
     </div>,

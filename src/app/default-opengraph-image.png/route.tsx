@@ -36,7 +36,7 @@ export const GET = async () => {
           alignItems: "center",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", height: 80 }}>
           <Logo
             style={{
               width: 80,

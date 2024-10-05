@@ -12,7 +12,9 @@ export const ArticleList = ({ articles }: Props) => {
       {articles.map((article) => (
         <li key={article.number}>
           <Time dateTime={article.created_at} />
-          <Link href={`/articles/${article.number}`}>{article.title}</Link>
+          <Link href={`/articles/${article.number}`} className="block">
+            {article.title}
+          </Link>
         </li>
       ))}
     </ol>
