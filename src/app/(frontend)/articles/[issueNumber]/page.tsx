@@ -45,33 +45,36 @@ export default async function Page({ params }: Props) {
   const labels = sortByName(issue.labels.flat() as Required<Exclude<(typeof issue)["labels"][0], string>>[]);
 
   return (
-    <div className="w-full divide-y divide-[#30363db3]">
-      <article className="markdown">
+    // コメントでの補足等を含めて1つの記事とする想定なため、最上位にarticle、その中はsectionにしている
+    <article className="w-full divide-y divide-[#30363db3]">
+      <section className="markdown">
         <header>
-          <Time dateTime={issue.created_at} />
+          <Time dateTime={issue.created_at} itemProp="datePublished" />
           <h1 className="!mt-0">{issue.title}</h1>
           {labels.length > 0 && (
-            <div className="mb-4 flex flex-wrap gap-2">
+            <ul className="!pl-0 mb-4 flex flex-wrap gap-2">
               {labels.map((label) => (
-                <Link key={label.id} href={`/tags/${label.code}`}>
-                  <span className="chip">{label.name}</span>
-                </Link>
+                <li key={label.id} className="!mt-0">
+                  <Link href={`/tags/${label.code}`}>
+                    <span className="chip">{label.name}</span>
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
         </header>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
-      </article>
+      </section>
       {issueComments.map((issueComment) => (
-        <article key={issueComment.id} className="markdown pt-4">
-          <header className="pb-2">
+        <section key={issueComment.id} className="markdown pt-4">
+          <header className="mb-2">
             <Time dateTime={issueComment.created_at} />
           </header>
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
           <div dangerouslySetInnerHTML={{ __html: issueComment.body_html_md }} />
-        </article>
+        </section>
       ))}
-    </div>
+    </article>
   );
 }

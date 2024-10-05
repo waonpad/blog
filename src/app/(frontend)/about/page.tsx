@@ -13,20 +13,20 @@ export default async function Page() {
   const issueComments = await listIssueComments({ issueNumber: issue.number });
 
   return (
-    <div className="w-full divide-y divide-[#30363db3]">
-      <div className="markdown">
+    <article className="w-full divide-y divide-[#30363db3]">
+      <section className="markdown">
         <header>
           <h1 className="!mt-0">このブログについて</h1>
         </header>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
-      </div>
+      </section>
       {issueComments.map((issueComment) => (
-        <div key={issueComment.id} className="markdown pt-4">
+        <section key={issueComment.id} className="markdown pt-4">
           {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
           <div dangerouslySetInnerHTML={{ __html: issueComment.body_html_md }} />
-        </div>
+        </section>
       ))}
-    </div>
+    </article>
   );
 }
