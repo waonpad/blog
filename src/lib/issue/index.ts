@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { sortByDateKey } from "@/utils/sort";
 import { glob } from "glob";
 import matter from "gray-matter";
-import { dataDirectoryPath, reservedissueTitles } from "./config";
+import { dataDirectoryPath, reservedIssueTitles } from "./config";
 import { transformLabel } from "./label";
 import { renderMarkdown } from "./markdown";
 import type { GHIssue, Issue, IssueListItem } from "./types";
@@ -39,7 +39,7 @@ export const listIssues = async ({
   withReserved,
 }: {
   withClosed?: boolean;
-  withReserved?: (typeof reservedissueTitles)[number][];
+  withReserved?: (typeof reservedIssueTitles)[number][];
 } = {}): Promise<IssueListItem[]> => {
   // Issueファイルのパス一覧を取得
   const paths = await glob(`${dataDirectoryPath}/issues/*/issue.md`);
@@ -58,7 +58,7 @@ export const listIssues = async ({
         const tilte = issueData.title;
         if (
           // 予約されたIssueのタイトルであって
-          reservedissueTitles.some((title) => title === tilte) &&
+          reservedIssueTitles.some((title) => title === tilte) &&
           // withReservedに指定されていない場合は除外する
           !(withReserved ?? []).some((title) => title === tilte)
         )
@@ -86,7 +86,7 @@ export const listIssues = async ({
  */
 export const getIssueByTitle = async ({
   title,
-}: { title: (typeof reservedissueTitles)[number] | (string & {}) }): Promise<Issue> => {
+}: { title: (typeof reservedIssueTitles)[number] | (string & {}) }): Promise<Issue> => {
   // Issueファイルのパス一覧を取得
   const paths = await glob(`${dataDirectoryPath}/issues/*/issue.md`);
 
