@@ -18,11 +18,46 @@ import rehypeToc from "rehype-toc";
 import remarkHtml from "remark-html";
 import { unified } from "unified";
 
-export type Issue = Endpoints["GET /repos/{owner}/{repo}/issues/{issue_number}"]["response"]["data"];
+/**
+ * ライブラリから取り出したそのままのIssueの型をエイリアスに保存
+ */
+type _GHIssue = Endpoints["GET /repos/{owner}/{repo}/issues/{issue_number}"]["response"]["data"];
 
-export type IssueComment = Endpoints["GET /repos/{owner}/{repo}/issues/comments/{comment_id}"]["response"]["data"];
+/**
+ * ライブラリから取り出したIssueの型を実際のものに変換
+ */
+export type GHIssue = Omit<_GHIssue, "labels"> & { labels: Required<Exclude<_GHIssue["labels"][number], string>>[] };
+
+/**
+ * 加工済みのIssueの型
+ */
+export type Issue = Awaited<ReturnType<typeof getIssue>>;
+
+/**
+ * 加工済みのIssueのリストの型
+ *
+ * 詳細なデータは`Issue`型を参照
+ */
+export type IssueListItem = Awaited<ReturnType<typeof listIssues>>[number];
+
+/**
+ * ライブラリから取り出したそのままのIssueのコメントの型をエイリアスに保存
+ */
+type _GHIssueComment = Endpoints["GET /repos/{owner}/{repo}/issues/comments"]["response"]["data"][number];
+
+/**
+ * ライブラリから取り出したIssueのコメントの型を実際のものに変換
+ */
+export type GHIssueComment = _GHIssueComment;
+
+/**
+ * 加工済みのIssueのコメントの型
+ */
+export type IssueComment = Awaited<ReturnType<typeof listIssueComments>>[number];
 
 const dataDirectoryPath = "./data";
+
+const reservedissueTitles = ["about", "privacy-policy"] as const;
 
 /**
  * Issueを取得
@@ -34,20 +69,19 @@ export const getIssue = async ({ issueNumber }: { issueNumber: number }) => {
   // Issueファイルを読み込み、データを取得
   const content = readFileSync(filePath, { encoding: "utf-8" });
   const issueMatter = matter(content);
+  const issueData = issueMatter.data as GHIssue;
   const body = issueMatter.content;
   const body_html_md = await renderMarkdown(body);
 
   const issue = {
-    ...issueMatter.data,
+    ...issueData,
     body,
     body_html_md,
-    labels: issueMatter.data.labels.map(transformLabel),
-  } as Issue & { body_html_md: string; labels: ReturnType<typeof transformLabel>[] };
+    labels: issueData.labels.map(transformLabel),
+  };
 
   return issue;
 };
-
-const reservedissueTitles = ["about", "privacy-policy"] as const;
 
 /**
  * Issueの一覧を取得
@@ -68,11 +102,12 @@ export const listIssues = async ({
       .map((filePath) => {
         const content = readFileSync(filePath, { encoding: "utf-8" });
         const issueMatter = matter(content);
+        const issueData = issueMatter.data as GHIssue;
 
         // クロースされたIssueを取得するオプションが無効の場合、クロースされたIssueは除外するためnullを返す
-        if (!withClosed && issueMatter.data.closed_at) return null;
+        if (!withClosed && issueData.closed_at) return null;
 
-        const tilte = issueMatter.data.title as string;
+        const tilte = issueData.title;
         if (
           // 予約されたIssueのタイトルであって
           reservedissueTitles.some((title) => title === tilte) &&
@@ -85,10 +120,10 @@ export const listIssues = async ({
         const body = issueMatter.content;
 
         return {
-          ...issueMatter.data,
+          ...issueData,
           body,
-          labels: issueMatter.data.labels.map(transformLabel),
-        } as Issue & { labels: ReturnType<typeof transformLabel>[] };
+          labels: issueData.labels.map(transformLabel),
+        };
       })
       .filter((issue): issue is Exclude<typeof issue, null> => issue !== null),
   ).reverse();
@@ -96,7 +131,9 @@ export const listIssues = async ({
   return issues;
 };
 
-export const getIssueByTitle = async ({ title }: { title: (typeof reservedissueTitles)[number] | (string & {}) }) => {
+export const getIssueByTitle = async ({
+  title,
+}: { title: (typeof reservedissueTitles)[number] | (string & {}) }): Promise<Issue> => {
   // Issueファイルのパス一覧を取得
   const paths = await glob(`${dataDirectoryPath}/issues/*/issue.md`);
 
@@ -106,21 +143,22 @@ export const getIssueByTitle = async ({ title }: { title: (typeof reservedissueT
       const content = readFileSync(filePath, { encoding: "utf-8" });
       const issueMatter = matter(content);
 
-      return issueMatter;
+      return issueMatter as Omit<typeof issueMatter, "data"> & { data: GHIssue };
     })
-    .find((issue) => issue.data.title === title);
+    .find((issueMatter) => issueMatter.data.title === title);
 
   if (!targetIssueMatter) throw new Error(`タイトルが ${title} のIssueは見つかりませんでした`);
 
+  const issueData = targetIssueMatter.data;
   const body = targetIssueMatter.content;
   const body_html_md = await renderMarkdown(body);
 
   const issue = {
-    ...targetIssueMatter.data,
+    ...issueData,
     body,
     body_html_md,
-    labels: targetIssueMatter.data.labels.map(transformLabel),
-  } as Issue & { body_html_md: string; labels: ReturnType<typeof transformLabel>[] };
+    labels: issueData.labels.map(transformLabel),
+  };
 
   return issue;
 };
@@ -142,14 +180,15 @@ export const listIssueComments = async ({
       paths.map(async (filePath: string) => {
         const content = readFileSync(filePath, { encoding: "utf-8" });
         const issueMatter = matter(content);
+        const issueData = issueMatter.data as GHIssueComment;
         const body = issueMatter.content;
         const body_html_md = await renderMarkdown(body);
 
         return {
-          ...issueMatter.data,
+          ...issueData,
           body,
           body_html_md,
-        } as IssueComment & { body_html_md: string };
+        };
       }),
     ),
   );
@@ -160,7 +199,7 @@ export const listIssueComments = async ({
 /**
  * Issueを作成日時でソートするための関数
  */
-const sortByCreatedAt = <T extends { created_at: string }>(array: T[]) => {
+const sortByCreatedAt = <T extends { created_at: string }>(array: T[]): T[] => {
   return array.sort((a, b) => {
     const aTime = new Date(a.created_at).getTime();
     const bTime = new Date(b.created_at).getTime();
@@ -176,12 +215,10 @@ const sortByCreatedAt = <T extends { created_at: string }>(array: T[]) => {
 /**
  * Labelの一覧を取得
  */
-export const listLabels = async () => {
+export const listLabels = async (): Promise<ReturnType<typeof transformLabel>[]> => {
   const issues = await listIssues();
 
-  const _labels = (
-    issues.flatMap((issue) => issue.labels) as Required<Exclude<(typeof issues)[0]["labels"][0], string>>[]
-  ).map(transformLabel);
+  const _labels = issues.flatMap((issue) => issue.labels).map(transformLabel);
 
   const labels = sortByName(_labels.filter((label, index, self) => self.findIndex((l) => l.id === label.id) === index));
 
@@ -191,7 +228,9 @@ export const listLabels = async () => {
 /**
  * Labelのdescriptionに埋め込まれたコードを取得してdescriptionから削除して返す
  */
-const transformLabel = (label: Required<Exclude<Issue["labels"][0], string>> & { code?: string }) => {
+const transformLabel = <T extends Required<Exclude<GHIssue["labels"][0], string>> & { code?: string }>(
+  label: T,
+): T & { code: string } => {
   // 既にtransformされている場合はそのまま返す
   if (label.code !== undefined) return label as typeof label & { code: string };
 
@@ -220,7 +259,7 @@ const transformLabel = (label: Required<Exclude<Issue["labels"][0], string>> & {
 /**
  * Labelを名前でソートするための関数
  */
-export const sortByName = <T extends { name: string }>(array: T[]) => {
+export const sortByName = <T extends { name: string }>(array: T[]): T[] => {
   return array.sort((a, b) => {
     if (a.name < b.name) return -1;
 
@@ -235,7 +274,7 @@ export const sortByName = <T extends { name: string }>(array: T[]) => {
  *
  * [remarkjs/remark](https://github.com/remarkjs/remark)
  */
-const renderMarkdown = async (content: string) => {
+const renderMarkdown = async (content: string): Promise<string> => {
   const result = await unified()
     .use(remarkParse)
     .use(remarkGfm)
@@ -243,21 +282,25 @@ const renderMarkdown = async (content: string) => {
       repository: clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY || "user/repo",
     })
     .use(remarkRehype)
+    // コードブロックのシンタックスハイライト
     .use(rehypePrettyCode, {
       theme: "github-dark",
       keepBackground: false,
       transformers: [
+        // コードブロックのコピー機能
         transformerCopyButton({
           visibility: "always",
           feedbackDuration: 3_000,
         }),
       ],
     })
+    // 外部リンクを新しいタブで開く
     .use(rehypeExternalLinks, {
       target: "_blank",
       rel: ["noopener", "noreferrer"],
     })
     .use(rehypeSlug)
+    // 目次を生成
     .use(rehypeToc, {
       customizeTOC: (toc) => {
         // @ts-ignore
@@ -282,6 +325,7 @@ const renderMarkdown = async (content: string) => {
         return wrappedToc;
       },
     })
+    // 見出しにリンクを追加
     .use(rehypeAutolinkHeadings, {
       behavior: "wrap",
       properties: {
