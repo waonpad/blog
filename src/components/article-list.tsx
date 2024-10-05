@@ -1,4 +1,4 @@
-import type { IssueListItem } from "@/lib/issue";
+import type { IssueListItem } from "@/lib/issue/types";
 import Link from "next/link";
 import { Time } from "./time";
 

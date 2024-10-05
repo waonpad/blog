@@ -1,5 +1,7 @@
 import { Time } from "@/components/time";
-import { getIssue, listIssueComments, listIssues, sortByName } from "@/lib/issue";
+import { getIssue, listIssues } from "@/lib/issue";
+import { listIssueComments } from "@/lib/issue/comment";
+import { sortByKey } from "@/utils/sort";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -42,7 +44,7 @@ export default async function Page({ params }: Props) {
   const issue = await getIssue({ issueNumber });
   const issueComments = await listIssueComments({ issueNumber });
 
-  const labels = sortByName(issue.labels.flat() as Required<Exclude<(typeof issue)["labels"][0], string>>[]);
+  const labels = sortByKey(issue.labels.flat() as Required<Exclude<(typeof issue)["labels"][0], string>>[], "name");
 
   return (
     // コメントでの補足等を含めて1つの記事とする想定なため、最上位にarticle、その中はsectionにしている

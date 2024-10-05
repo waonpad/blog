@@ -1,5 +1,6 @@
 import { ArticleList } from "@/components/article-list";
-import { listIssues, listLabels } from "@/lib/issue";
+import { listIssues } from "@/lib/issue";
+import { listLabels } from "@/lib/issue/label";
 import type { Metadata } from "next";
 
 type Props = {

@@ -1,4 +1,4 @@
-import { listLabels } from "@/lib/issue";
+import { listLabels } from "@/lib/issue/label";
 import type { Metadata } from "next";
 import Link from "next/link";
 
