@@ -44,7 +44,7 @@ export default async function Page({ params }: Props) {
   const issue = await getIssue({ issueNumber });
   const issueComments = await listIssueComments({ issueNumber });
 
-  const labels = sortByKey(issue.labels.flat() as Required<Exclude<(typeof issue)["labels"][0], string>>[], "name");
+  const labels = sortByKey(issue.labels.flat(), "name");
 
   return (
     // コメントでの補足等を含めて1つの記事とする想定なため、最上位にarticle、その中はsectionにしている
