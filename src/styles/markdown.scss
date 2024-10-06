@@ -336,9 +336,25 @@
   padding-left: 2em;
 }
 
+// 追加
+.markdown ul {
+  list-style-type: disc;
+}
+
+// 追加
+.markdown ol {
+  list-style-type: decimal;
+}
+
 .markdown ol ol,
 .markdown ul ol {
   list-style-type: lower-roman;
+}
+
+// 追加
+.markdown ul ul,
+.markdown ol ul {
+  list-style-type: circle;
 }
 
 .markdown ul ul ol,
@@ -346,6 +362,14 @@
 .markdown ol ul ol,
 .markdown ol ol ol {
   list-style-type: lower-alpha;
+}
+
+// 追加
+.markdown ul ul ul,
+.markdown ul ol ul,
+.markdown ol ul ul,
+.markdown ol ol ul {
+  list-style-type: disc;
 }
 
 .markdown dd {
