@@ -9,6 +9,7 @@ import { transformerCopyButton } from "@rehype-pretty/transformers/copy-button";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
 import rehypeToc from "rehype-toc";
 import remarkHtml from "remark-html";
@@ -26,7 +27,9 @@ export const renderMarkdown = async (content: string): Promise<string> => {
     .use(remarkGithub, {
       repository: clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY || "user/repo",
     })
-    .use(remarkRehype)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    // YouTubeの埋め込み等をするためのやつ
+    .use(rehypeRaw)
     // コードブロックのシンタックスハイライト
     .use(rehypePrettyCode, {
       theme: "github-dark",
