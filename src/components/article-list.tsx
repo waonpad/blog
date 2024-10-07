@@ -1,9 +1,9 @@
-import type { listIssues } from "@/lib/issue";
+import type { IssueListItem } from "@/lib/issue/types";
 import Link from "next/link";
 import { Time } from "./time";
 
 type Props = {
-  articles: Awaited<ReturnType<typeof listIssues>>;
+  articles: IssueListItem[];
 };
 
 export const ArticleList = ({ articles }: Props) => {

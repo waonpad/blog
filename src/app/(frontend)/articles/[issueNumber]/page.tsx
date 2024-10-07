@@ -1,5 +1,7 @@
 import { Time } from "@/components/time";
-import { getIssue, listIssueComments, listIssues, sortByName } from "@/lib/issue";
+import { getIssue, listIssues } from "@/lib/issue";
+import { listIssueComments } from "@/lib/issue/comment";
+import { sortByKey } from "@/utils/sort";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -42,7 +44,7 @@ export default async function Page({ params }: Props) {
   const issue = await getIssue({ issueNumber });
   const issueComments = await listIssueComments({ issueNumber });
 
-  const labels = sortByName(issue.labels.flat() as Required<Exclude<(typeof issue)["labels"][0], string>>[]);
+  const labels = sortByKey(issue.labels.flat(), "name");
 
   return (
     // コメントでの補足等を含めて1つの記事とする想定なため、最上位にarticle、その中はsectionにしている
@@ -52,7 +54,7 @@ export default async function Page({ params }: Props) {
           <Time dateTime={issue.created_at} itemProp="datePublished" />
           <h1 className="!mt-0">{issue.title}</h1>
           {labels.length > 0 && (
-            <ul className="!pl-0 mb-4 flex flex-wrap gap-2">
+            <ul className="!pl-0 !list-none mb-4 flex flex-wrap gap-2">
               {labels.map((label) => (
                 <li key={label.id} className="!mt-0">
                   <Link href={`/tags/${label.code}`}>

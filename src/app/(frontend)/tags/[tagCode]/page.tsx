@@ -1,5 +1,6 @@
 import { ArticleList } from "@/components/article-list";
-import { listIssues, listLabels } from "@/lib/issue";
+import { listIssues } from "@/lib/issue";
+import { listLabels } from "@/lib/issue/label";
 import type { Metadata } from "next";
 
 type Props = {
@@ -19,7 +20,9 @@ export const generateStaticParams = async (): Promise<Props["params"][]> => {
 export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
   const labels = await listLabels();
 
-  const label = labels.find((label) => label.code === params.tagCode)!;
+  const label = labels.find((label) => label.code === params.tagCode);
+
+  if (!label) throw new Error(`タグが見つかりません。タグコード: ${params.tagCode}`);
 
   return {
     title: label.name,
@@ -30,7 +33,9 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
 export default async function Page({ params }: Props) {
   const labels = await listLabels();
 
-  const label = labels.find((label) => label.code === params.tagCode)!;
+  const label = labels.find((label) => label.code === params.tagCode);
+
+  if (!label) throw new Error(`タグが見つかりません。タグコード: ${params.tagCode}`);
 
   const issues = await listIssues();
 
