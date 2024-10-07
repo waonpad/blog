@@ -74,7 +74,7 @@ export const listIssues = async ({
         };
       })
       .filter((issue): issue is Exclude<typeof issue, null> => issue !== null),
-    "closed_at",
+    "created_at",
     { order: "desc" },
   );
 
