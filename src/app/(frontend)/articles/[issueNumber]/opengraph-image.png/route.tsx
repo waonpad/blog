@@ -3,7 +3,6 @@ import { join } from "node:path";
 import Logo from "@/app/logo.svg";
 import { clientEnv } from "@/config/env/client.mjs";
 import { getIssue } from "@/lib/issue";
-import { getUniqueChars } from "@/utils/string";
 import { ImageResponse } from "next/og";
 import { type Props, generateStaticParams } from "../page";
 
@@ -11,26 +10,6 @@ export { generateStaticParams };
 
 export const GET = async (_: never, { params: { issueNumber } }: Props) => {
   const issue = await getIssue({ issueNumber: Number(issueNumber) });
-
-  // iOSやmacOSで使われているフォントの中で、OGPに使うものだけを読み込む
-  const sfFont = readFileSync(join(process.cwd(), "src", "assets", "SF-Pro-Text-Semibold.otf"));
-
-  // 既にSF-Proに含まれている文字は不要なので除外 (他にもいろいろあるが面倒なので最低限)
-  const fontTargetChars = issue.title.replace(/[A-Za-z0-9]/g, "");
-
-  const fontData = await (
-    await fetch(
-      `https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&text=${encodeURIComponent(getUniqueChars(fontTargetChars))}`,
-    )
-  ).text();
-  const fontUrl = fontData.match(/url\((.*?)\)/)?.[1];
-
-  if (!fontUrl) {
-    throw new Error("フォントのURLが取得できませんでした");
-  }
-
-  // Noto Sans JPのフォントを取得
-  const notoFont = await (await fetch(fontUrl)).arrayBuffer();
 
   return new ImageResponse(
     <div
@@ -54,9 +33,7 @@ export const GET = async (_: never, { params: { issueNumber } }: Props) => {
           padding: 40,
           // Twitterに共有した時にOGPの上にページタイトルが被るため、そのぶんpaddingを追加
           paddingBottom: 64,
-          fontFamily: '-apple-system, "Noto Sans JP"',
-          // 間が少し大きく見えたので調整
-          letterSpacing: "-0.0397em",
+          fontFamily: 'Roboto, "Noto Sans JP"',
           borderRadius: 20,
         }}
       >
@@ -88,7 +65,7 @@ export const GET = async (_: never, { params: { issueNumber } }: Props) => {
           <span
             style={{
               // 位置調整
-              marginBottom: 8,
+              marginBottom: 16,
             }}
           >
             {clientEnv.NEXT_PUBLIC_APP_NAME}
@@ -101,11 +78,11 @@ export const GET = async (_: never, { params: { issueNumber } }: Props) => {
       height: 630,
       fonts: [
         {
-          data: sfFont,
-          name: "-apple-system",
+          data: readFileSync(join(process.cwd(), "src/assets/fonts/Roboto/Roboto-Medium.ttf")),
+          name: "Roboto",
         },
         {
-          data: notoFont,
+          data: readFileSync(join(process.cwd(), "src/assets/fonts/Noto_Sans_JP/static/NotoSansJP-Bold.ttf")),
           name: "Noto Sans JP",
         },
       ],

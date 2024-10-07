@@ -6,9 +6,6 @@ import { ImageResponse } from "next/og";
 
 // NOTICE: 表示する内容(アプリ名)を変える場合はレイアウトの崩れに注意
 export const GET = async () => {
-  // iOSやmacOSで使われているフォントの中で、OGPに使うものだけを読み込む
-  const sfFont = readFileSync(join(process.cwd(), "src", "assets", "SF-Pro-Text-Semibold.otf"));
-
   return new ImageResponse(
     <div
       style={{
@@ -28,9 +25,7 @@ export const GET = async () => {
           display: "flex",
           color: "#e6edf3",
           flexDirection: "column",
-          fontFamily: "-apple-system",
-          // 間が少し大きく見えたので調整
-          letterSpacing: "-0.0397em",
+          fontFamily: "Roboto",
           borderRadius: 20,
           justifyContent: "center",
           alignItems: "center",
@@ -47,7 +42,7 @@ export const GET = async () => {
           <span
             style={{
               // 位置調整
-              marginBottom: 16,
+              marginBottom: 24,
             }}
           >
             {clientEnv.NEXT_PUBLIC_APP_NAME}
@@ -60,8 +55,8 @@ export const GET = async () => {
       height: 630,
       fonts: [
         {
-          data: sfFont,
-          name: "-apple-system",
+          data: readFileSync(join(process.cwd(), "src/assets/fonts/Roboto/Roboto-Medium.ttf")),
+          name: "Roboto",
         },
       ],
     },
