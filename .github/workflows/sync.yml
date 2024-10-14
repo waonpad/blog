@@ -80,10 +80,6 @@ jobs:
       - name: Build
         run: bun run build
 
-      # git statusを確認
-      - name: Check git status
-        run: git status
-
       # issueの内容をdataブランチに反映
       - name: Push issue data
         uses: peaceiris/actions-gh-pages@v4
