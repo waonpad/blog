@@ -47,7 +47,7 @@ const saveIssues = async () => {
 
       const { body, ...issueData } = issue;
 
-      mkdirSync(issueDirPath({ issueNumber: issue.number }));
+      mkdirSync(issueDirPath({ issueNumber: issue.number }), { recursive: true });
 
       // yaml形式にする
       const yamlContent = stringify(
@@ -71,6 +71,11 @@ const saveIssueComments = async () => {
 
   for await (const { data: comments } of issueCommentsIterator) {
     for (const comment of comments) {
+      // PRのコメントはスキップ
+      // html_url: 'https://github.com/user/repo/pull/1#issuecomment-123456'
+      // /でsplitして最後から2番目が"pull"の場合はPRのコメント
+      if (comment.html_url.split("/").slice(-2)[0] === "pull") continue;
+
       console.log("Comment #%d", comment.id);
 
       const { body, ...commentData } = comment;
@@ -95,8 +100,6 @@ const saveIssueComments = async () => {
 const main = async () => {
   // 削除されたものが残らないように、前のデータを削除
   if (existsSync(ISSUES_DIR)) rmdirSync(ISSUES_DIR, { recursive: true });
-  // ディレクトリを作成
-  mkdirSync(ISSUES_DIR, { recursive: true });
 
   await saveIssues();
 
