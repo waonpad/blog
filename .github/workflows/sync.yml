@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: read
     steps:
       # mainブランチの内容をコピー
       - name: Checkout main
