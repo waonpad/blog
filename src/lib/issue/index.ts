@@ -35,10 +35,10 @@ export const getIssue = async ({ issueNumber }: { issueNumber: number }): Promis
  * Issueの一覧を取得
  */
 export const listIssues = async ({
-  withClosed = false,
+  withDraft = false,
   withReserved,
 }: {
-  withClosed?: boolean;
+  withDraft?: boolean;
   withReserved?: (typeof reservedIssueTitles)[number][];
 } = {}): Promise<IssueListItem[]> => {
   // Issueファイルのパス一覧を取得
@@ -52,8 +52,8 @@ export const listIssues = async ({
         const issueMatter = matter(content);
         const issueData = issueMatter.data as GHIssue;
 
-        // クロースされたIssueを取得するオプションが無効の場合、クロースされたIssueは除外するためnullを返す
-        if (!withClosed && issueData.closed_at) return null;
+        // 下書きのIssueを取得するオプションが無効の場合、開いているIssueは除外するためnullを返す
+        if (!withDraft && issueData.state === "open") return null;
 
         const tilte = issueData.title;
         if (

@@ -15,7 +15,7 @@ export const listIssueComments = async ({
   issueNumber: number;
 }): Promise<IssueComment[]> => {
   // Issueのコメントファイルのパス一覧を取得
-  const paths = await glob(`${dataDirectoryPath}/issues/${issueNumber}/issue_comments/*.md`);
+  const paths = await glob(`${dataDirectoryPath}/issues/${issueNumber}/comments/*.md`);
 
   // Issueのコメントファイルを読み込み、データを取得
   const issueComments = sortByDateKey(
