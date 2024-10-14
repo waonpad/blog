@@ -39,6 +39,14 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v4
 
+      # Issueのデータを保存してあるブランチの内容をコピー
+      - name: Checkout issue data
+        uses: actions/checkout@v4
+        with:
+          ref: data # issueが保存されているブランチ
+          path: data # ブランチの内容を保存するディレクトリ
+        continue-on-error: true
+
       # 現在デプロイされているブランチの内容をコピー
       - name: Checkout Current Pages
         uses: actions/checkout@v4
@@ -72,16 +80,19 @@ jobs:
       - name: Build
         run: bun run build
 
+      # git statusを確認
+      - name: Check git status
+        run: git status
+
       # issueの内容をdataブランチに反映
-      - name: Publish issue data
+      - name: Push issue data
         uses: peaceiris/actions-gh-pages@v4
         with:
           destination_dir: .
           disable_nojekyll: true
-          force_orphan: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: data # push先ブランチ
-          publish_dir: data #　pushするディレクトリ
+          publish_dir: data #　ブランチにpushするディレクトリ
 
       # ビルド結果をデプロイ
       - name: Deploy
