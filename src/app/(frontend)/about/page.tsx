@@ -1,11 +1,11 @@
+import { clientEnv } from "@/config/env/client.mjs";
 import { getIssueByTitle } from "@/lib/issue";
 import { listIssueComments } from "@/lib/issue/comment";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About",
-  // NOTICE: サイト管理者の名前に書き換える
-  description: "waonpadのブログです。このブログと私の事について記載しています。",
+  description: `${clientEnv.NEXT_PUBLIC_GITHUB_USER}のブログです。このブログと私の事について記載しています。`,
 };
 
 export default async function Page() {
