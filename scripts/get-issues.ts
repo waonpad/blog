@@ -96,7 +96,7 @@ const main = async () => {
   // 削除されたものが残らないように、前のデータを削除
   if (existsSync(ISSUES_DIR)) rmdirSync(ISSUES_DIR, { recursive: true });
   // ディレクトリを作成
-  mkdirSync(ISSUES_DIR);
+  mkdirSync(ISSUES_DIR, { recursive: true });
 
   await saveIssues();
 
