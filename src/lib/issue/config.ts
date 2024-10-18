@@ -1,4 +1,4 @@
-export const dataDirectoryPath = "./data" as const;
+export const dataDirectoryPath = "./data";
 
 export const reservedIssueTitles = ["about", "privacy-policy"] as const;
 
@@ -8,4 +8,4 @@ export const reservedIssueTitles = ["about", "privacy-policy"] as const;
  * @example
  * `name___description`
  */
-export const labelCodeSeparator = "___" as const;
+export const labelCodeSeparator = "___";
