@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import Logo from "@/app/logo.svg";
-import { clientEnv } from "@/config/env/client.mjs";
+import { clientEnv } from "@/config/env/client";
 import { ImageResponse } from "next/og";
 
 // NOTICE: 表示する内容(アプリ名)を変える場合はレイアウトの崩れに注意

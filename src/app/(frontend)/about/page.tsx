@@ -1,4 +1,4 @@
-import { clientEnv } from "@/config/env/client.mjs";
+import { clientEnv } from "@/config/env/client";
 import { getIssueByTitle } from "@/lib/issue";
 import { listIssueComments } from "@/lib/issue/comment";
 import type { Metadata } from "next";

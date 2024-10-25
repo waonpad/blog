@@ -1,6 +1,6 @@
 import Logo from "@/app/logo.svg";
 import { ExternalLink } from "@/components/external-link";
-import { clientEnv } from "@/config/env/client.mjs";
+import { clientEnv } from "@/config/env/client";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { FaGithub } from "react-icons/fa";

@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { clientEnv } from "@/config/env/client.mjs";
+import { clientEnv } from "@/config/env/client";
 import { JWT } from "google-auth-library";
 import { google } from "googleapis";
 

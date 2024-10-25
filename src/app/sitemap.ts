@@ -1,4 +1,4 @@
-import { clientEnv } from "@/config/env/client.mjs";
+import { clientEnv } from "@/config/env/client";
 import type { MetadataRoute } from "next";
 import { generateStaticParams as generateStaticArticleParams } from "./(frontend)/articles/[issueNumber]/page";
 import { generateStaticParams as generateStaticTagParams } from "./(frontend)/tags/[tagCode]/page";

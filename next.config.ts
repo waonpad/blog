@@ -1,9 +1,16 @@
 import { PHASE_DEVELOPMENT_SERVER } from "next/constants.js";
-import { clientEnv } from "./src/config/env/client.mjs";
-import "./src/config/env/server.mjs";
+import { clientEnv } from "./src/config/env/client";
+import "./src/config/env/server";
+import type { NextConfig } from "next";
 
-/** @type {import('next').NextConfig} */
-const nextConfig = (phase, { defaultConfig }) => {
+const nextConfig = (
+  phase: string,
+  {
+    defaultConfig,
+  }: {
+    defaultConfig: NextConfig;
+  },
+): NextConfig => {
   const basePath = clientEnv.NEXT_PUBLIC_BASE_PATH;
 
   return {

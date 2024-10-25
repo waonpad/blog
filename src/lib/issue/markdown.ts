@@ -4,7 +4,7 @@ import remarkGithub from "remark-github";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 
-import { clientEnv } from "@/config/env/client.mjs";
+import { clientEnv } from "@/config/env/client";
 import { transformerCopyButton } from "@rehype-pretty/transformers/copy-button";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeExternalLinks from "rehype-external-links";

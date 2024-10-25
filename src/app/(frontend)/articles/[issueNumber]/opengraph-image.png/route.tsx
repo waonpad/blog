@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import Logo from "@/app/logo.svg";
-import { clientEnv } from "@/config/env/client.mjs";
+import { clientEnv } from "@/config/env/client";
 import { getIssue } from "@/lib/issue";
 import { ImageResponse } from "next/og";
 import { type Props, generateStaticParams } from "../page";
