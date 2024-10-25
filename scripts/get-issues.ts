@@ -6,8 +6,8 @@
  */
 
 import { existsSync, mkdirSync, rmdirSync, writeFileSync } from "node:fs";
+import { Octokit } from "@octokit/rest";
 import { stringify } from "gray-matter";
-import { Octokit } from "octokit";
 
 const DATA_DIR = "./data";
 const ISSUES_DIR = `${DATA_DIR}/issues`;

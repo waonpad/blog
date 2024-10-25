@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import "@/styles/globals.scss";
-import "@/styles/markdown.scss";
+import "@/styles/globals.css";
+import "@/styles/markdown.css";
 import { clientEnv } from "@/config/env/client";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";

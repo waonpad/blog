@@ -1,20 +1,20 @@
-// 以下リポジトリのcssファイルをコピーしたものを編集して使用しています
-// [sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
-// コピー元
-// https://github.com/sindresorhus/github-markdown-css/blob/5e1d34a4add8501c31efb8c6eb378bcac9b20ef4/github-markdown-dark.css
+/* 以下リポジトリのcssファイルをコピーしたものを編集して使用しています
+[sindresorhus/github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
+コピー元
+https://github.com/sindresorhus/github-markdown-css/blob/5e1d34a4add8501c31efb8c6eb378bcac9b20ef4/github-markdown-dark.css */
 
 .markdown {
   color-scheme: dark;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   margin: 0;
-  // グローバルに定義を移動した
-  // color: #e6edf3;
-  // グローバルに定義を移動した
-  // background-color: #0d1117;
-  // グローバルに定義を移動した
-  // font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
-  //   Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  /* グローバルに定義を移動した
+  color: #e6edf3;
+  グローバルに定義を移動した
+  background-color: #0d1117;
+  グローバルに定義を移動した
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"; */
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
@@ -336,12 +336,12 @@
   padding-left: 2em;
 }
 
-// 追加
+/* 追加 */
 .markdown ul {
   list-style-type: disc;
 }
 
-// 追加
+/* 追加 */
 .markdown ol {
   list-style-type: decimal;
 }
@@ -351,7 +351,7 @@
   list-style-type: lower-roman;
 }
 
-// 追加
+/* 追加 */
 .markdown ul ul,
 .markdown ol ul {
   list-style-type: circle;
@@ -364,7 +364,7 @@
   list-style-type: lower-alpha;
 }
 
-// 追加
+/* 追加 */
 .markdown ul ul ul,
 .markdown ul ol ul,
 .markdown ol ul ul,
@@ -731,7 +731,7 @@
   text-align: right;
 }
 
-.markdown .chip, // 追加
+.markdown .chip, /* 追加 */
 .markdown code,
 .markdown tt {
   padding: 0.2em 0.4em;
@@ -1138,7 +1138,7 @@
   margin-top: 0 !important;
 }
 
-// rehype-pretty-codeはfigure要素で囲むので、figure要素の余白を0にする
+/* rehype-pretty-codeはfigure要素で囲むので、figure要素の余白を0にする */
 .markdown figure[data-rehype-pretty-code-figure] {
   margin: 0;
 }
