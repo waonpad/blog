@@ -6,10 +6,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export type Props = {
-  params: { issueNumber: string };
+  params: Promise<{ issueNumber: string }>;
 };
 
-export const generateStaticParams = async (): Promise<Props["params"][]> => {
+export const generateStaticParams = async (): Promise<Awaited<Props["params"]>[]> => {
   const issues = await listIssues();
 
   return issues.map((issue) => {
@@ -19,7 +19,8 @@ export const generateStaticParams = async (): Promise<Props["params"][]> => {
   });
 };
 
-export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+export const generateMetadata = async (props: Props): Promise<Metadata> => {
+  const params = await props.params;
   const issueNumber = Number(params.issueNumber);
   const issue = await getIssue({ issueNumber });
 
@@ -39,7 +40,8 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   };
 };
 
-export default async function Page({ params }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
   const issueNumber = Number(params.issueNumber);
   const issue = await getIssue({ issueNumber });
   const issueComments = await listIssueComments({ issueNumber });

@@ -3,6 +3,8 @@ import type { MetadataRoute } from "next";
 import { generateStaticParams as generateStaticArticleParams } from "./(frontend)/articles/[issueNumber]/page";
 import { generateStaticParams as generateStaticTagParams } from "./(frontend)/tags/[tagCode]/page";
 
+export const dynamic = "force-static";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = clientEnv.NEXT_PUBLIC_SITE_URL;
 

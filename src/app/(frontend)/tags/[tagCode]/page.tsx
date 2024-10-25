@@ -4,10 +4,10 @@ import { listLabels } from "@/lib/issue/label";
 import type { Metadata } from "next";
 
 type Props = {
-  params: { tagCode: string };
+  params: Promise<{ tagCode: string }>;
 };
 
-export const generateStaticParams = async (): Promise<Props["params"][]> => {
+export const generateStaticParams = async (): Promise<Awaited<Props["params"]>[]> => {
   const labels = await listLabels();
 
   return labels.map((label) => {
@@ -17,7 +17,8 @@ export const generateStaticParams = async (): Promise<Props["params"][]> => {
   });
 };
 
-export const generateMetadata = async ({ params }: Props): Promise<Metadata> => {
+export const generateMetadata = async (props: Props): Promise<Metadata> => {
+  const params = await props.params;
   const labels = await listLabels();
 
   const label = labels.find((label) => label.code === params.tagCode);
@@ -30,7 +31,8 @@ export const generateMetadata = async ({ params }: Props): Promise<Metadata> => 
   };
 };
 
-export default async function Page({ params }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
   const labels = await listLabels();
 
   const label = labels.find((label) => label.code === params.tagCode);

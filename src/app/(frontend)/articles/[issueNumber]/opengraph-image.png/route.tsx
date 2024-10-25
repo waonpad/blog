@@ -8,7 +8,11 @@ import { type Props, generateStaticParams } from "../page";
 
 export { generateStaticParams };
 
-export const GET = async (_: never, { params: { issueNumber } }: Props) => {
+export const GET = async (_: never, props: Props) => {
+  const params = await props.params;
+
+  const { issueNumber } = params;
+
   const issue = await getIssue({ issueNumber: Number(issueNumber) });
 
   return new ImageResponse(
