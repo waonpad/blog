@@ -26,6 +26,18 @@ export const renderMarkdown = async (content: string): Promise<string> => {
     .use(remarkGfm)
     .use(remarkGithub, {
       repository: clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY || "user/repo",
+      buildUrl: (values) => {
+        // Issueの場合のみ記事リンクとして扱う
+        if (values.type === "issue") {
+          // articles/[issueNumber]/ にリンクする
+          // GitHub Pagesの場合は末尾にスラッシュを付けるため、リンクの末尾にもスラッシュを付ける
+          // next.config.ts の trailingSlash の値に合わせる
+          return `${clientEnv.NEXT_PUBLIC_SITE_URL}/articles/${values.no}/`;
+        }
+
+        // Issue以外のリンクを書く事は無いはずだが、もし書かれていてもリンクにしない
+        return false;
+      },
     })
     .use(remarkRehype, { allowDangerousHtml: true })
     // YouTubeの埋め込み等をするためのやつ
