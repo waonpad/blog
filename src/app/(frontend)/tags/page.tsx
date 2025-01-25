@@ -13,7 +13,7 @@ export default async function Page() {
 
   return (
     <section>
-      <header className="markdown !mb-4">
+      <header className="markdown mb-4!">
         <h1>タグ一覧</h1>
       </header>
       <ul className="flex flex-col gap-2">

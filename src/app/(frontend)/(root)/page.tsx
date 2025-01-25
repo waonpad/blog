@@ -6,7 +6,7 @@ export default async function Page() {
 
   return (
     <section>
-      <header className="markdown !mb-4">
+      <header className="markdown mb-4!">
         <h1>記事一覧</h1>
       </header>
       <ArticleList articles={issues} />

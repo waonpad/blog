@@ -17,7 +17,7 @@ export default async function Page() {
     <article className="w-full divide-y divide-[#30363db3]">
       <section className="markdown">
         <header>
-          <h1 className="!mt-0">このブログについて</h1>
+          <h1 className="mt-0!">このブログについて</h1>
         </header>
         {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />

@@ -8,7 +8,7 @@ import { FaGithub } from "react-icons/fa";
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
-      <header className="mx-auto flex w-[95%] max-w-screen-lg items-center py-3">
+      <header className="mx-auto flex w-[95%] max-w-(--breakpoint-lg) items-center py-3">
         <nav>
           <Link href="/" className="alternative-link flex items-center font-bold text-lg">
             <Logo className="mr-2 h-6 w-6" />
@@ -38,8 +38,8 @@ export default function Layout({ children }: { children: ReactNode }) {
           </ul>
         </nav>
       </header>
-      <main className="mx-auto flex w-[95%] max-w-screen-lg grow flex-col py-2">{children}</main>
-      <footer className="mx-auto w-[95%] max-w-screen-lg py-4">
+      <main className="mx-auto flex w-[95%] max-w-(--breakpoint-lg) grow flex-col py-2">{children}</main>
+      <footer className="mx-auto w-[95%] max-w-(--breakpoint-lg) py-4">
         <nav className="flex flex-col gap-3">
           <ul className="flex items-center justify-center gap-6">
             <li>

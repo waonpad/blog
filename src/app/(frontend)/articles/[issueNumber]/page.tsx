@@ -54,11 +54,11 @@ export default async function Page(props: Props) {
       <section className="markdown">
         <header>
           <Time dateTime={issue.created_at} itemProp="datePublished" />
-          <h1 className="!mt-0">{issue.title}</h1>
+          <h1 className="mt-0!">{issue.title}</h1>
           {labels.length > 0 && (
-            <ul className="!pl-0 !list-none mb-4 flex flex-wrap gap-2">
+            <ul className="mb-4 flex list-none! flex-wrap gap-2 pl-0!">
               {labels.map((label) => (
-                <li key={label.id} className="!mt-0">
+                <li key={label.id} className="mt-0!">
                   <Link href={`/tags/${label.code}`}>
                     <span className="chip">{label.name}</span>
                   </Link>

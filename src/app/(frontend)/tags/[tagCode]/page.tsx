@@ -50,7 +50,7 @@ export default async function Page(props: Props) {
 
   return (
     <section>
-      <header className="markdown !mb-4">
+      <header className="markdown mb-4!">
         <h1>
           {label.name} <span className="text-[75%] text-slate-300">の記事一覧</span>
         </h1>
