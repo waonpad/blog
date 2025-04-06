@@ -7,7 +7,30 @@ import remarkHtml from "remark-html";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
 import { dataDirectoryPath } from "./config";
-import type { GHIssueComment } from "./types";
+import type { GHIssueComment, IssueReference } from "./types";
+
+/**
+ * ファイルに保存されたデータを元に、Issueの参照関係を取得する
+ */
+export const getIssueReferences = ({
+  issueNumber,
+}: {
+  issueNumber: number;
+}): Omit<IssueReference, "number"> => {
+  const referencesFilePath = `${dataDirectoryPath}/issue-references.json`;
+  const referencesData: IssueReference[] = JSON.parse(readFileSync(referencesFilePath, { encoding: "utf-8" }));
+
+  const issueReferences = referencesData.find((ref) => ref.number === issueNumber);
+
+  if (!issueReferences) {
+    throw new Error(`番号が ${issueNumber} のIssueは見つかりませんでした`);
+  }
+
+  return {
+    referencings: issueReferences.referencings,
+    referencedBy: issueReferences.referencedBy,
+  };
+};
 
 /**
  * remark-githubがMarkdownからIssueを探すロジックを利用して、Issueが参照している他のIssue番号を取得する

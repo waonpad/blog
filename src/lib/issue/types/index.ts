@@ -41,3 +41,9 @@ export type GHIssueComment = _GHIssueComment;
  * 加工済みのIssueのコメントの型
  */
 export type IssueComment = Omit<GHIssueComment, "body"> & { body: string; body_html_md: string };
+
+export type IssueReference = {
+  number: number;
+  referencings: number[];
+  referencedBy: number[];
+};
