@@ -14,8 +14,8 @@ import type { GHIssueComment } from "./types";
  *
  * @see [remarkjs/remark-github](https://github.com/remarkjs/remark-github)
  */
-export const getReferencedIssueNumbersFromMarkdown = async (content: string): Promise<number[]> => {
-  const referencedIssueNumbers: number[] = [];
+export const getReferencingIssueNumbersFromMarkdown = async (content: string): Promise<number[]> => {
+  const referencingIssueNumbers: number[] = [];
 
   await unified()
     .use(remarkParse)
@@ -25,7 +25,7 @@ export const getReferencedIssueNumbersFromMarkdown = async (content: string): Pr
       buildUrl: (values) => {
         // リンクしているIssueの番号を取得して配列に追加
         if (values.type === "issue") {
-          referencedIssueNumbers.push(Number(values.no));
+          referencingIssueNumbers.push(Number(values.no));
         }
 
         // Issue番号が欲しいだけなので何もしない
@@ -34,10 +34,10 @@ export const getReferencedIssueNumbersFromMarkdown = async (content: string): Pr
     })
     .process(content);
 
-  return referencedIssueNumbers;
+  return referencingIssueNumbers;
 };
 
-export const getReferencedIssueNumbers = async ({ issueNumber }: { issueNumber: number }): Promise<number[]> => {
+export const getReferencingIssueNumbers = async ({ issueNumber }: { issueNumber: number }): Promise<number[]> => {
   // Issueファイルのパスを取得
   const issueFilePath = `${dataDirectoryPath}/issues/${issueNumber}/issue.md`;
 
@@ -47,7 +47,7 @@ export const getReferencedIssueNumbers = async ({ issueNumber }: { issueNumber: 
   const body = issueMatter.content;
 
   // Issueの本文から参照されているIssue番号一覧を取得
-  const referencedIssueNumbersOfMain = await getReferencedIssueNumbersFromMarkdown(body);
+  const referencingIssueNumbersOfMain = await getReferencingIssueNumbersFromMarkdown(body);
 
   // Issueのコメントファイルのパス一覧を取得
   const issueCommentFilePaths = await glob(`${dataDirectoryPath}/issues/${issueNumber}/comments/*.md`);
@@ -68,18 +68,18 @@ export const getReferencedIssueNumbers = async ({ issueNumber }: { issueNumber: 
   const sortedIssueComments = sortByDateKey(issueComments, "created_at", { order: "asc" });
 
   // Issueのコメントから参照されているIssue番号一覧を取得
-  const referencedIssueNumbersOfComments = await Promise.all(
-    sortedIssueComments.map(async ({ body }) => await getReferencedIssueNumbersFromMarkdown(body)),
+  const referencingIssueNumbersOfComments = await Promise.all(
+    sortedIssueComments.map(async ({ body }) => await getReferencingIssueNumbersFromMarkdown(body)),
   );
 
   // Issue全体から参照されているIssue番号一覧の配列を作成
-  const uniqueReferencedIssueNumbers = Array.from(
+  const uniqueReferencingIssueNumbers = Array.from(
     new Set(
-      [...referencedIssueNumbersOfMain, ...referencedIssueNumbersOfComments.flat()]
+      [...referencingIssueNumbersOfMain, ...referencingIssueNumbersOfComments.flat()]
         // 自分自身のIssue番号は除外
         .filter((number) => number !== issueNumber),
     ),
   );
 
-  return uniqueReferencedIssueNumbers;
+  return uniqueReferencingIssueNumbers;
 };
