@@ -33,7 +33,7 @@ export const getIssueReferences = ({
 };
 
 /**
- * remark-githubがMarkdownからIssueを探すロジックを利用して、Issueが参照している他のIssue番号を取得する
+ * remark-githubがMarkdownからIssueを探すロジックを利用して、参照しているIssue番号を取得する
  *
  * @see [remarkjs/remark-github](https://github.com/remarkjs/remark-github)
  */
