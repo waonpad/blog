@@ -18,25 +18,22 @@ export const listIssueComments = async ({
   const paths = await glob(`${dataDirectoryPath}/issues/${issueNumber}/comments/*.md`);
 
   // Issueのコメントファイルを読み込み、データを取得
-  const issueComments = sortByDateKey(
-    await Promise.all(
-      paths.map(async (filePath: string) => {
-        const content = readFileSync(filePath, { encoding: "utf-8" });
-        const issueMatter = matter(content);
-        const issueData = issueMatter.data as GHIssueComment;
-        const body = issueMatter.content;
-        const body_html_md = await renderMarkdown(body);
+  const issueComments = await Promise.all(
+    paths.map(async (filePath: string) => {
+      const content = readFileSync(filePath, { encoding: "utf-8" });
+      const issueMatter = matter(content);
+      const issueData = issueMatter.data as GHIssueComment;
+      const body = issueMatter.content;
+      const body_html_md = await renderMarkdown(body);
 
-        return {
-          ...issueData,
-          body,
-          body_html_md,
-        };
-      }),
-    ),
-    "created_at",
-    { order: "asc" },
+      return {
+        ...issueData,
+        body,
+        body_html_md,
+      };
+    }),
   );
 
-  return issueComments;
+  // ソートを実行
+  return sortByDateKey(issueComments, "created_at", { order: "asc" });
 };
