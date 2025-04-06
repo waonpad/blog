@@ -26,7 +26,8 @@ export const renderMarkdown = async (content: string): Promise<string> => {
     .use(remarkHtml)
     .use(remarkGfm)
     .use(remarkGithub, {
-      repository: clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY || "user/repo",
+      // 今回の使用方法ではリポジトリ名は使用しないため適当なものを指定
+      repository: "user/repo",
       buildUrl: (values) => {
         // Issueの場合のみ記事リンクとして扱う
         if (values.type === "issue") {
