@@ -18,7 +18,7 @@ import { unified } from "unified";
 /**
  * MarkdownをHTMLに変換する
  *
- * [remarkjs/remark](https://github.com/remarkjs/remark)
+ * @see [remarkjs/remark](https://github.com/remarkjs/remark)
  */
 export const renderMarkdown = async (content: string): Promise<string> => {
   const result = await unified()
