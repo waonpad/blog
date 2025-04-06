@@ -23,6 +23,7 @@ import { unified } from "unified";
 export const renderMarkdown = async (content: string): Promise<string> => {
   const result = await unified()
     .use(remarkParse)
+    .use(remarkHtml)
     .use(remarkGfm)
     .use(remarkGithub, {
       repository: clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY || "user/repo",
@@ -94,9 +95,7 @@ export const renderMarkdown = async (content: string): Promise<string> => {
         style: "display: inline-block; width: 100%;",
       },
     })
-    .use(remarkHtml)
     .use(rehypeStringify)
-    .use(remarkGfm)
     .process(content);
 
   return result.toString();
