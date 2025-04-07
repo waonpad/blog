@@ -7,18 +7,22 @@ import remarkHtml from "remark-html";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
 import { dataDirectoryPath } from "./config";
-import type { GHIssueComment, IssueReference } from "./types";
+import type { GHIssueComment, IssueReferences } from "./types";
 
 /**
  * ファイルに保存されたデータを元に、Issueの参照関係を取得する
+ *
+ * @return {Object} result
+ * @return {number[]} result.referencings - 参照しているIssue番号の配列(参照の登場順)
+ * @return {number[]} result.referencedBy - 参照されているIssue番号の配列(Issue番号の若い順)
  */
 export const getIssueReferences = ({
   issueNumber,
 }: {
   issueNumber: number;
-}): Omit<IssueReference, "number"> => {
+}): Omit<IssueReferences, "number"> => {
   const referencesFilePath = `${dataDirectoryPath}/issue-references.json`;
-  const referencesData: IssueReference[] = JSON.parse(readFileSync(referencesFilePath, { encoding: "utf-8" }));
+  const referencesData: IssueReferences[] = JSON.parse(readFileSync(referencesFilePath, { encoding: "utf-8" }));
 
   const issueReferences = referencesData.find((ref) => ref.number === issueNumber);
 

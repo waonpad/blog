@@ -42,7 +42,7 @@ export type GHIssueComment = _GHIssueComment;
  */
 export type IssueComment = Omit<GHIssueComment, "body"> & { body: string; body_html_md: string };
 
-export type IssueReference = {
+export type IssueReferences = {
   number: number;
   referencings: number[];
   referencedBy: number[];

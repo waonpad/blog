@@ -1,7 +1,7 @@
 import { writeFileSync } from "node:fs";
 import { listIssues } from "@/lib/issue";
 import { getReferencingIssueNumbers } from "@/lib/issue/reference";
-import type { IssueReference } from "@/lib/issue/types";
+import type { IssueReferences } from "@/lib/issue/types";
 
 const DATA_DIR = "./data";
 const REFERENCES_FILE = "issue-references.json";
@@ -10,7 +10,7 @@ const referencesFilePath = `${DATA_DIR}/${REFERENCES_FILE}` as const;
 
 const saveIssueReferences = async () => {
   const issues = await listIssues();
-  const issueReferences: Omit<IssueReference, "referencedBy">[] = await Promise.all(
+  const issueReferences: Omit<IssueReferences, "referencedBy">[] = await Promise.all(
     issues.map(async (issue) => {
       const referencingIssueNumbers = await getReferencingIssueNumbers({ issueNumber: issue.number });
       return {
@@ -20,7 +20,7 @@ const saveIssueReferences = async () => {
     }),
   );
 
-  const processedIssueReferences: IssueReference[] = issueReferences.map((issueReference) => ({
+  const processedIssueReferences: IssueReferences[] = issueReferences.map((issueReference) => ({
     ...issueReference,
     // 各Issue自身が参照されているIssueの番号を取得
     referencedBy: issueReferences
