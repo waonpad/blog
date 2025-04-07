@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { sortByDateKey } from "@/utils/sort";
 import { glob } from "glob";
 import matter from "gray-matter";
-import { buildIssueFilePath, issueFilePathGlobPattern, reservedIssueTitles } from "./config";
+import { buildIssueFilePath, draftIssueState, issueFilePathGlobPattern, reservedIssueTitles } from "./config";
 import { renderMarkdown } from "./markdown";
 import { transformLabel } from "./transform";
 import type { GHIssue, Issue, IssueListItem } from "./types";
@@ -53,7 +53,7 @@ export const getIssues = async ({
         const issueData = issueMatter.data as GHIssue;
 
         // 下書きのIssueを取得するオプションが無効の場合、開いているIssueは除外するためnullを返す
-        if (!withDraft && issueData.state === "open") return null;
+        if (!withDraft && issueData.state === draftIssueState) return null;
 
         const tilte = issueData.title;
         if (
@@ -126,5 +126,5 @@ export const getReservedIssues = async (): Promise<Issue[]> => {
  */
 export const getDraftIssues = async (): Promise<IssueListItem[]> => {
   const issues = await getIssues({ withDraft: true });
-  return issues.filter((issue) => issue.state === "open");
+  return issues.filter((issue) => issue.state === draftIssueState);
 };

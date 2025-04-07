@@ -27,3 +27,5 @@ export const reservedIssueTitles = ["about", "privacy-policy"] as const satisfie
  * `name___description`
  */
 export const labelCodeSeparator = "___";
+
+export const draftIssueState = "open" as const;
