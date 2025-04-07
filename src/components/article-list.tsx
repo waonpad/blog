@@ -1,5 +1,5 @@
 import type { IssueListItem } from "@/lib/issue/types";
-import { cn } from "@/styles/utils";
+import { cn } from "@/utils/styles";
 import Link from "next/link";
 import type { ComponentProps } from "react";
 import { Time } from "./time";

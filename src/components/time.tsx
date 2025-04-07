@@ -1,4 +1,4 @@
-import { cn } from "@/styles/utils";
+import { cn } from "@/utils/styles";
 import { formatInTimeZone } from "date-fns-tz";
 import type { ComponentPropsWithoutRef } from "react";
 
