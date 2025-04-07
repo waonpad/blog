@@ -20,7 +20,7 @@ import { unified } from "unified";
  *
  * @see [remarkjs/remark](https://github.com/remarkjs/remark)
  */
-export const renderMarkdown = async (content: string): Promise<string> => {
+export const renderMarkdown = async (markdown: string): Promise<string> => {
   const result = await unified()
     .use(remarkParse)
     .use(remarkHtml)
@@ -97,7 +97,7 @@ export const renderMarkdown = async (content: string): Promise<string> => {
       },
     })
     .use(rehypeStringify)
-    .process(content);
+    .process(markdown);
 
   return result.toString();
 };

@@ -6,10 +6,8 @@ import remarkGithub from "remark-github";
 import remarkHtml from "remark-html";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import { buildIssueCommentFilePathGlobPattern, buildIssueFilePath, dataDirPath } from "./config";
+import { buildIssueCommentFilePathGlobPattern, buildIssueFilePath, issueReferencesFilePath } from "./config";
 import type { GHIssueComment, IssueReferences } from "./types";
-
-const referencesFilePath = `${dataDirPath}/issue-references.json`;
 
 /**
  * ファイルに保存されたデータを元に、Issueの参照関係を取得する
@@ -19,7 +17,7 @@ const referencesFilePath = `${dataDirPath}/issue-references.json`;
  * @return {number[]} result.referencedBy - 参照されているIssue番号の配列(Issue番号の若い順)
  */
 export const getIssueReferences = (issueNumber: number): Omit<IssueReferences, "number"> => {
-  const referencesData: IssueReferences[] = JSON.parse(readFileSync(referencesFilePath, { encoding: "utf-8" }));
+  const referencesData: IssueReferences[] = JSON.parse(readFileSync(issueReferencesFilePath, { encoding: "utf-8" }));
 
   const issueReferences = referencesData.find((ref) => ref.number === issueNumber);
 
@@ -40,7 +38,7 @@ export const getIssueReferences = (issueNumber: number): Omit<IssueReferences, "
  *
  * @see [remarkjs/remark-github](https://github.com/remarkjs/remark-github)
  */
-export const getReferencingIssueNumbersFromMarkdown = async (content: string): Promise<number[]> => {
+export const getReferencingIssueNumbersFromMarkdown = async (markdown: string): Promise<number[]> => {
   const referencingIssueNumbers: number[] = [];
 
   await unified()
@@ -58,7 +56,7 @@ export const getReferencingIssueNumbersFromMarkdown = async (content: string): P
         return false;
       },
     })
-    .process(content);
+    .process(markdown);
 
   // 重複を排除
   return Array.from(new Set(referencingIssueNumbers));
