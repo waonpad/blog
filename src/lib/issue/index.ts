@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { sortByDateKey } from "@/utils/sort";
 import { glob } from "glob";
 import matter from "gray-matter";
-import { dataDirPath, reservedIssueTitles } from "./config";
+import { issueFilePath, issueFilePathGlobPattern, reservedIssueTitles } from "./config";
 import { renderMarkdown } from "./markdown";
 import { transformLabel } from "./transform";
 import type { GHIssue, Issue, IssueListItem } from "./types";
@@ -12,7 +12,7 @@ import type { GHIssue, Issue, IssueListItem } from "./types";
  */
 export const getIssue = async ({ issueNumber }: { issueNumber: number }): Promise<Issue> => {
   // Issueファイルのパスを取得
-  const filePath = `${dataDirPath}/issues/${issueNumber}/issue.md`;
+  const filePath = issueFilePath({ issueNumber });
 
   // Issueファイルを読み込み、データを取得
   const content = readFileSync(filePath, { encoding: "utf-8" });
@@ -42,7 +42,7 @@ export const getIssues = async ({
   withReserved?: (typeof reservedIssueTitles)[number][];
 } = {}): Promise<IssueListItem[]> => {
   // Issueファイルのパス一覧を取得
-  const paths = await glob(`${dataDirPath}/issues/*/issue.md`);
+  const paths = await glob(issueFilePathGlobPattern);
 
   // Issueファイルを読み込み、データを取得
   const issues = sortByDateKey(
@@ -88,7 +88,7 @@ export const getIssueByTitle = async ({
   title,
 }: { title: (typeof reservedIssueTitles)[number] | (string & {}) }): Promise<Issue> => {
   // Issueファイルのパス一覧を取得
-  const paths = await glob(`${dataDirPath}/issues/*/issue.md`);
+  const paths = await glob(issueFilePathGlobPattern);
 
   // Issueファイルを読み込み、データを取得
   const targetIssueMatter = paths
