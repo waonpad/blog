@@ -68,11 +68,17 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      # issueを取得
+      # Issueを取得
       - name: Get issue data
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bun run scripts/get-issues.ts
+
+      # Issueの参照関係を取得
+      - name: Get issue references
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bun run scripts/compute-issue-references.ts
 
       # 必要であればテスト等を実行
 
@@ -80,7 +86,7 @@ jobs:
       - name: Build
         run: bun run build
 
-      # issueの内容をdataブランチに反映
+      # Issueの内容をdataブランチに反映
       - name: Push issue data
         uses: peaceiris/actions-gh-pages@v4
         with:
