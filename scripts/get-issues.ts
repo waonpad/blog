@@ -38,7 +38,7 @@ const saveIssues = async () => {
 
       const { body, ...issueData } = issue;
 
-      mkdirSync(buildIssueDirPath({ issueNumber: issue.number }), { recursive: true });
+      mkdirSync(buildIssueDirPath(issue.number), { recursive: true });
 
       // yaml形式にする
       const yamlContent = stringify(
@@ -48,7 +48,7 @@ const saveIssues = async () => {
       );
 
       // ファイルを書き込む
-      writeFileSync(buildIssueFilePath({ issueNumber: issue.number }), yamlContent);
+      writeFileSync(buildIssueFilePath(issue.number), yamlContent);
     }
   }
 };
@@ -73,7 +73,7 @@ const saveIssueComments = async () => {
 
       const issueNumber = Number(comment.issue_url.split("/").pop());
 
-      mkdirSync(buildIssueCommentsDirPath({ issueNumber }), { recursive: true });
+      mkdirSync(buildIssueCommentsDirPath(issueNumber), { recursive: true });
 
       // yaml形式にする
       const yamlContent = stringify(
@@ -83,7 +83,7 @@ const saveIssueComments = async () => {
       );
 
       // ファイルを書き込む
-      writeFileSync(buildIssueCommentFilePath({ issueNumber, commentId: comment.id }), yamlContent);
+      writeFileSync(buildIssueCommentFilePath(issueNumber, comment.id), yamlContent);
     }
   }
 };

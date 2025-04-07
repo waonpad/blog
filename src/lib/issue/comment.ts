@@ -9,13 +9,9 @@ import type { GHIssueComment, IssueComment } from "./types";
 /**
  * Issueのコメント一覧を取得
  */
-export const listIssueComments = async ({
-  issueNumber,
-}: {
-  issueNumber: number;
-}): Promise<IssueComment[]> => {
+export const listIssueComments = async (issueNumber: number): Promise<IssueComment[]> => {
   // Issueのコメントファイルのパス一覧を取得
-  const paths = await glob(buildIssueCommentFilePathGlobPattern({ issueNumber }));
+  const paths = await glob(buildIssueCommentFilePathGlobPattern(issueNumber));
 
   // Issueのコメントファイルを読み込み、データを取得
   const issueComments = await Promise.all(

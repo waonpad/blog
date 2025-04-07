@@ -24,7 +24,7 @@ export const generateStaticParams = async (): Promise<Awaited<Props["params"]>[]
 export const generateMetadata = async (props: Props): Promise<Metadata> => {
   const params = await props.params;
   const issueNumber = Number(params.issueNumber);
-  const issue = await getIssue({ issueNumber });
+  const issue = await getIssue(issueNumber);
 
   return {
     title: issue.title,
@@ -45,20 +45,20 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 export default async function Page(props: Props) {
   const params = await props.params;
   const issueNumber = Number(params.issueNumber);
-  const issue = await getIssue({ issueNumber });
-  const issueComments = await listIssueComments({ issueNumber });
+  const issue = await getIssue(issueNumber);
+  const issueComments = await listIssueComments(issueNumber);
 
   const labels = sortByKey(issue.labels.flat(), "name");
 
-  const { referencings, referencedBy } = getIssueReferences({ issueNumber });
+  const { referencings, referencedBy } = getIssueReferences(issueNumber);
 
   // 参照しているIssueを取得
   const referencingIssues = await Promise.all(
-    referencings.map(async (referencingIssueNumber) => await getIssue({ issueNumber: referencingIssueNumber })),
+    referencings.map(async (referencingIssueNumber) => await getIssue(referencingIssueNumber)),
   );
   // 参照されているIssueを取得
   const referencedIssues = await Promise.all(
-    referencedBy.map(async (referencedIssueNumber) => await getIssue({ issueNumber: referencedIssueNumber })),
+    referencedBy.map(async (referencedIssueNumber) => await getIssue(referencedIssueNumber)),
   );
 
   // 関連記事に表示させたくない、除外対象のIssue番号一覧を取得

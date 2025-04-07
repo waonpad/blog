@@ -18,11 +18,7 @@ const referencesFilePath = `${dataDirPath}/issue-references.json`;
  * @return {number[]} result.referencings - 参照しているIssue番号の配列(参照の登場順)
  * @return {number[]} result.referencedBy - 参照されているIssue番号の配列(Issue番号の若い順)
  */
-export const getIssueReferences = ({
-  issueNumber,
-}: {
-  issueNumber: number;
-}): Omit<IssueReferences, "number"> => {
+export const getIssueReferences = (issueNumber: number): Omit<IssueReferences, "number"> => {
   const referencesData: IssueReferences[] = JSON.parse(readFileSync(referencesFilePath, { encoding: "utf-8" }));
 
   const issueReferences = referencesData.find((ref) => ref.number === issueNumber);
@@ -73,9 +69,9 @@ export const getReferencingIssueNumbersFromMarkdown = async (content: string): P
  *
  * 重複は排除され、登場順で並んだ配列が返される
  */
-export const getReferencingIssueNumbers = async ({ issueNumber }: { issueNumber: number }): Promise<number[]> => {
+export const getReferencingIssueNumbers = async (issueNumber: number): Promise<number[]> => {
   // Issueファイルのパスを取得
-  const _issueFilePath = buildIssueFilePath({ issueNumber });
+  const _issueFilePath = buildIssueFilePath(issueNumber);
 
   // Issueファイルを読み込み、データを取得
   const content = readFileSync(_issueFilePath, { encoding: "utf-8" });
@@ -86,7 +82,7 @@ export const getReferencingIssueNumbers = async ({ issueNumber }: { issueNumber:
   const referencingIssueNumbersOfMain = await getReferencingIssueNumbersFromMarkdown(body);
 
   // Issueのコメントファイルのパス一覧を取得
-  const issueCommentFilePaths = await glob(buildIssueCommentFilePathGlobPattern({ issueNumber }));
+  const issueCommentFilePaths = await glob(buildIssueCommentFilePathGlobPattern(issueNumber));
 
   // Issueのコメントファイルを読み込み、データを取得
   const issueComments = issueCommentFilePaths.map((filePath: string) => {

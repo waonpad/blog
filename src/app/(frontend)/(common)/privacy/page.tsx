@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const issue = await getIssueByTitle({ title: "privacy-policy" });
+  const issue = await getIssueByTitle("privacy-policy");
 
-  const issueComments = await listIssueComments({ issueNumber: issue.number });
+  const issueComments = await listIssueComments(issue.number);
 
   return (
     <article className="w-full divide-y divide-[#30363db3]">

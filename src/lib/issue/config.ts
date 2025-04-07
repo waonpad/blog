@@ -5,22 +5,18 @@ export const issueCommentsDirName = "comments" as const;
 export const issueReferencesFileName = "issue-references.json" as const;
 export const issueReferencesFilePath = `${dataDirPath}/${issueReferencesFileName}` as const;
 
-export const buildIssueDirPath = ({ issueNumber }: { issueNumber: number }) =>
-  `${issuesDirPath}/${issueNumber}` as const;
-export const buildIssueFilePath = ({ issueNumber }: { issueNumber: number }) =>
-  `${buildIssueDirPath({ issueNumber })}/${issueFileName}` as const;
+export const buildIssueDirPath = (issueNumber: number) => `${issuesDirPath}/${issueNumber}` as const;
+export const buildIssueFilePath = (issueNumber: number) =>
+  `${buildIssueDirPath(issueNumber)}/${issueFileName}` as const;
 
-export const buildIssueCommentsDirPath = ({ issueNumber }: { issueNumber: number }) =>
+export const buildIssueCommentsDirPath = (issueNumber: number) =>
   `${issuesDirPath}/${issueNumber}/${issueCommentsDirName}` as const;
-export const buildIssueCommentFilePath = ({ issueNumber, commentId }: { issueNumber: number; commentId: number }) =>
-  `${buildIssueCommentsDirPath({ issueNumber })}/${commentId}.md` as const;
+export const buildIssueCommentFilePath = (issueNumber: number, commentId: number) =>
+  `${buildIssueCommentsDirPath(issueNumber)}/${commentId}.md` as const;
 
 export const issueFilePathGlobPattern = `${issuesDirPath}/*/${issueFileName}` as const;
-export const buildIssueCommentFilePathGlobPattern = ({
-  issueNumber,
-}: {
-  issueNumber: number;
-}) => `${issuesDirPath}/${issueNumber}/comments/*.md` as const;
+export const buildIssueCommentFilePathGlobPattern = (issueNumber: number) =>
+  `${issuesDirPath}/${issueNumber}/comments/*.md` as const;
 
 export const reservedIssueTitles = ["about", "privacy-policy"] as const satisfies string[];
 

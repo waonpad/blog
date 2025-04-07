@@ -13,7 +13,7 @@ export const GET = async (_: never, props: Props) => {
 
   const { issueNumber } = params;
 
-  const issue = await getIssue({ issueNumber: Number(issueNumber) });
+  const issue = await getIssue(Number(issueNumber));
 
   return new ImageResponse(
     <div

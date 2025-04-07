@@ -14,7 +14,7 @@ const saveIssueReferences = async () => {
     issues.map(async (issue) => {
       return {
         number: issue.number,
-        referencings: await getReferencingIssueNumbers({ issueNumber: issue.number }),
+        referencings: await getReferencingIssueNumbers(issue.number),
       };
     }),
   );

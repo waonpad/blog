@@ -10,9 +10,9 @@ import type { GHIssue, Issue, IssueListItem } from "./types";
 /**
  * Issueを取得
  */
-export const getIssue = async ({ issueNumber }: { issueNumber: number }): Promise<Issue> => {
+export const getIssue = async (issueNumber: number): Promise<Issue> => {
   // Issueファイルのパスを取得
-  const filePath = buildIssueFilePath({ issueNumber });
+  const filePath = buildIssueFilePath(issueNumber);
 
   // Issueファイルを読み込み、データを取得
   const content = readFileSync(filePath, { encoding: "utf-8" });
@@ -84,9 +84,7 @@ export const getIssues = async ({
 /**
  * タイトルからIssueを取得
  */
-export const getIssueByTitle = async ({
-  title,
-}: { title: (typeof reservedIssueTitles)[number] | (string & {}) }): Promise<Issue> => {
+export const getIssueByTitle = async (title: (typeof reservedIssueTitles)[number] | (string & {})): Promise<Issue> => {
   // Issueファイルのパス一覧を取得
   const paths = await glob(issueFilePathGlobPattern);
 
@@ -120,7 +118,7 @@ export const getIssueByTitle = async ({
  * 予約されたIssueの番号一覧を取得
  */
 export const getReservedIssues = async (): Promise<Issue[]> => {
-  return await Promise.all(reservedIssueTitles.map(async (title) => await getIssueByTitle({ title })));
+  return await Promise.all(reservedIssueTitles.map(async (title) => await getIssueByTitle(title)));
 };
 
 /**
