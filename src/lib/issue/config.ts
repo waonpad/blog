@@ -1,6 +1,6 @@
 export const dataDirectoryPath = "./data";
 
-export const reservedIssueTitles = ["about", "privacy-policy"] as const;
+export const reservedIssueTitles = ["about", "privacy-policy"] as const satisfies string[];
 
 /**
  * ラベルのコードとdescriptionの区切り文字
