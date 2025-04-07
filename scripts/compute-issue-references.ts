@@ -28,6 +28,9 @@ const saveIssueReferences = async () => {
       .map((issue) => issue.number),
   }));
 
+  // referencings: 参照の登場順
+  // referencedBy: Issue番号の若い順
+
   // JSONファイルに保存
   writeFileSync(referencesFilePath, JSON.stringify(processedIssueReferences, null, 2), { encoding: "utf-8" });
 };
