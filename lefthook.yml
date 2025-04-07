@@ -2,6 +2,8 @@ pre-push:
   commands:
     run-type-check:
       run: bun run tsc
+    run-circular-deps:
+      run: bun run lint:circular-deps
     # run-tests:
     # run: bun run test
 
