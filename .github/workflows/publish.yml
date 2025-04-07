@@ -25,10 +25,10 @@ jobs:
         uses: actions/checkout@v4
 
       # Issueのデータを保存してあるブランチの内容をコピー
-      - name: Checkout issue data
+      - name: Checkout Issue data
         uses: actions/checkout@v4
         with:
-          ref: data # issueが保存されているブランチ
+          ref: data # Issueが保存されているブランチ
           path: data # ブランチの内容を保存するディレクトリ
         continue-on-error: true
 
