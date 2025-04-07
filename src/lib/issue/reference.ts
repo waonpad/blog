@@ -33,7 +33,9 @@ export const getIssueReferences = ({
 };
 
 /**
- * remark-githubがMarkdownからIssueを探すロジックを利用して、参照しているIssue番号を取得する
+ * remark-githubがMarkdownからIssueを探すロジックを利用して、Markdownが参照しているIssue番号を取得する
+ *
+ * 重複は排除され、登場順で並んだ配列が返される
  *
  * @see [remarkjs/remark-github](https://github.com/remarkjs/remark-github)
  */
@@ -61,6 +63,11 @@ export const getReferencingIssueNumbersFromMarkdown = async (content: string): P
   return Array.from(new Set(referencingIssueNumbers));
 };
 
+/**
+ * Issueの本文とコメントのMarkdownから参照しているIssue番号を取得する
+ *
+ * 重複は排除され、登場順で並んだ配列が返される
+ */
 export const getReferencingIssueNumbers = async ({ issueNumber }: { issueNumber: number }): Promise<number[]> => {
   // Issueファイルのパスを取得
   const issueFilePath = `${dataDirectoryPath}/issues/${issueNumber}/issue.md`;
