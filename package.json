@@ -8,9 +8,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "serve out",
-    "fmt": "biome format --write .",
-    "lnt": "biome lint --write .",
-    "che": "biome check --write .",
+    "format": "biome format --write .",
+    "lint": "biome lint --write .",
+    "check": "biome check --write .",
     "test": "vitest run",
     "test:watch": "vitest watch --silent",
     "test:ci": "vitest run --silent"
