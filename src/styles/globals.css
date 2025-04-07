@@ -1,9 +1,9 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 body {
   background-color: #0d1117;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI",
-    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji";
   color: #e6edf3;
 }
 
