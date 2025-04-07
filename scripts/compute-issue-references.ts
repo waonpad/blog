@@ -1,5 +1,5 @@
 import { writeFileSync } from "node:fs";
-import { listIssues } from "@/lib/issue";
+import { getIssues } from "@/lib/issue";
 import { reservedIssueTitles } from "@/lib/issue/config";
 import { getReferencingIssueNumbers } from "@/lib/issue/reference";
 import type { IssueReferences } from "@/lib/issue/types";
@@ -10,7 +10,7 @@ const REFERENCES_FILE = "issue-references.json";
 const referencesFilePath = `${DATA_DIR}/${REFERENCES_FILE}` as const;
 
 const saveIssueReferences = async () => {
-  const issues = await listIssues({
+  const issues = await getIssues({
     withDraft: true,
     withReserved: reservedIssueTitles,
   });

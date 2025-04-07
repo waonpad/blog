@@ -1,6 +1,6 @@
 import { ArticleList } from "@/components/article-list";
 import { Time } from "@/components/time";
-import { getDraftIssues, getIssue, getReservedIssues, listIssues } from "@/lib/issue";
+import { getDraftIssues, getIssue, getIssues, getReservedIssues } from "@/lib/issue";
 import { listIssueComments } from "@/lib/issue/comment";
 import { getIssueReferences } from "@/lib/issue/reference";
 import { sortByDateKey, sortByKey } from "@/utils/sort";
@@ -12,7 +12,7 @@ export type Props = {
 };
 
 export const generateStaticParams = async (): Promise<Awaited<Props["params"]>[]> => {
-  const issues = await listIssues();
+  const issues = await getIssues();
 
   return issues.map((issue) => {
     return {

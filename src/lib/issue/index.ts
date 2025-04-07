@@ -34,7 +34,7 @@ export const getIssue = async ({ issueNumber }: { issueNumber: number }): Promis
 /**
  * Issueの一覧を取得
  */
-export const listIssues = async ({
+export const getIssues = async ({
   withDraft = false,
   withReserved,
 }: {
@@ -127,6 +127,6 @@ export const getReservedIssues = async (): Promise<Issue[]> => {
  * 下書きのIssue一覧を取得
  */
 export const getDraftIssues = async (): Promise<IssueListItem[]> => {
-  const issues = await listIssues({ withDraft: true });
+  const issues = await getIssues({ withDraft: true });
   return issues.filter((issue) => issue.state === "open");
 };

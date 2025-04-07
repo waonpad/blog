@@ -1,5 +1,5 @@
 import { ArticleList } from "@/components/article-list";
-import { listIssues } from "@/lib/issue";
+import { getIssues } from "@/lib/issue";
 import { listLabels } from "@/lib/issue/label";
 import type { Metadata } from "next";
 
@@ -39,7 +39,7 @@ export default async function Page(props: Props) {
 
   if (!label) throw new Error(`タグが見つかりません。タグコード: ${params.tagCode}`);
 
-  const issues = await listIssues();
+  const issues = await getIssues();
 
   // labelsにparams.tagCodeが含まれるissueのみを抽出
   const filteredIssues = issues.filter((issue) =>
