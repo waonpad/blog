@@ -7,10 +7,10 @@
 
 import { existsSync, mkdirSync, rmdirSync, writeFileSync } from "node:fs";
 import {
-  issueCommentFilePath,
-  issueCommentsDirPath,
-  issueDirPath,
-  issueFilePath,
+  buildIssueCommentFilePath,
+  buildIssueCommentsDirPath,
+  buildIssueDirPath,
+  buildIssueFilePath,
   issuesDirPath,
 } from "@/lib/issue/config";
 import { Octokit } from "@octokit/rest";
@@ -38,7 +38,7 @@ const saveIssues = async () => {
 
       const { body, ...issueData } = issue;
 
-      mkdirSync(issueDirPath({ issueNumber: issue.number }), { recursive: true });
+      mkdirSync(buildIssueDirPath({ issueNumber: issue.number }), { recursive: true });
 
       // yaml形式にする
       const yamlContent = stringify(
@@ -48,7 +48,7 @@ const saveIssues = async () => {
       );
 
       // ファイルを書き込む
-      writeFileSync(issueFilePath({ issueNumber: issue.number }), yamlContent);
+      writeFileSync(buildIssueFilePath({ issueNumber: issue.number }), yamlContent);
     }
   }
 };
@@ -73,7 +73,7 @@ const saveIssueComments = async () => {
 
       const issueNumber = Number(comment.issue_url.split("/").pop());
 
-      mkdirSync(issueCommentsDirPath({ issueNumber }), { recursive: true });
+      mkdirSync(buildIssueCommentsDirPath({ issueNumber }), { recursive: true });
 
       // yaml形式にする
       const yamlContent = stringify(
@@ -83,7 +83,7 @@ const saveIssueComments = async () => {
       );
 
       // ファイルを書き込む
-      writeFileSync(issueCommentFilePath({ issueNumber, commentId: comment.id }), yamlContent);
+      writeFileSync(buildIssueCommentFilePath({ issueNumber, commentId: comment.id }), yamlContent);
     }
   }
 };

@@ -6,7 +6,7 @@ import remarkGithub from "remark-github";
 import remarkHtml from "remark-html";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import { dataDirPath, issueCommentFilePathGlobPattern, issueFilePath } from "./config";
+import { buildIssueCommentFilePathGlobPattern, buildIssueFilePath, dataDirPath } from "./config";
 import type { GHIssueComment, IssueReferences } from "./types";
 
 const referencesFilePath = `${dataDirPath}/issue-references.json`;
@@ -75,7 +75,7 @@ export const getReferencingIssueNumbersFromMarkdown = async (content: string): P
  */
 export const getReferencingIssueNumbers = async ({ issueNumber }: { issueNumber: number }): Promise<number[]> => {
   // Issueファイルのパスを取得
-  const _issueFilePath = issueFilePath({ issueNumber });
+  const _issueFilePath = buildIssueFilePath({ issueNumber });
 
   // Issueファイルを読み込み、データを取得
   const content = readFileSync(_issueFilePath, { encoding: "utf-8" });
@@ -86,7 +86,7 @@ export const getReferencingIssueNumbers = async ({ issueNumber }: { issueNumber:
   const referencingIssueNumbersOfMain = await getReferencingIssueNumbersFromMarkdown(body);
 
   // Issueのコメントファイルのパス一覧を取得
-  const issueCommentFilePaths = await glob(issueCommentFilePathGlobPattern({ issueNumber }));
+  const issueCommentFilePaths = await glob(buildIssueCommentFilePathGlobPattern({ issueNumber }));
 
   // Issueのコメントファイルを読み込み、データを取得
   const issueComments = issueCommentFilePaths.map((filePath: string) => {

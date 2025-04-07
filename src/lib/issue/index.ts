@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { sortByDateKey } from "@/utils/sort";
 import { glob } from "glob";
 import matter from "gray-matter";
-import { issueFilePath, issueFilePathGlobPattern, reservedIssueTitles } from "./config";
+import { buildIssueFilePath, issueFilePathGlobPattern, reservedIssueTitles } from "./config";
 import { renderMarkdown } from "./markdown";
 import { transformLabel } from "./transform";
 import type { GHIssue, Issue, IssueListItem } from "./types";
@@ -12,7 +12,7 @@ import type { GHIssue, Issue, IssueListItem } from "./types";
  */
 export const getIssue = async ({ issueNumber }: { issueNumber: number }): Promise<Issue> => {
   // Issueファイルのパスを取得
-  const filePath = issueFilePath({ issueNumber });
+  const filePath = buildIssueFilePath({ issueNumber });
 
   // Issueファイルを読み込み、データを取得
   const content = readFileSync(filePath, { encoding: "utf-8" });
