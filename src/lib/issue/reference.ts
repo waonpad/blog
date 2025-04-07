@@ -9,6 +9,8 @@ import { unified } from "unified";
 import { dataDirectoryPath } from "./config";
 import type { GHIssueComment, IssueReferences } from "./types";
 
+const referencesFilePath = `${dataDirectoryPath}/issue-references.json`;
+
 /**
  * ファイルに保存されたデータを元に、Issueの参照関係を取得する
  *
@@ -21,7 +23,6 @@ export const getIssueReferences = ({
 }: {
   issueNumber: number;
 }): Omit<IssueReferences, "number"> => {
-  const referencesFilePath = `${dataDirectoryPath}/issue-references.json`;
   const referencesData: IssueReferences[] = JSON.parse(readFileSync(referencesFilePath, { encoding: "utf-8" }));
 
   const issueReferences = referencesData.find((ref) => ref.number === issueNumber);
