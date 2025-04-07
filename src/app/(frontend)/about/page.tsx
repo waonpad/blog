@@ -1,6 +1,6 @@
 import { clientEnv } from "@/config/env/client";
 import { getIssueByTitle } from "@/lib/issue";
-import { listIssueComments } from "@/lib/issue/comment";
+import { getIssueComments } from "@/lib/issue/comment";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   const issue = await getIssueByTitle("about");
 
-  const issueComments = await listIssueComments(issue.number);
+  const issueComments = await getIssueComments(issue.number);
 
   return (
     <article className="w-full divide-y divide-[#30363db3]">

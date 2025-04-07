@@ -1,7 +1,7 @@
 import { ArticleList } from "@/components/article-list";
 import { Time } from "@/components/time";
 import { getDraftIssues, getIssue, getIssues, getReservedIssues } from "@/lib/issue";
-import { listIssueComments } from "@/lib/issue/comment";
+import { getIssueComments } from "@/lib/issue/comment";
 import { getIssueReferences } from "@/lib/issue/reference";
 import { sortByDateKey, sortByKey } from "@/utils/sort";
 import type { Metadata } from "next";
@@ -46,7 +46,7 @@ export default async function Page(props: Props) {
   const params = await props.params;
   const issueNumber = Number(params.issueNumber);
   const issue = await getIssue(issueNumber);
-  const issueComments = await listIssueComments(issueNumber);
+  const issueComments = await getIssueComments(issueNumber);
 
   const labels = sortByKey(issue.labels.flat(), "name");
 
