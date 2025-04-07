@@ -36,8 +36,6 @@ const saveIssueReferences = async () => {
 };
 
 const main = async () => {
-  // TODO: ファイルに保存された情報を元に関連記事を表示する
-  // TODO: 予約されたIssueは関連記事に表示しない？
   await saveIssueReferences();
 };
 
