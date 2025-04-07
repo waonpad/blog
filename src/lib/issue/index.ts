@@ -3,8 +3,8 @@ import { sortByDateKey } from "@/utils/sort";
 import { glob } from "glob";
 import matter from "gray-matter";
 import { dataDirectoryPath, reservedIssueTitles } from "./config";
-import { transformLabel } from "./label";
 import { renderMarkdown } from "./markdown";
+import { transformLabel } from "./transform";
 import type { GHIssue, Issue, IssueListItem } from "./types";
 
 /**
