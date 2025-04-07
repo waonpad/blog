@@ -45,6 +45,7 @@ export const getReferencingIssueNumbersFromMarkdown = async (markdown: string): 
     .use(remarkParse)
     .use(remarkHtml)
     .use(remarkGithub, {
+      // 今回の使用方法ではリポジトリ名は使用しないため適当なものを指定
       repository: "user/repo",
       buildUrl: (values) => {
         // リンクしているIssueの番号を取得して配列に追加
@@ -69,10 +70,10 @@ export const getReferencingIssueNumbersFromMarkdown = async (markdown: string): 
  */
 export const getReferencingIssueNumbers = async (issueNumber: number): Promise<number[]> => {
   // Issueファイルのパスを取得
-  const _issueFilePath = buildIssueFilePath(issueNumber);
+  const issueFilePath = buildIssueFilePath(issueNumber);
 
   // Issueファイルを読み込み、データを取得
-  const content = readFileSync(_issueFilePath, { encoding: "utf-8" });
+  const content = readFileSync(issueFilePath, { encoding: "utf-8" });
   const issueMatter = matter(content);
   const body = issueMatter.content;
 
