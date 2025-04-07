@@ -12,7 +12,7 @@ import {
   buildIssueDirPath,
   buildIssueFilePath,
   issuesDirPath,
-} from "@/lib/issue/config";
+} from "@/lib/issue/path";
 import { Octokit } from "@octokit/rest";
 import { stringify } from "gray-matter";
 

@@ -1,7 +1,7 @@
 import { sortByDateKey } from "@/utils/sort";
-import { getRawIssueCommentDataFromFilePath } from ".";
-import { searchIssueCommentFilePaths } from "./config";
 import { renderMarkdown } from "./markdown";
+import { searchIssueCommentFilePaths } from "./path";
+import { getRawIssueCommentDataFromFilePath } from "./raw";
 import type { IssueComment } from "./types";
 
 /**

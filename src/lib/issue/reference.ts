@@ -4,8 +4,8 @@ import remarkGithub from "remark-github";
 import remarkHtml from "remark-html";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import { getRawIssueCommentDataFromFilePath, getRawIssueData } from ".";
-import { issueReferencesFilePath, searchIssueCommentFilePaths } from "./config";
+import { issueReferencesFilePath, searchIssueCommentFilePaths } from "./path";
+import { getRawIssueCommentDataFromFilePath, getRawIssueData } from "./raw";
 import type { IssueReferences } from "./types";
 
 /**
