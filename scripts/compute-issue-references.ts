@@ -12,18 +12,17 @@ const saveIssueReferences = async () => {
   const issues = await listIssues();
   const issueReferences: Omit<IssueReferences, "referencedBy">[] = await Promise.all(
     issues.map(async (issue) => {
-      const referencingIssueNumbers = await getReferencingIssueNumbers({ issueNumber: issue.number });
       return {
         number: issue.number,
-        referencings: referencingIssueNumbers,
+        referencings: await getReferencingIssueNumbers({ issueNumber: issue.number }),
       };
     }),
   );
 
-  const processedIssueReferences: IssueReferences[] = issueReferences.map((issueReference) => ({
+  const processedIssueReferences: IssueReferences[] = issueReferences.map((issueReference, _, self) => ({
     ...issueReference,
     // 各Issue自身が参照されているIssueの番号を取得
-    referencedBy: issueReferences
+    referencedBy: self
       .filter((issue) => issue.referencings.includes(issueReference.number))
       .map((issue) => issue.number),
   }));
