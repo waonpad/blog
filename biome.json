@@ -17,6 +17,9 @@
         "noUnusedVariables": "error",
         "noUnusedImports": "error"
       },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
       "style": {
         "noImplicitBoolean": "error"
       },

@@ -98,7 +98,6 @@ export default async function Page(props: Props) {
             </ul>
           )}
         </header>
-        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
       </section>
       {issueComments.map((issueComment) => (
@@ -106,7 +105,6 @@ export default async function Page(props: Props) {
           <header className="mb-2">
             <Time dateTime={issueComment.created_at} />
           </header>
-          {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
           <div dangerouslySetInnerHTML={{ __html: issueComment.body_html_md }} />
         </section>
       ))}

@@ -19,12 +19,10 @@ export default async function Page() {
         <header>
           <h1 className="mt-0!">このブログについて</h1>
         </header>
-        {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
         <div dangerouslySetInnerHTML={{ __html: issue.body_html_md }} />
       </section>
       {issueComments.map((issueComment) => (
         <section key={issueComment.id} className="markdown pt-4">
-          {/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
           <div dangerouslySetInnerHTML={{ __html: issueComment.body_html_md }} />
         </section>
       ))}
