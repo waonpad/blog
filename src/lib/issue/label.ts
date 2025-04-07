@@ -22,7 +22,7 @@ export const listLabels = async (): Promise<ReturnType<typeof transformLabel>[]>
 /**
  * Labelのdescriptionに埋め込まれたコードを取得してdescriptionから削除して返す
  */
-export const transformLabel = <T extends Required<Exclude<GHIssue["labels"][0], string>> & { code?: string }>(
+export const transformLabel = <T extends Required<Exclude<GHIssue["labels"][number], string>> & { code?: string }>(
   label: T,
 ): T & { code: string } => {
   // 既にtransformされている場合はそのまま返す
