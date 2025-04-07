@@ -57,7 +57,8 @@ export const getReferencingIssueNumbersFromMarkdown = async (content: string): P
     })
     .process(content);
 
-  return referencingIssueNumbers;
+  // 重複を排除
+  return Array.from(new Set(referencingIssueNumbers));
 };
 
 export const getReferencingIssueNumbers = async ({ issueNumber }: { issueNumber: number }): Promise<number[]> => {
