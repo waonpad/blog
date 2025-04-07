@@ -6,24 +6,15 @@
  */
 
 import { existsSync, mkdirSync, rmdirSync, writeFileSync } from "node:fs";
+import {
+  issueCommentFilePath,
+  issueCommentsDirPath,
+  issueDirPath,
+  issueFilePath,
+  issuesDirPath,
+} from "@/lib/issue/config";
 import { Octokit } from "@octokit/rest";
 import { stringify } from "gray-matter";
-
-const DATA_DIR = "./data";
-const ISSUES_DIR = `${DATA_DIR}/issues`;
-const ISSUE_FILE = "issue.md";
-const ISSUE_COMMENTS_DIR = "comments";
-
-const issueDirPath = ({ issueNumber }: { issueNumber: number }) => `${ISSUES_DIR}/${issueNumber}` as const;
-
-const issueFilePath = ({ issueNumber }: { issueNumber: number }) =>
-  `${issueDirPath({ issueNumber })}/${ISSUE_FILE}` as const;
-
-const issueCommentsDirPath = ({ issueNumber }: { issueNumber: number }) =>
-  `${ISSUES_DIR}/${issueNumber}/${ISSUE_COMMENTS_DIR}` as const;
-
-const issueCommentFilePath = ({ issueNumber, commentId }: { issueNumber: number; commentId: number }) =>
-  `${issueCommentsDirPath({ issueNumber })}/${commentId}.md` as const;
 
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
@@ -99,7 +90,7 @@ const saveIssueComments = async () => {
 
 const main = async () => {
   // 削除されたものが残らないように、前のデータを削除
-  if (existsSync(ISSUES_DIR)) rmdirSync(ISSUES_DIR, { recursive: true });
+  if (existsSync(issuesDirPath)) rmdirSync(issuesDirPath, { recursive: true });
 
   await saveIssues();
 

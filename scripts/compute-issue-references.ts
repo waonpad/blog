@@ -1,13 +1,8 @@
 import { writeFileSync } from "node:fs";
 import { getIssues } from "@/lib/issue";
-import { reservedIssueTitles } from "@/lib/issue/config";
+import { issueReferencesFilePath, reservedIssueTitles } from "@/lib/issue/config";
 import { getReferencingIssueNumbers } from "@/lib/issue/reference";
 import type { IssueReferences } from "@/lib/issue/types";
-
-const DATA_DIR = "./data";
-const REFERENCES_FILE = "issue-references.json";
-
-const referencesFilePath = `${DATA_DIR}/${REFERENCES_FILE}` as const;
 
 const saveIssueReferences = async () => {
   const issues = await getIssues({
@@ -36,7 +31,7 @@ const saveIssueReferences = async () => {
   // referencedBy: Issue番号の若い順
 
   // JSONファイルに保存
-  writeFileSync(referencesFilePath, JSON.stringify(processedIssueReferences, null, 2), { encoding: "utf-8" });
+  writeFileSync(issueReferencesFilePath, JSON.stringify(processedIssueReferences, null, 2), { encoding: "utf-8" });
 };
 
 const main = async () => {

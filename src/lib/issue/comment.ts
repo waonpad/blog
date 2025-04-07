@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { sortByDateKey } from "@/utils/sort";
 import { glob } from "glob";
 import matter from "gray-matter";
-import { dataDirectoryPath } from "./config";
+import { dataDirPath } from "./config";
 import { renderMarkdown } from "./markdown";
 import type { GHIssueComment, IssueComment } from "./types";
 
@@ -15,7 +15,7 @@ export const listIssueComments = async ({
   issueNumber: number;
 }): Promise<IssueComment[]> => {
   // Issueのコメントファイルのパス一覧を取得
-  const paths = await glob(`${dataDirectoryPath}/issues/${issueNumber}/comments/*.md`);
+  const paths = await glob(`${dataDirPath}/issues/${issueNumber}/comments/*.md`);
 
   // Issueのコメントファイルを読み込み、データを取得
   const issueComments = await Promise.all(
