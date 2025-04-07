@@ -2,30 +2,66 @@ import { readFileSync } from "node:fs";
 import { sortByDateKey } from "@/utils/sort";
 import { glob } from "glob";
 import matter from "gray-matter";
-import { buildIssueFilePath, draftIssueState, issueFilePathGlobPattern, reservedIssueTitles } from "./config";
+import {
+  type buildIssueCommentFilePath,
+  buildIssueFilePath,
+  draftIssueState,
+  issueFilePathGlobPattern,
+  reservedIssueTitles,
+} from "./config";
 import { renderMarkdown } from "./markdown";
 import { transformLabel } from "./transform";
-import type { GHIssue, Issue, IssueListItem } from "./types";
+import type { GHIssue, GHIssueComment, Issue, IssueListItem } from "./types";
+
+/**
+ * パースのみで特別な加工無しのIssueデータを取得
+ */
+export const getRawIssueData = (issueNumber: number): GHIssue => {
+  const filePath = buildIssueFilePath(issueNumber);
+
+  return getRawIssueDataFromFilePath(filePath);
+};
+
+/**
+ * パースのみで特別な加工無しのIssueデータをファイルパスから直接取得
+ */
+export const getRawIssueDataFromFilePath = (filePath: ReturnType<typeof buildIssueFilePath>): GHIssue => {
+  const content = readFileSync(filePath, { encoding: "utf-8" });
+  const issueMatter = matter(content);
+  const issueData = issueMatter.data as GHIssue;
+
+  return {
+    ...issueData,
+    body: issueMatter.content,
+  };
+};
+
+/**
+ * パースのみで特別な加工無しのIssueコメントデータをファイルパスから直接取得
+ */
+export const getRawIssueCommentDataFromFilePath = (
+  filePath: ReturnType<typeof buildIssueCommentFilePath>,
+): GHIssueComment => {
+  const content = readFileSync(filePath, { encoding: "utf-8" });
+  const issueMatter = matter(content);
+  const issueData = issueMatter.data as GHIssueComment;
+
+  return {
+    ...issueData,
+    body: issueMatter.content,
+  };
+};
 
 /**
  * Issueを取得
  */
 export const getIssue = async (issueNumber: number): Promise<Issue> => {
-  // Issueファイルのパスを取得
-  const filePath = buildIssueFilePath(issueNumber);
-
-  // Issueファイルを読み込み、データを取得
-  const content = readFileSync(filePath, { encoding: "utf-8" });
-  const issueMatter = matter(content);
-  const issueData = issueMatter.data as GHIssue;
-  const body = issueMatter.content;
-  const body_html_md = await renderMarkdown(body);
+  const rawIssueData = getRawIssueData(issueNumber);
 
   const issue = {
-    ...issueData,
-    body,
-    body_html_md,
-    labels: issueData.labels.map(transformLabel),
+    ...rawIssueData,
+    body_html_md: await renderMarkdown(rawIssueData.body),
+    labels: rawIssueData.labels.map(transformLabel),
   };
 
   return issue;
@@ -42,35 +78,29 @@ export const getIssues = async ({
   withReserved?: (typeof reservedIssueTitles)[number][];
 } = {}): Promise<IssueListItem[]> => {
   // Issueファイルのパス一覧を取得
-  const paths = await glob(issueFilePathGlobPattern);
+  const paths = (await glob(issueFilePathGlobPattern)) as ReturnType<typeof buildIssueFilePath>[];
 
   // Issueファイルを読み込み、データを取得
   const issues = sortByDateKey(
     paths
       .map((filePath) => {
-        const content = readFileSync(filePath, { encoding: "utf-8" });
-        const issueMatter = matter(content);
-        const issueData = issueMatter.data as GHIssue;
+        const rawIssueData = getRawIssueDataFromFilePath(filePath);
 
         // 下書きのIssueを取得するオプションが無効の場合、開いているIssueは除外するためnullを返す
-        if (!withDraft && issueData.state === draftIssueState) return null;
+        if (!withDraft && rawIssueData.state === draftIssueState) return null;
 
-        const tilte = issueData.title;
         if (
           // 予約されたIssueのタイトルであって
-          reservedIssueTitles.some((title) => title === tilte) &&
+          reservedIssueTitles.some((title) => title === rawIssueData.title) &&
           // withReservedに指定されていない場合は除外する
-          !(withReserved ?? []).some((title) => title === tilte)
+          !(withReserved ?? []).some((title) => title === rawIssueData.title)
         )
           // 予約されたIssueで且つ取得する対象でないものはここで除外される
           return null;
 
-        const body = issueMatter.content;
-
         return {
-          ...issueData,
-          body,
-          labels: issueData.labels.map(transformLabel),
+          ...rawIssueData,
+          labels: rawIssueData.labels.map(transformLabel),
         };
       })
       .filter((issue): issue is Exclude<typeof issue, null> => issue !== null),
@@ -86,29 +116,19 @@ export const getIssues = async ({
  */
 export const getIssueByTitle = async (title: (typeof reservedIssueTitles)[number] | (string & {})): Promise<Issue> => {
   // Issueファイルのパス一覧を取得
-  const paths = await glob(issueFilePathGlobPattern);
+  const paths = (await glob(issueFilePathGlobPattern)) as ReturnType<typeof buildIssueFilePath>[];
 
   // Issueファイルを読み込み、データを取得
-  const targetIssueMatter = paths
-    .map((filePath) => {
-      const content = readFileSync(filePath, { encoding: "utf-8" });
-      const issueMatter = matter(content);
+  const rawIssueData = paths.map(getRawIssueDataFromFilePath).find((rawIssueData) => rawIssueData.title === title);
 
-      return issueMatter as Omit<typeof issueMatter, "data"> & { data: GHIssue };
-    })
-    .find((issueMatter) => issueMatter.data.title === title);
+  if (!rawIssueData) throw new Error(`タイトルが ${title} のIssueは見つかりませんでした`);
 
-  if (!targetIssueMatter) throw new Error(`タイトルが ${title} のIssueは見つかりませんでした`);
-
-  const issueData = targetIssueMatter.data;
-  const body = targetIssueMatter.content;
-  const body_html_md = await renderMarkdown(body);
+  const body_html_md = await renderMarkdown(rawIssueData.body);
 
   const issue = {
-    ...issueData,
-    body,
+    ...rawIssueData,
     body_html_md,
-    labels: issueData.labels.map(transformLabel),
+    labels: rawIssueData.labels.map(transformLabel),
   };
 
   return issue;

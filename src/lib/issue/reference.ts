@@ -1,13 +1,17 @@
 import { readFileSync } from "node:fs";
 import { sortByDateKey } from "@/utils/sort";
 import { glob } from "glob";
-import matter from "gray-matter";
 import remarkGithub from "remark-github";
 import remarkHtml from "remark-html";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
-import { buildIssueCommentFilePathGlobPattern, buildIssueFilePath, issueReferencesFilePath } from "./config";
-import type { GHIssueComment, IssueReferences } from "./types";
+import { getRawIssueCommentDataFromFilePath, getRawIssueData } from ".";
+import {
+  type buildIssueCommentFilePath,
+  buildIssueCommentFilePathGlobPattern,
+  issueReferencesFilePath,
+} from "./config";
+import type { IssueReferences } from "./types";
 
 /**
  * ファイルに保存されたデータを元に、Issueの参照関係を取得する
@@ -69,38 +73,24 @@ export const getReferencingIssueNumbersFromMarkdown = async (markdown: string): 
  * 重複は排除され、登場順で並んだ配列が返される
  */
 export const getReferencingIssueNumbers = async (issueNumber: number): Promise<number[]> => {
-  // Issueファイルのパスを取得
-  const issueFilePath = buildIssueFilePath(issueNumber);
-
-  // Issueファイルを読み込み、データを取得
-  const content = readFileSync(issueFilePath, { encoding: "utf-8" });
-  const issueMatter = matter(content);
-  const body = issueMatter.content;
+  const rawIssueData = getRawIssueData(issueNumber);
 
   // Issueの本文から参照されているIssue番号一覧を取得
-  const referencingIssueNumbersOfMain = await getReferencingIssueNumbersFromMarkdown(body);
+  const referencingIssueNumbersOfMain = await getReferencingIssueNumbersFromMarkdown(rawIssueData.body);
 
   // Issueのコメントファイルのパス一覧を取得
-  const issueCommentFilePaths = await glob(buildIssueCommentFilePathGlobPattern(issueNumber));
+  const issueCommentFilePaths = (await glob(buildIssueCommentFilePathGlobPattern(issueNumber))) as ReturnType<
+    typeof buildIssueCommentFilePath
+  >[];
 
   // Issueのコメントファイルを読み込み、データを取得
-  const issueComments = issueCommentFilePaths.map((filePath: string) => {
-    const content = readFileSync(filePath, { encoding: "utf-8" });
-    const issueMatter = matter(content);
-    const issueData = issueMatter.data as GHIssueComment;
-    const body = issueMatter.content;
-
-    return {
-      ...issueData,
-      body,
-    };
-  });
+  const issueComments = issueCommentFilePaths.map(getRawIssueCommentDataFromFilePath);
 
   const sortedIssueComments = sortByDateKey(issueComments, "created_at", { order: "asc" });
 
   // Issueのコメントから参照されているIssue番号一覧を取得
   const referencingIssueNumbersOfComments = await Promise.all(
-    sortedIssueComments.map(async ({ body }) => await getReferencingIssueNumbersFromMarkdown(body)),
+    sortedIssueComments.map(async (issueComment) => await getReferencingIssueNumbersFromMarkdown(issueComment.body)),
   );
 
   // Issue全体から参照されているIssue番号一覧の配列を作成
