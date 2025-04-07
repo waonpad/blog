@@ -1,16 +1,11 @@
 import { readFileSync } from "node:fs";
 import { sortByDateKey } from "@/utils/sort";
-import { glob } from "glob";
 import remarkGithub from "remark-github";
 import remarkHtml from "remark-html";
 import remarkParse from "remark-parse";
 import { unified } from "unified";
 import { getRawIssueCommentDataFromFilePath, getRawIssueData } from ".";
-import {
-  type buildIssueCommentFilePath,
-  buildIssueCommentFilePathGlobPattern,
-  issueReferencesFilePath,
-} from "./config";
+import { issueReferencesFilePath, searchIssueCommentFilePaths } from "./config";
 import type { IssueReferences } from "./types";
 
 /**
@@ -79,9 +74,7 @@ export const getReferencingIssueNumbers = async (issueNumber: number): Promise<n
   const referencingIssueNumbersOfMain = await getReferencingIssueNumbersFromMarkdown(rawIssueData.body);
 
   // Issueのコメントファイルのパス一覧を取得
-  const issueCommentFilePaths = (await glob(buildIssueCommentFilePathGlobPattern(issueNumber))) as ReturnType<
-    typeof buildIssueCommentFilePath
-  >[];
+  const issueCommentFilePaths = await searchIssueCommentFilePaths(issueNumber);
 
   // Issueのコメントファイルを読み込み、データを取得
   const issueComments = issueCommentFilePaths.map(getRawIssueCommentDataFromFilePath);

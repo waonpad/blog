@@ -1,13 +1,12 @@
 import { readFileSync } from "node:fs";
 import { sortByDateKey } from "@/utils/sort";
-import { glob } from "glob";
 import matter from "gray-matter";
 import {
   type buildIssueCommentFilePath,
   buildIssueFilePath,
   draftIssueState,
-  issueFilePathGlobPattern,
   reservedIssueTitles,
+  searchIssueFilePaths,
 } from "./config";
 import { renderMarkdown } from "./markdown";
 import { transformLabel } from "./transform";
@@ -78,7 +77,7 @@ export const getIssues = async ({
   withReserved?: (typeof reservedIssueTitles)[number][];
 } = {}): Promise<IssueListItem[]> => {
   // Issueファイルのパス一覧を取得
-  const paths = (await glob(issueFilePathGlobPattern)) as ReturnType<typeof buildIssueFilePath>[];
+  const paths = await searchIssueFilePaths();
 
   // Issueファイルを読み込み、データを取得
   const issues = sortByDateKey(
@@ -116,7 +115,7 @@ export const getIssues = async ({
  */
 export const getIssueByTitle = async (title: (typeof reservedIssueTitles)[number] | (string & {})): Promise<Issue> => {
   // Issueファイルのパス一覧を取得
-  const paths = (await glob(issueFilePathGlobPattern)) as ReturnType<typeof buildIssueFilePath>[];
+  const paths = await searchIssueFilePaths();
 
   // Issueファイルを読み込み、データを取得
   const rawIssueData = paths.map(getRawIssueDataFromFilePath).find((rawIssueData) => rawIssueData.title === title);

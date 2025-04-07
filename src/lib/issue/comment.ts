@@ -1,30 +1,25 @@
-import { readFileSync } from "node:fs";
 import { sortByDateKey } from "@/utils/sort";
-import { glob } from "glob";
-import matter from "gray-matter";
-import { buildIssueCommentFilePathGlobPattern } from "./config";
+import { getRawIssueCommentDataFromFilePath } from ".";
+import { searchIssueCommentFilePaths } from "./config";
 import { renderMarkdown } from "./markdown";
-import type { GHIssueComment, IssueComment } from "./types";
+import type { IssueComment } from "./types";
 
 /**
  * Issueのコメント一覧を取得
  */
 export const listIssueComments = async (issueNumber: number): Promise<IssueComment[]> => {
   // Issueのコメントファイルのパス一覧を取得
-  const paths = await glob(buildIssueCommentFilePathGlobPattern(issueNumber));
+  const paths = await searchIssueCommentFilePaths(issueNumber);
 
   // Issueのコメントファイルを読み込み、データを取得
   const issueComments = await Promise.all(
-    paths.map(async (filePath: string) => {
-      const content = readFileSync(filePath, { encoding: "utf-8" });
-      const issueMatter = matter(content);
-      const issueData = issueMatter.data as GHIssueComment;
-      const body = issueMatter.content;
-      const body_html_md = await renderMarkdown(body);
+    paths.map(async (filePath) => {
+      const rawIssueCommentData = getRawIssueCommentDataFromFilePath(filePath);
+
+      const body_html_md = await renderMarkdown(rawIssueCommentData.body);
 
       return {
-        ...issueData,
-        body,
+        ...rawIssueCommentData,
         body_html_md,
       };
     }),
