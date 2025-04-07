@@ -115,3 +115,18 @@ export const getIssueByTitle = async ({
 
   return issue;
 };
+
+/**
+ * 予約されたIssueの番号一覧を取得
+ */
+export const getReservedIssues = async (): Promise<Issue[]> => {
+  return await Promise.all(reservedIssueTitles.map(async (title) => await getIssueByTitle({ title })));
+};
+
+/**
+ * 下書きのIssue一覧を取得
+ */
+export const getDraftIssues = async (): Promise<IssueListItem[]> => {
+  const issues = await listIssues({ withDraft: true });
+  return issues.filter((issue) => issue.state === "open");
+};

@@ -1,6 +1,6 @@
 import { ArticleList } from "@/components/article-list";
 import { Time } from "@/components/time";
-import { getIssue, listIssues } from "@/lib/issue";
+import { getDraftIssues, getIssue, getReservedIssues, listIssues } from "@/lib/issue";
 import { listIssueComments } from "@/lib/issue/comment";
 import { getIssueReferences } from "@/lib/issue/reference";
 import { sortByDateKey, sortByKey } from "@/utils/sort";
@@ -50,22 +50,33 @@ export default async function Page(props: Props) {
 
   const labels = sortByKey(issue.labels.flat(), "name");
 
-  const issueReferences = getIssueReferences({ issueNumber });
+  const { referencings, referencedBy } = getIssueReferences({ issueNumber });
 
+  // 参照しているIssueを取得
   const referencingIssues = await Promise.all(
-    issueReferences.referencings.map(
-      async (referencingIssueNumber) => await getIssue({ issueNumber: referencingIssueNumber }),
-    ),
+    referencings.map(async (referencingIssueNumber) => await getIssue({ issueNumber: referencingIssueNumber })),
   );
-
+  // 参照されているIssueを取得
   const referencedIssues = await Promise.all(
-    issueReferences.referencedBy.map(
-      async (referencedIssueNumber) => await getIssue({ issueNumber: referencedIssueNumber }),
-    ),
+    referencedBy.map(async (referencedIssueNumber) => await getIssue({ issueNumber: referencedIssueNumber })),
   );
 
-  const isReferencingIssuesExists = referencingIssues.length > 0;
-  const isReferencedIssuesExists = referencedIssues.length > 0;
+  // 関連記事に表示させたくない、除外対象のIssue番号一覧を取得
+  const excludedIssueNumbers = [...(await getReservedIssues()), ...(await getDraftIssues())].map(
+    (issue) => issue.number,
+  );
+
+  // 除外対象のIssue番号を除外する
+  const filteredReferencingIssues = referencingIssues.filter(
+    (issue) => !excludedIssueNumbers.some((excludeIssueNumber) => excludeIssueNumber === issue.number),
+  );
+  const filteredReferencedIssues = referencedIssues.filter(
+    (issue) => !excludedIssueNumbers.some((excludeIssueNumber) => excludeIssueNumber === issue.number),
+  );
+
+  // 参照しているIssue,されているIssueが存在するか
+  const isReferencingIssuesExists = filteredReferencingIssues.length > 0;
+  const isReferencedIssuesExists = filteredReferencedIssues.length > 0;
   const isAnyIssueReferenceExists = isReferencingIssuesExists || isReferencedIssuesExists;
 
   return (
@@ -110,7 +121,7 @@ export default async function Page(props: Props) {
                 <header className="markdown mb-2!">
                   <h3>本文中で参照した記事</h3>
                 </header>
-                <ArticleList articles={referencingIssues} className="gap-2" />
+                <ArticleList articles={filteredReferencingIssues} className="gap-2" />
               </section>
             )}
             {isReferencedIssuesExists && (
@@ -119,7 +130,7 @@ export default async function Page(props: Props) {
                   <h3>この記事を参照している記事</h3>
                 </header>
                 <ArticleList
-                  articles={sortByDateKey(referencedIssues, "created_at", { order: "desc" })}
+                  articles={sortByDateKey(filteredReferencedIssues, "created_at", { order: "desc" })}
                   className="gap-2"
                 />
               </section>
