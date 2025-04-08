@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "prepare": "lefthook install",
-    "setup": "$npm_execpath install && cp -n .env.example .env; exit 0",
+    "setup": "bun install && cp -n .env.example .env; exit 0",
     "dev": "next dev",
     "build": "next build",
     "start": "serve out",
