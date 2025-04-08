@@ -13,5 +13,6 @@ export default defineConfig({
       "@": resolve(__dirname, "./src"),
     },
     setupFiles: ["src/testing/setup.ts"],
+    passWithNoTests: true,
   },
 });

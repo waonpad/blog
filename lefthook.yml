@@ -4,8 +4,8 @@ pre-push:
       run: bun run tsc
     run-circular-deps:
       run: bun run lint:circular-deps
-    # run-tests:
-    # run: bun run test
+    run-tests:
+      run: bun run test
 
 pre-commit:
   parallel: true
