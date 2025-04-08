@@ -11,7 +11,7 @@ import { buildGithubPagesUrl, extractOwnerAndNameFromRepo } from "./src/utils/gi
 
 const svgRegex = /\.svg$/;
 
-const nextConfig = (
+export default (
   _phase:
     | typeof PHASE_EXPORT
     | typeof PHASE_DEVELOPMENT_SERVER
@@ -59,5 +59,3 @@ const nextConfig = (
     },
   };
 };
-
-export default nextConfig;

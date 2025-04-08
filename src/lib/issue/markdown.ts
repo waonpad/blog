@@ -1,9 +1,3 @@
-import rehypeStringify from "rehype-stringify";
-import remarkGfm from "remark-gfm";
-import remarkGithub from "remark-github";
-import remarkParse from "remark-parse";
-import remarkRehype from "remark-rehype";
-
 import { clientEnv } from "@/config/env/client";
 import { transformerCopyButton } from "@rehype-pretty/transformers/copy-button";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -11,8 +5,13 @@ import rehypeExternalLinks from "rehype-external-links";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
+import rehypeStringify from "rehype-stringify";
 import rehypeToc from "rehype-toc";
+import remarkGfm from "remark-gfm";
+import remarkGithub from "remark-github";
 import remarkHtml from "remark-html";
+import remarkParse from "remark-parse";
+import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 
 /**
@@ -68,6 +67,7 @@ export const renderMarkdown = async (markdown: string): Promise<string> => {
         customizeTOC: (toc) => {
           // @ts-ignore
           const items = (toc.children?.[0].children || []) as Node[];
+
           // 見出しの数が0の場合は目次を表示しない
           if (items.length === 0) {
             return false;

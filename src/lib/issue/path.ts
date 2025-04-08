@@ -1,10 +1,15 @@
 import { glob } from "glob";
 
 export const dataDirPath = "./data";
+
 export const issuesDirPath = `${dataDirPath}/issues` as const;
+
 export const issueFileName = "issue.md" as const;
+
 export const issueCommentsDirName = "comments" as const;
+
 export const issueReferencesFileName = "issue-references.json" as const;
+
 export const issueReferencesFilePath = `${dataDirPath}/${issueReferencesFileName}` as const;
 
 export const buildIssueDirPath = (issueNumber: number) => `${issuesDirPath}/${issueNumber}` as const;

@@ -1,5 +1,4 @@
 import { describe, expect, test } from "vitest";
-
 import { buildGithubPagesUrl, extractOwnerAndNameFromRepo } from "./github";
 
 describe(buildGithubPagesUrl, () => {
@@ -19,6 +18,7 @@ describe(extractOwnerAndNameFromRepo, () => {
     const { owner, name } = extractOwnerAndNameFromRepo(repo);
 
     expect(owner).toBe("owner");
+
     expect(name).toBe("repo");
   });
 
