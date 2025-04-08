@@ -31,7 +31,7 @@ export default defineConfig([
         { blankLine: "never", prev: "directive", next: "directive" },
         // importが続く場合は空行を入れない
         { blankLine: "never", prev: "import", next: "import" },
-        // 変数宣言の後の空行は自由（複数行連続で宣言できる）
+        // 変数宣言の間の空行は自由（複数行連続で宣言できる）
         { blankLine: "any", prev: ["const", "let", "var"], next: ["const", "let", "var"] },
       ],
     } satisfies Partial<Record<`@stylistic/js/${keyof typeof stylisticJs.rules}`, Linter.RulesRecord[string]>>,
