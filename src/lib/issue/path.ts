@@ -25,7 +25,7 @@ export const searchIssueFilePaths = async () => {
 };
 
 export const buildIssueCommentFilePathGlobPattern = (issueNumber: number) =>
-  `${issuesDirPath}/${issueNumber}/comments/*.md` as const;
+  `${issuesDirPath}/${issueNumber}/${issueCommentsDirName}/*.md` as const;
 
 export const searchIssueCommentFilePaths = async (issueNumber: number) => {
   return (await glob(buildIssueCommentFilePathGlobPattern(issueNumber))) as ReturnType<
