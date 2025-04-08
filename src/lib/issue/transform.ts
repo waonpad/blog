@@ -1,8 +1,5 @@
-// NOTICE: 循環参照を避けるためにとりあえず適当なモジュール名で切り出しただけ
-
-import type { Optional } from "utility-types";
 import { labelCodeSeparator } from "./config";
-import type { Label } from "./types";
+import type { GHLabel, Label } from "./types";
 
 /**
  * @example
@@ -20,9 +17,9 @@ const extractLabelCode = (labelDescription: string): string | null => {
 
 /**
  * @example
- * extractDisplayDescription("label___description") // "description"
+ * extractDisplayLabelDescription("label___description") // "description"
  */
-const extractDisplayDescription = (labelDescription: string): string | null => {
+const extractDisplayLabelDescription = (labelDescription: string): string | null => {
   if (!labelDescription.includes(labelCodeSeparator)) {
     return labelDescription;
   }
@@ -33,9 +30,9 @@ const extractDisplayDescription = (labelDescription: string): string | null => {
 /**
  * プロジェクト内でラベルを扱うために加工処理をする
  */
-export const transformLabel = <T extends Optional<Label, "code">>(label: T): Label => {
+export const transformLabel = <T extends GHLabel | Label>(label: T): Label => {
   // 既にtransformされている場合はそのまま返す
-  if (label.code !== undefined) return label as Label;
+  if (("code" satisfies keyof Label) in label) return label as Label;
 
   // パスパラメータ等に表示するためのコードがdescriptionに埋め込まれていた場合、コードを取得
   const extractedCode = label.description ? extractLabelCode(label.description) : null;
@@ -43,7 +40,7 @@ export const transformLabel = <T extends Optional<Label, "code">>(label: T): Lab
   const code = extractedCode || label.name;
 
   // 表示用のdescriptionを取得
-  const description = label.description ? extractDisplayDescription(label.description) : null;
+  const description = label.description ? extractDisplayLabelDescription(label.description) : null;
 
   return {
     ...label,
