@@ -7,7 +7,7 @@ import type {
 import { clientEnv } from "./src/config/env/client";
 import "./src/config/env/server";
 import type { NextConfig } from "next";
-import { buildPagesUrlFromRepo } from "./src/utils/github";
+import { buildGithubPagesUrl, extractOwnerAndNameFromRepo } from "./src/utils/github";
 
 const nextConfig = (
   _phase:
@@ -29,7 +29,8 @@ const nextConfig = (
     trailingSlash: true,
     basePath:
       clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY &&
-      new URL(buildPagesUrlFromRepo(clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY)).pathname,
+      new URL(buildGithubPagesUrl(extractOwnerAndNameFromRepo(clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY)))
+        .pathname,
     typescript: {
       tsconfigPath: "./tsconfig.build.json",
     },

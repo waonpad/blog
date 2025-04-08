@@ -1,11 +1,15 @@
 /**
  * @example
- * buildPagesUrlFromRepo("owner/repo")
+ * buildPagesUrlFromRepo({ owner: "owner", name: "repo" })
  * // => "https://owner.github.io/repo"
  */
-export const buildPagesUrlFromRepo = (repo: string) => {
-  const { owner, name } = extractOwnerAndNameFromRepo(repo);
-
+export const buildGithubPagesUrl = <Owner extends string, Name extends string>({
+  owner,
+  name,
+}: {
+  owner: Owner;
+  name: Name;
+}) => {
   return `https://${owner}.github.io/${name}` as const;
 };
 
@@ -21,8 +25,5 @@ export const extractOwnerAndNameFromRepo = (repo: string) => {
     throw new Error("リポジトリ名のフォーマットが不正です");
   }
 
-  return {
-    owner,
-    name,
-  } as const;
+  return { owner, name };
 };

@@ -1,6 +1,6 @@
 import { createEnv } from "@t3-oss/env-nextjs";
 import { z } from "zod";
-import { buildPagesUrlFromRepo, extractOwnerAndNameFromRepo } from "../../utils/github";
+import { buildGithubPagesUrl, extractOwnerAndNameFromRepo } from "../../utils/github";
 
 export const clientEnv = createEnv({
   client: {
@@ -20,7 +20,7 @@ export const clientEnv = createEnv({
       process.env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY &&
       extractOwnerAndNameFromRepo(process.env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY).owner,
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY
-      ? buildPagesUrlFromRepo(process.env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY)
+      ? buildGithubPagesUrl(extractOwnerAndNameFromRepo(process.env.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY))
       : process.env.NEXT_PUBLIC_SITE_URL,
   },
 });
