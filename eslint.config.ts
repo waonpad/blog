@@ -1,3 +1,4 @@
+import stylisticJs from "@stylistic/eslint-plugin-js";
 import type { Linter } from "eslint";
 import sonarjs from "eslint-plugin-sonarjs";
 import { defineConfig } from "eslint/config";
@@ -10,8 +11,6 @@ export default defineConfig([
   { files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"] },
   // @ts-ignore
   tseslint.configs.base,
-  // sonarjsのプラグインを追加
-  // https://github.com/SonarSource/SonarJS/blob/master/packages/jsts/src/rules/README.md
   {
     plugins: { sonarjs },
     rules: {
@@ -19,5 +18,13 @@ export default defineConfig([
       // https://github.com/SonarSource/eslint-plugin-sonarjs/blob/master/docs/rules/prefer-immediate-return.md
       "sonarjs/prefer-immediate-return": "error",
     } satisfies Partial<Record<`sonarjs/${keyof typeof sonarjs.rules}`, Linter.RulesRecord[string]>>,
+  },
+  {
+    plugins: { "@stylistic/js": stylisticJs },
+    rules: {
+      // 空行を挟むルール
+      // https://eslint.style/rules/js/padding-line-between-statements
+      "@stylistic/js/padding-line-between-statements": ["error", { blankLine: "always", prev: "*", next: "return" }],
+    } satisfies Partial<Record<`@stylistic/js/${keyof typeof stylisticJs.rules}`, Linter.RulesRecord[string]>>,
   },
 ]);
