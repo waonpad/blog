@@ -26,11 +26,7 @@ export default defineConfig([
       // https://eslint.style/rules/js/padding-line-between-statements
       "@stylistic/js/padding-line-between-statements": [
         "error",
-        {
-          blankLine: "always",
-          prev: "*",
-          next: "*",
-        },
+        { blankLine: "always", prev: "*", next: "*" },
         // ディレクティブが続く場合は空行を入れない
         { blankLine: "never", prev: "directive", next: "directive" },
         // importが続く場合は空行を入れない
