@@ -1,16 +1,15 @@
 // NOTICE: 循環参照を避けるためにとりあえず適当なモジュール名で切り出しただけ
 
+import type { Optional } from "utility-types";
 import { labelCodeSeparator } from "./config";
-import type { GHIssue } from "./types";
+import type { Label } from "./types";
 
 /**
  * Labelのdescriptionに埋め込まれたコードを取得してdescriptionから削除して返す
  */
-export const transformLabel = <T extends Required<Exclude<GHIssue["labels"][number], string>> & { code?: string }>(
-  label: T,
-): T & { code: string } => {
+export const transformLabel = <T extends Optional<Label, "code">>(label: T): Label => {
   // 既にtransformされている場合はそのまま返す
-  if (label.code !== undefined) return label as T & { code: string };
+  if (label.code !== undefined) return label as Label;
 
   // パスパラメータ等に表示するためのコードがdescriptionに埋め込まれていた場合、コードを取得
   const code = label.description
