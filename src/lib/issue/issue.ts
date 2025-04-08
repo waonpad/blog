@@ -38,8 +38,12 @@ export const getIssues = async ({
       .map((filePath) => {
         const rawIssueData = getRawIssueDataFromFilePath(filePath);
 
-        // 下書きのIssueを取得するオプションが無効の場合、開いているIssueは除外するためnullを返す
-        if (!withDraft && rawIssueData.state === draftIssueState) {
+        if (
+          // 下書きのIssueを取得する指定が無い場合は
+          !withDraft &&
+          // 下書き状態のIssueは除外するため、nullを返す
+          rawIssueData.state === draftIssueState
+        ) {
           return null;
         }
 
