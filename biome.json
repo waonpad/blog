@@ -22,7 +22,24 @@
       },
       "style": {
         "noImplicitBoolean": "error",
-        "useBlockStatements": "error"
+        "useBlockStatements": "error",
+        "noYodaExpression": "error",
+        "useConsistentArrayType": "error",
+        "useConsistentBuiltinInstantiation": "error",
+        "useDefaultSwitchClause": "error",
+        "useExplicitLengthCheck": "error",
+        "useForOf": "error",
+        "useFragmentSyntax": "error",
+        "useShorthandAssign": "error",
+        "useSingleCaseStatement": "error",
+        "useThrowNewError": "error",
+        "useThrowOnlyError": "error"
+      },
+      "suspicious": {
+        "noEmptyBlockStatements": "error",
+        "noEvolvingTypes": "error",
+        "noMisplacedAssertion": "error",
+        "useAwait": "error"
       },
       "nursery": {
         "useSortedClasses": {

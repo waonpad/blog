@@ -7,7 +7,7 @@ import { ImageResponse } from "next/og";
 export const dynamic = "force-static";
 
 // NOTICE: 表示する内容(アプリ名)を変える場合はレイアウトの崩れに注意
-export const GET = async () => {
+export const GET = () => {
   return new ImageResponse(
     <div
       style={{

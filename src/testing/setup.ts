@@ -7,7 +7,7 @@ import { afterEach } from "vitest";
 /**
  * これを実行しないと環境変数が読み込まれない
  */
-export const setupEnv = async (): Promise<void> => {
+export const setupEnv = (): void => {
   loadEnvConfig(process.env.PWD || process.cwd());
 };
 
