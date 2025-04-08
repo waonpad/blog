@@ -11,7 +11,7 @@ export default defineConfig([
   // @ts-ignore
   tseslint.configs.base,
   // sonarjsのプラグインを追加
-  // https://github.com/SonarSource/eslint-plugin-sonarjs
+  // https://github.com/SonarSource/SonarJS/blob/master/packages/jsts/src/rules/README.md
   {
     plugins: { sonarjs },
     rules: {
