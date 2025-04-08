@@ -13,7 +13,7 @@ pre-commit:
     biome:
       glob: "*.{js,jsx,ts,tsx,mts,mjs,cjs}"
       run: |
-        bun run biome check --write {staged_files}
+        bun run biome check --write {staged_files} && bun run eslint --fix {staged_files}
       stage_fixed: true
       skip:
         - merge
