@@ -45,9 +45,11 @@ export default async function Page(props: Props) {
   const params = await props.params;
   const issueNumber = Number(params.issueNumber);
   const issue = await getIssue(issueNumber);
+
   const issueComments = await getIssueComments(issueNumber);
 
   const labels = sortByKey(issue.labels.flat(), "name");
+  const isLabelsExists = labels.length > 0;
 
   return (
     // コメントでの補足等を含めて1つの記事とする想定なため、最上位にarticle、その中はsectionにしている
@@ -56,7 +58,7 @@ export default async function Page(props: Props) {
         <header>
           <Time dateTime={issue.created_at} itemProp="datePublished" />
           <h1 className="mt-0!">{issue.title}</h1>
-          {labels.length > 0 && (
+          {isLabelsExists && (
             <ul className="mb-4 flex list-none! flex-wrap gap-2 pl-0!">
               {labels.map((label) => (
                 <li key={label.id} className="mt-0!">

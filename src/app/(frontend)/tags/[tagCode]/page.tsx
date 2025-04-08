@@ -46,11 +46,7 @@ export default async function Page(props: Props) {
   const issues = await getIssues();
 
   // labelsにparams.tagCodeが含まれるissueのみを抽出
-  const filteredIssues = issues.filter((issue) =>
-    (issue.labels as Required<Exclude<(typeof issues)[0]["labels"][0], string>>[]).some(
-      (label) => label.code === params.tagCode,
-    ),
-  );
+  const filteredIssues = issues.filter((issue) => issue.labels.some((label) => label.code === params.tagCode));
 
   return (
     <section>

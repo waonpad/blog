@@ -1,4 +1,5 @@
 import type { Endpoints } from "@octokit/types";
+import type { Overwrite } from "utility-types";
 
 /**
  * ライブラリから取り出したそのままのIssueの型をエイリアスに保存
@@ -18,10 +19,7 @@ export type GHLabel = Required<Exclude<_GHLabel, string>>;
 /**
  * ライブラリから取り出したIssueの型を実際のものに変換
  */
-export type GHIssue = Omit<_GHIssue, "body" | "labels"> & {
-  body: string;
-  labels: GHLabel[];
-};
+export type GHIssue = Overwrite<_GHIssue, { body: string; labels: GHLabel[] }>;
 
 /**
  * 加工済みのLabelの型
@@ -31,14 +29,14 @@ export type Label = GHLabel & { code: string };
 /**
  * 加工済みのIssueの型
  */
-export type Issue = GHIssue & { body_html_md: string; labels: Label[] };
+export type Issue = Overwrite<GHIssue, { labels: Label[] }> & { body_html_md: string };
 
 /**
  * 加工済みのIssueのリストの型
  *
  * 詳細なデータは`Issue`型を参照
  */
-export type IssueListItem = GHIssue & { labels: Label[] };
+export type IssueListItem = Overwrite<GHIssue, { labels: Label[] }>;
 
 /**
  * ライブラリから取り出したそのままのIssueのコメントの型をエイリアスに保存
@@ -48,7 +46,7 @@ type _GHIssueComment = Endpoints["GET /repos/{owner}/{repo}/issues/comments"]["r
 /**
  * ライブラリから取り出したIssueのコメントの型を実際のものに変換
  */
-export type GHIssueComment = Omit<_GHIssueComment, "body"> & { body: string };
+export type GHIssueComment = Overwrite<_GHIssueComment, { body: string }>;
 
 /**
  * 加工済みのIssueのコメントの型

@@ -10,10 +10,8 @@ export { generateStaticParams };
 
 export const GET = async (_: never, props: Props) => {
   const params = await props.params;
-
-  const { issueNumber } = params;
-
-  const issue = await getIssue(Number(issueNumber));
+  const issueNumber = Number(params.issueNumber);
+  const issue = await getIssue(issueNumber);
 
   return new ImageResponse(
     <div
