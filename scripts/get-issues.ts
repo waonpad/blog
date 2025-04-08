@@ -2,7 +2,7 @@
  * ローカルで実行する場合
  *
  * - 用意したアクセストークンをGITHUB_TOKENに設定
- * - リポジトリをGITHUB_REPOSITORYに設定 (例: "user/repo")
+ * - リポジトリをGITHUB_REPOSITORYに設定 (例: "owner/repo")
  */
 
 import { existsSync, mkdirSync, rmdirSync, writeFileSync } from "node:fs";
@@ -63,7 +63,7 @@ const saveIssueComments = async () => {
   for await (const { data: comments } of issueCommentsIterator) {
     for (const comment of comments) {
       // PRのコメントはスキップ
-      // html_url: 'https://github.com/user/repo/pull/1#issuecomment-123456'
+      // html_url: 'https://github.com/owner/repo/pull/1#issuecomment-123456'
       // /でsplitして最後から2番目が"pull"の場合はPRのコメント
       if (comment.html_url.split("/").slice(-2)[0] === "pull") continue;
 

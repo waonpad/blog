@@ -45,7 +45,7 @@ export const getReferencingIssueNumbersFromMarkdown = async (markdown: string): 
     .use(remarkHtml)
     .use(remarkGithub, {
       // 今回の使用方法ではリポジトリ名は使用しないため適当なものを指定
-      repository: "user/repo",
+      repository: "owner/repo",
       buildUrl: (values) => {
         // リンクしているIssueの番号を取得して配列に追加
         if (values.type === "issue") {
