@@ -9,6 +9,8 @@ import "./src/config/env/server";
 import type { NextConfig } from "next";
 import { buildGithubPagesUrl, extractOwnerAndNameFromRepo } from "./src/utils/github";
 
+const svgRegex = /\.svg$/;
+
 const nextConfig = (
   _phase:
     | typeof PHASE_EXPORT
@@ -42,7 +44,7 @@ const nextConfig = (
     },
     webpack: (config) => {
       config.module.rules.push({
-        test: /\.svg$/,
+        test: svgRegex,
         use: [
           {
             loader: "@svgr/webpack",

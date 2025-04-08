@@ -21,7 +21,7 @@ export const buildGithubPagesUrl = <Owner extends string, Name extends string>({
 export const extractOwnerAndNameFromRepo = (repo: string) => {
   const [owner, name] = repo.split("/");
 
-  if (!owner || !name) {
+  if (!(owner && name)) {
     throw new Error("リポジトリ名のフォーマットが不正です");
   }
 

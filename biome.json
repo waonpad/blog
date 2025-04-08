@@ -11,35 +11,23 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "all": true,
       "correctness": {
-        "noUndeclaredVariables": "error",
-        "noUnusedVariables": "error",
-        "noUnusedImports": "error"
+        "noNodejsModules": "off",
+        "useImportExtensions": "off",
+        "noUndeclaredDependencies": "off"
       },
       "security": {
         "noDangerouslySetInnerHtml": "off"
       },
       "style": {
-        "noImplicitBoolean": "error",
-        "useBlockStatements": "error",
-        "noYodaExpression": "error",
-        "useConsistentArrayType": "error",
-        "useConsistentBuiltinInstantiation": "error",
-        "useDefaultSwitchClause": "error",
-        "useExplicitLengthCheck": "error",
-        "useForOf": "error",
-        "useFragmentSyntax": "error",
-        "useShorthandAssign": "error",
-        "useSingleCaseStatement": "error",
-        "useThrowNewError": "error",
-        "useThrowOnlyError": "error"
+        "noDefaultExport": "off",
+        "useNamingConvention": "off"
       },
       "suspicious": {
-        "noEmptyBlockStatements": "error",
-        "noEvolvingTypes": "error",
-        "noMisplacedAssertion": "error",
-        "useAwait": "error"
+        "noConsole": "off",
+        "noConsoleLog": "off",
+        "noReactSpecificProps": "off"
       },
       "nursery": {
         "useSortedClasses": {
