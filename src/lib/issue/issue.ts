@@ -73,11 +73,9 @@ export const getIssueByTitle = async (title: (typeof reservedIssueTitles)[number
 
   if (!rawIssueData) throw new Error(`タイトルが ${title} のIssueは見つかりませんでした`);
 
-  const body_html_md = await renderMarkdown(rawIssueData.body);
-
   return {
     ...rawIssueData,
-    body_html_md,
+    body_html_md: await renderMarkdown(rawIssueData.body),
     labels: rawIssueData.labels.map(transformLabel),
   };
 };
@@ -94,5 +92,6 @@ export const getReservedIssues = async (): Promise<Issue[]> => {
  */
 export const getDraftIssues = async (): Promise<IssueListItem[]> => {
   const issues = await getIssues({ withDraft: true });
+
   return issues.filter((issue) => issue.state === draftIssueState);
 };
