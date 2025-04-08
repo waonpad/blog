@@ -16,13 +16,12 @@ export const getRawIssueData = (issueNumber: number): GHIssue => {
  * パースのみで特別な加工無しのIssueデータをファイルパスから直接取得
  */
 export const getRawIssueDataFromFilePath = (filePath: ReturnType<typeof buildIssueFilePath>): GHIssue => {
-  const content = readFileSync(filePath, { encoding: "utf-8" });
-  const issueMatter = matter(content);
-  const issueData = issueMatter.data as GHIssue;
+  const rawFileContent = readFileSync(filePath, { encoding: "utf-8" });
+  const { data, content } = matter(rawFileContent);
 
   return {
-    ...issueData,
-    body: issueMatter.content,
+    ...(data as GHIssue),
+    body: content,
   };
 };
 
@@ -32,12 +31,11 @@ export const getRawIssueDataFromFilePath = (filePath: ReturnType<typeof buildIss
 export const getRawIssueCommentDataFromFilePath = (
   filePath: ReturnType<typeof buildIssueCommentFilePath>,
 ): GHIssueComment => {
-  const content = readFileSync(filePath, { encoding: "utf-8" });
-  const issueMatter = matter(content);
-  const issueData = issueMatter.data as GHIssueComment;
+  const rawFileContent = readFileSync(filePath, { encoding: "utf-8" });
+  const { data, content } = matter(rawFileContent);
 
   return {
-    ...issueData,
-    body: issueMatter.content,
+    ...(data as GHIssueComment),
+    body: content,
   };
 };
