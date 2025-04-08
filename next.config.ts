@@ -1,35 +1,41 @@
-import { PHASE_DEVELOPMENT_SERVER } from "next/constants.js";
+import type {
+  PHASE_DEVELOPMENT_SERVER,
+  PHASE_EXPORT,
+  PHASE_PRODUCTION_BUILD,
+  PHASE_PRODUCTION_SERVER,
+} from "next/constants.js";
 import { clientEnv } from "./src/config/env/client";
 import "./src/config/env/server";
 import type { NextConfig } from "next";
 
 const nextConfig = (
-  phase: string,
+  _phase:
+    | typeof PHASE_EXPORT
+    | typeof PHASE_DEVELOPMENT_SERVER
+    | typeof PHASE_PRODUCTION_BUILD
+    | typeof PHASE_PRODUCTION_SERVER,
   {
     defaultConfig,
   }: {
     defaultConfig: NextConfig;
   },
 ): NextConfig => {
-  const basePath = clientEnv.NEXT_PUBLIC_BASE_PATH;
-
   return {
     ...defaultConfig,
     // GitHub Pages にデプロイするためにサーバー環境無しで動作するようにする
     output: "export",
     // GitHub Pages はパスの末尾に強制的にスラッシュを追加するため、これに対応するために trailingSlash を true にする
     trailingSlash: true,
+    basePath: clientEnv.NEXT_PUBLIC_BASE_PATH,
     typescript: {
       tsconfigPath: "./tsconfig.build.json",
     },
     experimental: {
       typedRoutes: true,
     },
-    basePath,
-    pageExtensions: ["ts", "tsx", "js", "jsx"].flatMap((extension) => {
-      const isDevServer = phase === PHASE_DEVELOPMENT_SERVER;
-      return isDevServer ? [`dev.${extension}`, extension] : extension;
-    }),
+    images: {
+      disableStaticImages: true, // importした画像の型定義設定を無効にする設定
+    },
     webpack: (config) => {
       config.module.rules.push({
         test: /\.svg$/,
@@ -44,9 +50,6 @@ const nextConfig = (
       });
 
       return config;
-    },
-    images: {
-      disableStaticImages: true, // importした画像の型定義設定を無効にする設定
     },
   };
 };
