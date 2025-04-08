@@ -264,7 +264,7 @@ https://github.com/sindresorhus/github-markdown-css/blob/5e1d34a4add8501c31efb8c
 .markdown kbd {
   display: inline-block;
   padding: 3px 5px;
-  font: 11px ui-monospace, 'SFMono-Regular', 'SF Mono', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
+  font: 11px ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "Liberation Mono", monospace;
   line-height: 10px;
   color: #e6edf3;
   vertical-align: middle;
