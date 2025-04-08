@@ -7,6 +7,7 @@ import type {
 import { clientEnv } from "./src/config/env/client";
 import "./src/config/env/server";
 import type { NextConfig } from "next";
+import { buildPagesUrlFromRepo } from "./src/utils/github";
 
 const nextConfig = (
   _phase:
@@ -26,7 +27,9 @@ const nextConfig = (
     output: "export",
     // GitHub Pages はパスの末尾に強制的にスラッシュを追加するため、これに対応するために trailingSlash を true にする
     trailingSlash: true,
-    basePath: clientEnv.NEXT_PUBLIC_BASE_PATH,
+    basePath:
+      clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY &&
+      new URL(buildPagesUrlFromRepo(clientEnv.NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY)).pathname,
     typescript: {
       tsconfigPath: "./tsconfig.build.json",
     },

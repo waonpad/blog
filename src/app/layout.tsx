@@ -11,7 +11,6 @@ export const metadata: Metadata = {
     template: `%s | ${clientEnv.NEXT_PUBLIC_APP_NAME}`,
   },
   description: `${clientEnv.NEXT_PUBLIC_GITHUB_USER}のブログです。`,
-  icons: `${clientEnv.NEXT_PUBLIC_BASE_PATH}/favicon.ico`,
   metadataBase: new URL(clientEnv.NEXT_PUBLIC_SITE_URL),
   openGraph: {
     images: [
