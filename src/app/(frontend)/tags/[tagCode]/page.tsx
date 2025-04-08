@@ -1,6 +1,6 @@
 import { ArticleList } from "@/components/article-list";
 import { getIssues } from "@/lib/issue";
-import { listLabels } from "@/lib/issue/label";
+import { getLabels } from "@/lib/issue/label";
 import type { Metadata } from "next";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const generateStaticParams = async (): Promise<Awaited<Props["params"]>[]> => {
-  const labels = await listLabels();
+  const labels = await getLabels();
 
   return labels.map((label) => {
     return {
@@ -19,7 +19,7 @@ export const generateStaticParams = async (): Promise<Awaited<Props["params"]>[]
 
 export const generateMetadata = async (props: Props): Promise<Metadata> => {
   const params = await props.params;
-  const labels = await listLabels();
+  const labels = await getLabels();
 
   const label = labels.find((label) => label.code === params.tagCode);
 
@@ -33,7 +33,7 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 
 export default async function Page(props: Props) {
   const params = await props.params;
-  const labels = await listLabels();
+  const labels = await getLabels();
 
   const label = labels.find((label) => label.code === params.tagCode);
 

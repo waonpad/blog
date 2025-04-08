@@ -1,4 +1,4 @@
-import { listLabels } from "@/lib/issue/label";
+import { getLabels } from "@/lib/issue/label";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
-  const labels = await listLabels();
+  const labels = await getLabels();
 
   return (
     <section>

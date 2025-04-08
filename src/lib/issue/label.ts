@@ -5,7 +5,7 @@ import { transformLabel } from "./transform";
 /**
  * Labelの一覧を取得
  */
-export const listLabels = async (): Promise<ReturnType<typeof transformLabel>[]> => {
+export const getLabels = async (): Promise<ReturnType<typeof transformLabel>[]> => {
   const issues = await getIssues();
 
   const _labels = issues.flatMap((issue) => issue.labels).map(transformLabel);
