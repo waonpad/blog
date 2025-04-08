@@ -264,7 +264,7 @@ https://github.com/sindresorhus/github-markdown-css/blob/5e1d34a4add8501c31efb8c
 .markdown kbd {
   display: inline-block;
   padding: 3px 5px;
-  font: 11px ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  font: 11px ui-monospace, 'SFMono-Regular', 'SF Mono', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
   line-height: 10px;
   color: #e6edf3;
   vertical-align: middle;
@@ -378,14 +378,14 @@ https://github.com/sindresorhus/github-markdown-css/blob/5e1d34a4add8501c31efb8c
 .markdown tt,
 .markdown code,
 .markdown samp {
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  font-family: ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "Liberation Mono", monospace;
   font-size: 12px;
 }
 
 .markdown pre {
   margin-top: 0;
   margin-bottom: 0;
-  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  font-family: ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Consolas", "Liberation Mono", monospace;
   font-size: 12px;
   word-wrap: normal;
 }
@@ -1010,6 +1010,7 @@ https://github.com/sindresorhus/github-markdown-css/blob/5e1d34a4add8501c31efb8c
 .markdown g-emoji {
   display: inline-block;
   min-width: 1ch;
+  /* biome-ignore lint/a11y/useGenericFontNames: <explanation> */
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 1em;
   font-style: normal !important;
