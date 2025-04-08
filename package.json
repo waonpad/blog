@@ -61,7 +61,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.24.0",
     "eslint-plugin-sonarjs": "^3.0.2",
-    "google-auth-library": "^9.15.1",
+    "google-auth-library": "9.15.0",
     "googleapis": "^148.0.0",
     "happy-dom": "^17.4.4",
     "lefthook": "^1.11.7",
