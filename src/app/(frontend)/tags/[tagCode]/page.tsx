@@ -1,5 +1,5 @@
 import { ArticleList } from "@/components/article-list";
-import { getIssues } from "@/lib/issue";
+import { getIssues } from "@/lib/issue/issue";
 import { getLabels } from "@/lib/issue/label";
 import type { Metadata } from "next";
 

@@ -1,5 +1,5 @@
-import { getIssueByTitle } from "@/lib/issue";
 import { getIssueComments } from "@/lib/issue/comment";
+import { getIssueByTitle } from "@/lib/issue/issue";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

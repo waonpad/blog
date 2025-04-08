@@ -1,5 +1,5 @@
 import { ArticleList } from "@/components/article-list";
-import { getDraftIssues, getIssue, getReservedIssues } from "@/lib/issue";
+import { getDraftIssues, getIssue, getReservedIssues } from "@/lib/issue/issue";
 import { getIssueReferences } from "@/lib/issue/reference";
 import { sortByDateKey } from "@/utils/sort";
 

@@ -1,5 +1,5 @@
 import { ArticleList } from "@/components/article-list";
-import { getIssues } from "@/lib/issue";
+import { getIssues } from "@/lib/issue/issue";
 
 export default async function Page() {
   const issues = await getIssues();

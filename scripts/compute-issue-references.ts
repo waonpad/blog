@@ -1,6 +1,6 @@
 import { writeFileSync } from "node:fs";
-import { getIssues } from "@/lib/issue";
 import { reservedIssueTitles } from "@/lib/issue/config";
+import { getIssues } from "@/lib/issue/issue";
 import { issueReferencesFilePath } from "@/lib/issue/path";
 import { getReferencingIssueNumbers } from "@/lib/issue/reference";
 import type { IssueReferences } from "@/lib/issue/types";

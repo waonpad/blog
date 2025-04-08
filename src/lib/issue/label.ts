@@ -1,5 +1,5 @@
 import { sortByKey } from "@/utils/sort";
-import { getIssues } from ".";
+import { getIssues } from "./issue";
 import { transformLabel } from "./transform";
 
 /**
