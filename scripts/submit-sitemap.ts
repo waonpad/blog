@@ -20,6 +20,7 @@ const main = async () => {
   // 完全に同じ場合は何もしない
   if (sitemap === newSitemap) {
     console.log("サイトマップに変更はありません");
+
     return;
   }
 
