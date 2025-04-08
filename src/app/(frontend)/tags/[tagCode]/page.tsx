@@ -45,7 +45,7 @@ export default async function Page(props: Props) {
 
   const issues = await getIssues();
 
-  // labelsにparams.tagCodeが含まれるissueのみを抽出
+  // 対象のラベルが付与されたIssueを取得
   const filteredIssues = issues.filter((issue) => issue.labels.some((label) => label.code === params.tagCode));
 
   return (
