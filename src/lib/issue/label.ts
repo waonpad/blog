@@ -10,10 +10,8 @@ export const getLabels = async (): Promise<ReturnType<typeof transformLabel>[]> 
 
   const _labels = issues.flatMap((issue) => issue.labels).map(transformLabel);
 
-  const labels = sortByKey(
+  return sortByKey(
     _labels.filter((label, index, self) => self.findIndex((l) => l.id === label.id) === index),
     "name",
   );
-
-  return labels;
 };

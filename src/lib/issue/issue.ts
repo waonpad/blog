@@ -12,13 +12,11 @@ import type { Issue, IssueListItem } from "./types";
 export const getIssue = async (issueNumber: number): Promise<Issue> => {
   const rawIssueData = getRawIssueData(issueNumber);
 
-  const issue = {
+  return {
     ...rawIssueData,
     body_html_md: await renderMarkdown(rawIssueData.body),
     labels: rawIssueData.labels.map(transformLabel),
   };
-
-  return issue;
 };
 
 /**
@@ -35,7 +33,7 @@ export const getIssues = async ({
   const paths = await searchIssueFilePaths();
 
   // Issueファイルを読み込み、データを取得
-  const issues = sortByDateKey(
+  return sortByDateKey(
     paths
       .map((filePath) => {
         const rawIssueData = getRawIssueDataFromFilePath(filePath);
@@ -61,8 +59,6 @@ export const getIssues = async ({
     "created_at",
     { order: "desc" },
   );
-
-  return issues;
 };
 
 /**
@@ -79,13 +75,11 @@ export const getIssueByTitle = async (title: (typeof reservedIssueTitles)[number
 
   const body_html_md = await renderMarkdown(rawIssueData.body);
 
-  const issue = {
+  return {
     ...rawIssueData,
     body_html_md,
     labels: rawIssueData.labels.map(transformLabel),
   };
-
-  return issue;
 };
 
 /**

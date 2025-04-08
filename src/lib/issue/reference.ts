@@ -87,13 +87,11 @@ export const getReferencingIssueNumbers = async (issueNumber: number): Promise<n
   );
 
   // Issue全体から参照されているIssue番号一覧の配列を作成
-  const uniqueReferencingIssueNumbers = Array.from(
+  return Array.from(
     new Set(
       [...referencingIssueNumbersOfMain, ...referencingIssueNumbersOfComments.flat()]
         // 自分自身のIssue番号は除外
         .filter((number) => number !== issueNumber),
     ),
   );
-
-  return uniqueReferencingIssueNumbers;
 };

@@ -72,7 +72,7 @@ export const renderMarkdown = async (markdown: string): Promise<string> => {
           if (items.length === 0) return false;
 
           // 開いたり閉じたりできるようにする
-          const wrappedToc = {
+          return {
             type: "element",
             tagName: "details",
             children: [
@@ -84,8 +84,6 @@ export const renderMarkdown = async (markdown: string): Promise<string> => {
               toc,
             ],
           };
-
-          return wrappedToc;
         },
       })
       // 見出しにリンクを追加
