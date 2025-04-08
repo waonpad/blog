@@ -7,9 +7,14 @@ import type { Overwrite } from "utility-types";
 type _GHIssue = Endpoints["GET /repos/{owner}/{repo}/issues/{issue_number}"]["response"]["data"];
 
 /**
+ * ライブラリから取り出したそのままのIssueのコメントの型をエイリアスに保存
+ */
+type _GHIssueComment = Endpoints["GET /repos/{owner}/{repo}/issues/comments"]["response"]["data"][number];
+
+/**
  * ライブラリから取り出したそのままのIssueのラベルの型をエイリアスに保存
  */
-export type _GHLabel = _GHIssue["labels"][number];
+type _GHLabel = _GHIssue["labels"][number];
 
 /**
  * ライブラリから取り出したそのままのIssueのラベルの型を実際のものに変換
@@ -17,14 +22,14 @@ export type _GHLabel = _GHIssue["labels"][number];
 export type GHLabel = Required<Exclude<_GHLabel, string>>;
 
 /**
- * ライブラリから取り出したIssueの型を実際のものに変換
- */
-export type GHIssue = Overwrite<_GHIssue, { body: string; labels: GHLabel[] }>;
-
-/**
  * 加工済みのLabelの型
  */
 export type Label = GHLabel & { code: string };
+
+/**
+ * ライブラリから取り出したIssueの型を実際のものに変換
+ */
+export type GHIssue = Overwrite<_GHIssue, { body: string; labels: GHLabel[] }>;
 
 /**
  * 加工済みのIssueの型
@@ -39,11 +44,6 @@ export type Issue = Overwrite<GHIssue, { labels: Label[] }> & { body_html_md: st
 export type IssueListItem = Overwrite<GHIssue, { labels: Label[] }>;
 
 /**
- * ライブラリから取り出したそのままのIssueのコメントの型をエイリアスに保存
- */
-type _GHIssueComment = Endpoints["GET /repos/{owner}/{repo}/issues/comments"]["response"]["data"][number];
-
-/**
  * ライブラリから取り出したIssueのコメントの型を実際のものに変換
  */
 export type GHIssueComment = Overwrite<_GHIssueComment, { body: string }>;
@@ -53,6 +53,9 @@ export type GHIssueComment = Overwrite<_GHIssueComment, { body: string }>;
  */
 export type IssueComment = GHIssueComment & { body_html_md: string };
 
+/**
+ * Issueの参照関係を表す型
+ */
 export type IssueReferences = {
   number: number;
   referencings: number[];
