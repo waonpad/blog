@@ -5,7 +5,6 @@ import { cleanup } from "@testing-library/react";
 import { afterEach } from "vitest";
 
 /**
- * @description
  * これを実行しないと環境変数が読み込まれない
  */
 export const setupEnv = async (): Promise<void> => {
