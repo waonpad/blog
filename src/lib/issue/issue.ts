@@ -39,16 +39,19 @@ export const getIssues = async ({
         const rawIssueData = getRawIssueDataFromFilePath(filePath);
 
         // 下書きのIssueを取得するオプションが無効の場合、開いているIssueは除外するためnullを返す
-        if (!withDraft && rawIssueData.state === draftIssueState) return null;
+        if (!withDraft && rawIssueData.state === draftIssueState) {
+          return null;
+        }
 
         if (
           // 予約されたIssueのタイトルであって
           reservedIssueTitles.some((title) => title === rawIssueData.title) &&
           // withReservedに指定されていない場合は除外する
           !(withReserved ?? []).some((title) => title === rawIssueData.title)
-        )
+        ) {
           // 予約されたIssueで且つ取得する対象でないものはここで除外される
           return null;
+        }
 
         return {
           ...rawIssueData,
@@ -71,7 +74,9 @@ export const getIssueByTitle = async (title: (typeof reservedIssueTitles)[number
   // Issueファイルを読み込み、データを取得
   const rawIssueData = paths.map(getRawIssueDataFromFilePath).find((rawIssueData) => rawIssueData.title === title);
 
-  if (!rawIssueData) throw new Error(`タイトルが ${title} のIssueは見つかりませんでした`);
+  if (!rawIssueData) {
+    throw new Error(`タイトルが ${title} のIssueは見つかりませんでした`);
+  }
 
   return {
     ...rawIssueData,

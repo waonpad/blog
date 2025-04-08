@@ -23,7 +23,9 @@ export const generateMetadata = async (props: Props): Promise<Metadata> => {
 
   const label = labels.find((label) => label.code === params.tagCode);
 
-  if (!label) throw new Error(`タグが見つかりません。タグコード: ${params.tagCode}`);
+  if (!label) {
+    throw new Error(`タグが見つかりません。タグコード: ${params.tagCode}`);
+  }
 
   return {
     title: label.name,
@@ -37,7 +39,9 @@ export default async function Page(props: Props) {
 
   const label = labels.find((label) => label.code === params.tagCode);
 
-  if (!label) throw new Error(`タグが見つかりません。タグコード: ${params.tagCode}`);
+  if (!label) {
+    throw new Error(`タグが見つかりません。タグコード: ${params.tagCode}`);
+  }
 
   const issues = await getIssues();
 

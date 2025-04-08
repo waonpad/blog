@@ -69,7 +69,9 @@ export const renderMarkdown = async (markdown: string): Promise<string> => {
           // @ts-ignore
           const items = (toc.children?.[0].children || []) as Node[];
           // 見出しの数が0の場合は目次を表示しない
-          if (items.length === 0) return false;
+          if (items.length === 0) {
+            return false;
+          }
 
           // 開いたり閉じたりできるようにする
           return {

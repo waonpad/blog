@@ -6,7 +6,9 @@ import { extractDisplayLabelDescription, extractLabelCode } from "./utils";
  */
 export const transformLabel = <T extends GHLabel | Label>(label: T): Label => {
   // 既にtransformされている場合はそのまま返す
-  if (("code" satisfies keyof Label) in label) return label as Label;
+  if (("code" satisfies keyof Label) in label) {
+    return label as Label;
+  }
 
   // パスパラメータ等に表示するためのコードがdescriptionに埋め込まれていた場合、コードを取得
   const extractedCode = label.description ? extractLabelCode(label.description) : null;

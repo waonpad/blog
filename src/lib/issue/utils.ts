@@ -19,7 +19,9 @@ export const extractLabelCode = (labelDescription: string): string | null => {
  * extractDisplayLabelDescription("label___description") // "description"
  */
 export const extractDisplayLabelDescription = (labelDescription: string): string | null => {
-  if (!labelDescription.includes(labelCodeSeparator)) return labelDescription;
+  if (!labelDescription.includes(labelCodeSeparator)) {
+    return labelDescription;
+  }
 
   return labelDescription.split(labelCodeSeparator)[1] || null;
 };

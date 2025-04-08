@@ -32,7 +32,9 @@ const saveIssues = async () => {
   for await (const { data: issues } of issuesIterator) {
     for (const issue of issues) {
       // PRはスキップ
-      if (issue.pull_request) continue;
+      if (issue.pull_request) {
+        continue;
+      }
 
       console.log("Issue #%d: %s", issue.number, issue.title);
 
@@ -65,7 +67,9 @@ const saveIssueComments = async () => {
       // PRのコメントはスキップ
       // html_url: 'https://github.com/owner/repo/pull/1#issuecomment-123456'
       // /でsplitして最後から2番目が"pull"の場合はPRのコメント
-      if (comment.html_url.split("/").slice(-2)[0] === "pull") continue;
+      if (comment.html_url.split("/").slice(-2)[0] === "pull") {
+        continue;
+      }
 
       console.log("Comment #%d", comment.id);
 
@@ -90,7 +94,9 @@ const saveIssueComments = async () => {
 
 const main = async () => {
   // 削除されたものが残らないように、前のデータを削除
-  if (existsSync(issuesDirPath)) rmdirSync(issuesDirPath, { recursive: true });
+  if (existsSync(issuesDirPath)) {
+    rmdirSync(issuesDirPath, { recursive: true });
+  }
 
   await saveIssues();
 

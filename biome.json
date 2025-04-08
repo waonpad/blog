@@ -21,7 +21,8 @@
         "noDangerouslySetInnerHtml": "off"
       },
       "style": {
-        "noImplicitBoolean": "error"
+        "noImplicitBoolean": "error",
+        "useBlockStatements": "error"
       },
       "nursery": {
         "useSortedClasses": {

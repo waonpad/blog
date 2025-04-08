@@ -7,9 +7,13 @@ export const sortByKey = <T>(array: T[], key: keyof T, { order = "asc" }: { orde
   const _order = order === "asc" ? 1 : -1;
 
   return array.sort((a, b) => {
-    if (a[key] < b[key]) return -1 * _order;
+    if (a[key] < b[key]) {
+      return -1 * _order;
+    }
 
-    if (a[key] > b[key]) return 1 * _order;
+    if (a[key] > b[key]) {
+      return 1 * _order;
+    }
 
     return 0;
   });
@@ -29,9 +33,13 @@ export const sortByDateKey = <T, DateConstructorParameter extends number | strin
     const _a = new Date(a[key] as DateConstructorParameter).getTime();
     const _b = new Date(b[key] as DateConstructorParameter).getTime();
 
-    if (_a < _b) return -1 * _order;
+    if (_a < _b) {
+      return -1 * _order;
+    }
 
-    if (_a > _b) return 1 * _order;
+    if (_a > _b) {
+      return 1 * _order;
+    }
 
     return 0;
   });
