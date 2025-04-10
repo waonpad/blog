@@ -1,17 +1,17 @@
-import { sortByKey } from "@/utils/sort";
+import { sortByKey } from "@/utils/array/sort";
+import { uniqueByKey } from "@/utils/array/unique";
 import { getIssues } from "./issue";
-import { transformLabel } from "./transform";
+import type { Label } from "./types";
 
 /**
- * Labelの一覧を取得
+ * 全てのIssueから、現在使用されているラベルの一覧を取得
+ *
+ * @returns ラベル一覧（ラベル名でソート済み）
  */
-export const getLabels = async (): Promise<ReturnType<typeof transformLabel>[]> => {
+export const getLabels = async (): Promise<Label[]> => {
   const issues = await getIssues();
 
-  const _labels = issues.flatMap((issue) => issue.labels).map(transformLabel);
+  const labels = issues.flatMap((issue) => issue.labels);
 
-  return sortByKey(
-    _labels.filter((label, index, self) => self.findIndex((l) => l.id === label.id) === index),
-    "name",
-  );
+  return sortByKey(uniqueByKey(labels, "id"), "name");
 };

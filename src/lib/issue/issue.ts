@@ -1,4 +1,4 @@
-import { sortByDateKey } from "@/utils/sort";
+import { sortByDateKey } from "@/utils/array/sort";
 import { draftIssueState, reservedIssueTitles } from "./config";
 import { renderMarkdown } from "./markdown";
 import { searchIssueFilePaths } from "./path";

@@ -1,4 +1,4 @@
-import { sortByDateKey } from "@/utils/sort";
+import { sortByDateKey } from "@/utils/array/sort";
 import { renderMarkdown } from "./markdown";
 import { searchIssueCommentFilePaths } from "./path";
 import { getRawIssueCommentDataFromFilePath } from "./raw";

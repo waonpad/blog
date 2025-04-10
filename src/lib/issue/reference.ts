@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { sortByDateKey } from "@/utils/sort";
+import { sortByDateKey } from "@/utils/array/sort";
 import remarkGithub from "remark-github";
 import remarkHtml from "remark-html";
 import remarkParse from "remark-parse";

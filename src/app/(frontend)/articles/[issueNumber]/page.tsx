@@ -2,7 +2,7 @@ import { ArticleReferences } from "@/components/article-references";
 import { Time } from "@/components/time";
 import { getIssueComments } from "@/lib/issue/comment";
 import { getIssue, getIssues } from "@/lib/issue/issue";
-import { sortByKey } from "@/utils/sort";
+import { sortByKey } from "@/utils/array/sort";
 import type { Metadata } from "next";
 import Link from "next/link";
 
