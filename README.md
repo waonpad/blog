@@ -59,8 +59,7 @@ https://github.com/new からリポジトリを作成します。
 この2つはサイトマップのアップロードに使用します。  
 
 <details>
-
-<summary>サイトマップのアップロードをする場合<summary>
+<summary>サイトマップのアップロードをする場合</summary>
 
 以下の操作を行ってください。
 
@@ -70,8 +69,7 @@ https://github.com/new からリポジトリを作成します。
 </details>
 
 <details>
-
-<summary>サイトマップのアップロードが不要な場合<summary>
+<summary>サイトマップのアップロードが不要な場合</summary>
 
 以下の操作を行ってください。
 
