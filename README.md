@@ -58,7 +58,7 @@ https://github.com/new からリポジトリを作成します。
 `GOOGLE_CLOUD_PRIVATE_KEY`, `GOOGLE_CLOUD_CLIENT_EMAIL`の設定は任意です。  
 この2つはサイトマップのアップロードに使用します。  
 
-<detail>
+<details>
 <summary>サイトマップのアップロードをする場合<summary>
 
 以下の操作を行ってください。
@@ -66,9 +66,9 @@ https://github.com/new からリポジトリを作成します。
 - Googleから取得したサイト識別用のhtmlファイルを[publicディレクトリ](./public)に配置
 - [publicディレクトリ](./public)に元からあったサイト識別用のhtmlファイルを削除
 
-</detail>
+</details>
 
-<detail>
+<details>
 <summary>サイトマップのアップロードが不要な場合<summary>
 
 以下の操作を行ってください。
@@ -79,7 +79,7 @@ https://github.com/new からリポジトリを作成します。
 - [コード更新のみ反映ワークフロー](.github/workflows/publish.yml), [記事更新とコード更新反映ワークフロ](.github/workflows/sync.yml)から`Submit sitemap`ステップを削除
 - `google-auth-library`, `googleapis`をアンインストール
 
-</detail>
+</details>
 
 | シークレット名 | 説明 |
 | --- | --- |
