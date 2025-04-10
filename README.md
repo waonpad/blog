@@ -42,18 +42,25 @@ https://github.com/new からリポジトリを作成します。
 
 <記事管理用の非公開GitHubリポジトリURL>/settings/variables/actions にアクセスし、変数を設定します。
 
-`NEXT_PUBLIC_GOOGLE_ANALYTICS_ID`の設定は任意です。  
-不要な場合、この値を使用している箇所を削除して`@next/third-parties`をアンインストールしてください。
-
 | 変数名 | 説明 |
 | --- | --- |
 | NEXT_PUBLIC_APP_NAME | ブログタイトル |
 | NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY | GitHub Pagesデプロイ先GitHubリポジトリ（例：org/repo） |
 | NEXT_PUBLIC_GOOGLE_ANALYTICS_ID | Google AnalyticsのID（任意） |
 
+`NEXT_PUBLIC_GOOGLE_ANALYTICS_ID`の設定は任意です。  
+不要な場合、この値を使用している箇所を削除して`@next/third-parties`をアンインストールしてください。
+
 ### リポジトリにシークレットを設定する
 
 <記事管理用の非公開GitHubリポジトリURL>/settings/secrets/actions にアクセスし、シークレットを設定します。
+
+| シークレット名 | 説明 |
+| --- | --- |
+| ACTIONS_DEPLOY_KEY | [actions-gh-pages](https://github.com/peaceiris/actions-gh-pages?tab=readme-ov-file#%EF%B8%8F-deploy-to-external-repository-external_repository)で外部リポジトリへデプロイするためのキー（[作成方法](https://github.com/peaceiris/actions-gh-pages?tab=readme-ov-file#%EF%B8%8F-create-ssh-deploy-key)） |
+| GOOGLE_CLOUD_PRIVATE_KEY | Google Cloudのプライベートキー（任意） |
+| GOOGLE_CLOUD_CLIENT_EMAIL | Google Cloudのクライアントメール（任意） |
+
 
 `GOOGLE_CLOUD_PRIVATE_KEY`, `GOOGLE_CLOUD_CLIENT_EMAIL`の設定は任意です。  
 この2つはサイトマップのアップロードに使用します。  
@@ -76,16 +83,10 @@ https://github.com/new からリポジトリを作成します。
 - [サイトマップアップロードスクリプト](scripts/submit-sitemap.ts)を削除
 - `GOOGLE_CLOUD_PRIVATE_KEY`, `GOOGLE_CLOUD_CLIENT_EMAIL`の値を使用している箇所を検索して削除
 - [publicディレクトリ](./public)からhtmlファイルを削除（`google`から始まるファイル名）
-- [コード更新のみ反映ワークフロー](.github/workflows/publish.yml), [記事更新とコード更新反映ワークフロ](.github/workflows/sync.yml)から`Submit sitemap`ステップを削除
+- [コード更新のみ反映ワークフロー](.github/workflows/publish.yml)、[記事更新とコード更新反映ワークフロー](.github/workflows/sync.yml)から`Submit sitemap`ステップを削除
 - `google-auth-library`, `googleapis`をアンインストール
 
 </details>
-
-| シークレット名 | 説明 |
-| --- | --- |
-| ACTIONS_DEPLOY_KEY | [actions-gh-pages](https://github.com/peaceiris/actions-gh-pages?tab=readme-ov-file#%EF%B8%8F-deploy-to-external-repository-external_repository)で外部リポジトリへデプロイするためのキー（[作成方法](https://github.com/peaceiris/actions-gh-pages?tab=readme-ov-file#%EF%B8%8F-create-ssh-deploy-key)） |
-| GOOGLE_CLOUD_PRIVATE_KEY | Google Cloudのプライベートキー（任意） |
-| GOOGLE_CLOUD_CLIENT_EMAIL | Google Cloudのクライアントメール（任意） |
 
 ### 特別な役割を持つIssueを作成する
 
@@ -105,13 +106,14 @@ https://github.com/new からリポジトリを作成します。
 
 <記事管理用の非公開GitHubリポジトリURL>/issues/new から、記事となるIssueを作成します。
 
-Issueのタイトルが本文となります。
+Issueのタイトルが記事タイトルとなります。  
+Issueをクローズする事で、記事として表示されるようになります。
 
 記事がどう表示されるかは[Markdownのレンダリングに使用する関数](src/lib/issue/markdown.ts)を参照したり、ローカル開発サーバーで確認できます。
 
 ### ラベルを作成する
 
-<記事管理用の非公開GitHubリポジトリURL>/labels にアクセスし、ラベルを作成します。
+<記事管理用の非公開GitHubリポジトリURL>/labels にアクセスし、ラベルを作成できます。
 
 ラベルはブログ内では「タグ」と呼び替えています。
 
