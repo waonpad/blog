@@ -58,7 +58,7 @@ bun run setup
 
 <https://github.com/new> からリポジトリを作成します。
 
-このリポジトリの名前はブログのURLに使用されます（例：org/repo -> `https://org.github.io/repo/`）。
+このリポジトリの名前はブログのURLに使用されます（例：owner/repo -> `https://owner.github.io/repo/`）。
 
 **このリポジトリは公開する必要があります。**  
 [プランを変更すれば非公開でも可能](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site#creating-your-site)で、別途リポジトリを作成する必要はありませんが、このセットアップ方法では想定していません。
@@ -70,7 +70,7 @@ bun run setup
 | 変数名 | 説明 |
 | --- | --- |
 | NEXT_PUBLIC_APP_NAME | ブログタイトル |
-| NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY | GitHub Pagesデプロイ先GitHubリポジトリ（例：org/repo） |
+| NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY | GitHub Pagesデプロイ先GitHubリポジトリ（例：owner/repo） |
 | NEXT_PUBLIC_GOOGLE_ANALYTICS_ID | Google AnalyticsのID（任意） |
 
 `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID`の設定は任意です。  
@@ -173,7 +173,7 @@ GitHub REST APIからリポジトリのデータを取得して、ローカル�
 | 環境変数名 | 説明 |
 | --- | --- |
 | GITHUB_TOKEN | [アクセストークン](https://github.com/settings/tokens) |
-| GITHUB_REPOSITORY | 記事管理用GitHubリポジトリ（例：org/repo） |
+| GITHUB_REPOSITORY | 記事管理用GitHubリポジトリ（例：owner/repo） |
 
 ### GitHub REST APIからIssueを取得する
 
