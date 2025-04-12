@@ -32,11 +32,10 @@ Issueには自由にコメントできてしまうため、リポジトリは非
 
 https://github.com/new からリポジトリを作成します。
 
-このリポジトリの名前はブログのURLに使用されます。
+このリポジトリの名前はブログのURLに使用されます（例：org/repo -> https://org.github.io/repo/）。
 
 このリポジトリは公開する必要があります。  
-[プランを変更すれば非公開でも可能](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site#creating-your-site)で、別途リポジトリを作成する必要はありません。  
-以後の手順では別途リポジトリを作成しなかった場合は想定しません。
+[プランを変更すれば非公開でも可能](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site#creating-your-site)で、別途リポジトリを作成する必要はありませんが、このセットアップ方法では想定していません。
 
 ### リポジトリに変数を設定する
 
@@ -88,9 +87,11 @@ https://github.com/new からリポジトリを作成します。
 
 </details>
 
+## ブログの運用
+
 ### 特別な役割を持つIssueを作成する
 
-[設定](src/lib/issue/config.ts)により、特定のタイトルを持つIssueは特別な扱いがされます。  
+特定のタイトルを持つIssueは特別な扱いがされます（[設定](src/lib/issue/config.ts)によるもの）。  
 
 これらは記事として扱われず、Issueのクローズは任意です。
 
@@ -117,8 +118,8 @@ Issueをクローズする事で、記事として表示されるようになり
 
 ラベルはブログ内では「タグ」と呼び替えています。
 
-[設定](src/lib/issue/config.ts)により、タグがついた記事一覧を表示するページのパスに使われる文字列を設定できます。  
-`Description`を`pathname___説明`とする事で、/tags/pathname/ というパスでアクセスできるようになります。
+タグがついた記事一覧を表示するページのパス部分に使われる文字列を設定できます（[設定](src/lib/issue/config.ts)によるもの）。  
+ラベルの`Description`を`pathname___説明`とする事で、/tags/pathname/ というパスでアクセスできるようになります。
 
 ### 記事にラベルを追加する
 
@@ -130,16 +131,16 @@ Issueをクローズする事で、記事として表示されるようになり
 
 <記事管理用の非公開GitHubリポジトリURL>/actions/workflows/sync.yml にアクセスし、ワークフローを実行します。
 
-ワークフローが完了すると、GitHub Pagesデプロイ先GitHubリポジトリでワークフローが自動実行されます。  
+ワークフローが完了すると、GitHub Pagesデプロイ先GitHubリポジトリでGitHub Pagesの公開をするワークフローが自動実行されます。  
 <GitHub Pagesデプロイ先GitHubリポジトリURL>/actions/workflows/pages/pages-build-deployment から実行状況が確認できます。
 
 2つのワークフローが完了すると、以下のURLからブログにアクセスできます。  
 https://<GitHubユーザー名>.github.io/<デプロイ先リポジトリ名>/
 
-### TODO: ローカル開発方法
+## TODO: ローカル開発方法
 
-### TODO: 実際に手順をやってみる
+## TODO: 実際に手順をやってみる
 
-### TODO: Google関連のやり方確認
+## TODO: Google関連のやり方確認
 
-### TODO: ソースコードの公開方法
+## TODO: ソースコードの公開方法
