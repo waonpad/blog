@@ -33,5 +33,12 @@
     "editor.formatOnSave": false,
     "files.trimTrailingWhitespace": false
   },
-  "explorer.fileNesting.enabled": true
+  "markdown.extension.toc.levels": "2..6",
+  "markdown.extension.toc.omittedFromToc": {
+    "README.md": ["## 目次"]
+  },
+  "markdownlint.config": {
+    "MD033": false,
+  },
+  "explorer.fileNesting.enabled": true,
 }
