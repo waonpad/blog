@@ -110,7 +110,7 @@ https://github.com/new からリポジトリを作成します。
 Issueのタイトルが記事タイトルとなります。  
 Issueをクローズする事で、記事として表示されるようになります。
 
-記事がどう表示されるかは[Markdownのレンダリングに使用する関数](src/lib/issue/markdown.ts)を参照したり、ローカル開発サーバーで確認できます。
+記事がどう表示されるかは[Markdownのレンダリングに使用する関数](src/lib/issue/markdown.ts)を参照したり、[ローカル開発](#ローカル開発)サーバーを起動して確認できます。
 
 ### ラベルを作成する
 
@@ -137,10 +137,39 @@ Issueをクローズする事で、記事として表示されるようになり
 2つのワークフローが完了すると、以下のURLからブログにアクセスできます。  
 https://<GitHubユーザー名>.github.io/<デプロイ先リポジトリ名>/
 
-## TODO: ローカル開発方法
+## ローカル開発
 
-## TODO: 実際に手順をやってみる
+GitHub REST APIからリポジトリのデータを取得して、ローカルで記事の表示のされ方等の挙動を確認しながらソースコードを編集できます。
 
-## TODO: Google関連のやり方確認
+### ローカルからリポジトリにアクセスするため、環境変数を設定する
 
-## TODO: ソースコードの公開方法
+[.env](.env)に環境変数を設定します。
+
+| 環境変数名 | 説明 |
+| --- | --- |
+| GITHUB_TOKEN | [アクセストークン](https://github.com/settings/tokens) |
+| GITHUB_REPOSITORY | 記事管理用の非公開GitHubリポジトリ（例：org/repo） |
+
+### GitHub REST APIからIssueを取得する
+
+```sh
+bun run scripts/get-issues.ts && bun run scripts/compute-issue-references.ts
+```
+
+### 開発サーバーを起動する
+
+```sh
+bun dev
+```
+
+### ビルド結果をプレビューする
+
+```sh
+bun run build && bun run start
+```
+
+## ソースコードを公開する
+
+記事管理用のGitHubリポジトリは非公開で、ソースコードもこのリポジトリで管理しているため同じく非公開です。
+
+GitHub Pagesデプロイ先GitHubリポジトリをリモートリポジトリに追加して適宜Pushする事で、ソースコードを公開できます。
