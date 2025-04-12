@@ -27,6 +27,8 @@
   - [開発サーバーを起動する](#開発サーバーを起動する)
   - [ビルド結果をプレビューする](#ビルド結果をプレビューする)
 - [ソースコードの公開](#ソースコードの公開)
+- [注意点](#注意点)
+  - [ブログタイトルとOGPのレイアウト](#ブログタイトルとogpのレイアウト)
 
 ## 構成
 
@@ -69,7 +71,7 @@ bun run setup
 
 | 変数名 | 説明 |
 | --- | --- |
-| NEXT_PUBLIC_APP_NAME | ブログタイトル |
+| NEXT_PUBLIC_APP_NAME | ブログタイトル（[注意点](#ブログタイトルとogpのレイアウト)） |
 | NEXT_PUBLIC_PAGES_PUBLISH_REPOSITORY | GitHub Pagesデプロイ先GitHubリポジトリ（例：owner/repo） |
 | NEXT_PUBLIC_GOOGLE_ANALYTICS_ID | Google AnalyticsのID（任意） |
 
@@ -198,3 +200,16 @@ bun run build && bun run start
 記事管理用のGitHubリポジトリは非公開で、ソースコードもこのリポジトリで管理しているため同じく非公開です。
 
 GitHub Pagesデプロイ先GitHubリポジトリをリモートリポジトリに追加して適宜Pushする事で、ソースコードを公開できます。
+
+## 注意点
+
+### ブログタイトルとOGPのレイアウト
+
+ブログタイトル（NEXT_PUBLIC_APP_NAME）はOGPに表示されます。
+
+ご自身のブログタイトルが綺麗に表示されるようレイアウトを調整してください。
+
+現在以下のルーティングでOGPが生成されます。
+
+- [デフォルトOGP](src/app/default-opengraph-image.png/route.tsx)
+- [記事OGP](src/app/(frontend)/articles/[issueNumber]/opengraph-image.png/route.tsx)

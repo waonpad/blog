@@ -6,7 +6,7 @@ import { ImageResponse } from "next/og";
 
 export const dynamic = "force-static";
 
-// NOTICE: 表示する内容(アプリ名)を変える場合はレイアウトの崩れに注意
+// 表示する内容(アプリ名)を変える場合はレイアウトの崩れに注意
 export const GET = () => {
   return new ImageResponse(
     <div
@@ -59,6 +59,10 @@ export const GET = () => {
         {
           data: readFileSync(join(process.cwd(), "src/assets/fonts/Roboto/Roboto-Medium.ttf")),
           name: "Roboto",
+        },
+        {
+          data: readFileSync(join(process.cwd(), "src/assets/fonts/Noto_Sans_JP/static/NotoSansJP-Bold.ttf")),
+          name: "Noto Sans JP",
         },
       ],
     },
