@@ -27,7 +27,7 @@ export const GET = () => {
           display: "flex",
           color: "#e6edf3",
           flexDirection: "column",
-          fontFamily: "Roboto",
+          fontFamily: 'Roboto, "Noto Sans JP"',
           borderRadius: 20,
           justifyContent: "center",
           alignItems: "center",
