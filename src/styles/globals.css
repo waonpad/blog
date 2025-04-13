@@ -18,3 +18,12 @@ a:not(.alternative-link):hover {
 a.alternative-link:hover {
   opacity: 0.7;
 }
+
+iframe {
+  /* 親要素からはみ出さないようにする */
+  max-width: 100%;
+  /* 一旦16:9の動画系のみを想定 */
+  aspect-ratio: 16 / 9;
+  /* アスペクト比に従って高さを調整 */
+  height: auto;
+}
